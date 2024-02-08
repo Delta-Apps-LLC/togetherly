@@ -49,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: ListView(
           children: [
-            for (var chore in _chores)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Material(
@@ -61,15 +60,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     children: [
                       Text("Chore Category"),
-                      SizedBox(height: 8.0),
-                      Material(
-                        borderRadius: BorderRadiusDirectional.all(Radius.circular(5)),
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(chore),
+                      for (var chore in _chores)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Material(
+                            borderRadius:
+                                BorderRadiusDirectional.all(Radius.circular(5)),
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(chore),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
