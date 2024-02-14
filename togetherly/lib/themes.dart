@@ -15,17 +15,14 @@ class AppColors {
 }
 
 class AppFonts {
-  //   Fonts
+  // Fonts
   static const String fontFamilyHeading = 'Quicksand';
   static const String fontFamilyBody = 'Lato';
   static const String fontFamilyAccent = 'Crimson Text';
-  static const TextStyle brandHeading = TextStyle(
-    fontSize: 20,
-    fontFamily: 'Quicksand',
-  );
 }
 
 class AppTextStyles {
+  // Text Styles
   static const TextStyle brandHeading = TextStyle(
     color: AppColors.brandBlack,
     fontFamily: AppFonts.fontFamilyHeading,
@@ -55,12 +52,12 @@ class AppTextStyles {
   static const TextStyle brandAccent = TextStyle(
     color: AppColors.brandBlack,
     fontFamily: AppFonts.fontFamilyAccent,
-    fontSize: 14,
+    fontSize: 16,
   );
   static const TextStyle brandAccentSub = TextStyle(
     color: AppColors.brandBlack,
     fontFamily: AppFonts.fontFamilyAccent,
-    fontSize: 12,
+    fontSize: 14,
   );
   static const TextStyle brandAccentLarge = TextStyle(
     color: AppColors.brandBlack,

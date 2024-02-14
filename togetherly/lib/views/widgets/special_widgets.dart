@@ -1,6 +1,33 @@
 import 'package:flutter/material.dart';
+import '../../themes.dart';
 
-import '../themes.dart';
+class CustomAppBar {
+  final String title;
+
+  CustomAppBar({required this.title});
+
+  PreferredSizeWidget get builtWidget => AppBar(
+    backgroundColor: AppColors.brandBlue,
+    title: Padding(
+      padding: const EdgeInsets.all(
+          0.0), // May need to specify, but default seems to line up
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/images/logo-name.png',
+            width: 150.0,
+            fit: BoxFit.contain,
+          ),
+          Text(
+            title,
+            style: AppTextStyles.brandHeading,
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
 class BottomNavBar {
   final List<BottomNavigationBarItem> items = [
@@ -16,7 +43,6 @@ class BottomNavBar {
       icon: Icon(Icons.settings),
       label: 'Settings',
     ),
-    // Add more items as needed
   ];
 
   Widget get builtWidget => BottomNavigationBar(
@@ -28,7 +54,7 @@ class BottomNavBar {
     selectedLabelStyle: AppTextStyles.brandAccentSub,
     unselectedLabelStyle: AppTextStyles.brandAccentSub,
     onTap: (index) {
-      // route to correct screen
+      print(index);
     },
   );
 }
