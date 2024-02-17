@@ -18,14 +18,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: CustomAppBar(title: 'Chores').builtWidget,
       body: const Padding(
-        padding: EdgeInsets.all(18.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            ChoreList(
-              title: 'Today',
-            ),
-          ],
+        padding: EdgeInsets.only(top: 2, bottom: 2, left: 16.0, right: 16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ChoreList(
+                title: 'Today',
+              ),
+              SizedBox(height: 20.0),
+              ChoreList(
+                title: 'Upcoming',
+              ),
+              SizedBox(height: 20.0),
+              ChoreList(
+                title: 'Overdue',
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: bottomNavBar.builtWidget,

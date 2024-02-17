@@ -57,11 +57,11 @@ class AppTextStyles {
   static const TextStyle brandAccentSub = TextStyle(
     color: AppColors.brandBlack,
     fontFamily: AppFonts.fontFamilyAccent,
-    fontSize: 14,
+    fontSize: 15,
   );
   static const TextStyle brandAccentLarge = TextStyle(
     color: AppColors.brandBlack,
     fontFamily: AppFonts.fontFamilyAccent,
-    fontSize: 18,
+    fontSize: 20,
   );
 }

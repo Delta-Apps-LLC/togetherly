@@ -9,8 +9,7 @@ class CustomAppBar {
   PreferredSizeWidget get builtWidget => AppBar(
     backgroundColor: AppColors.brandBlue,
     title: Padding(
-      padding: const EdgeInsets.all(
-          0.0), // May need to specify, but default seems to line up
+      padding: const EdgeInsets.all(0.0), // May need to specify, but default seems to line up
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
