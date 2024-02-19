@@ -14,3 +14,21 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Setting Up Environment Variables
+
+To build the project, you must create a ".env" file at the root of the project.
+**This file should not be checked into version control.**
+It should contain the following environment variables:
+
+```env
+SUPABASE_ANON_KEY=...
+```
+
+(In assigning values to these variables, you may need to consult team resources
+found elsewhere, such as the team Supabase project.)
+
+Once this file has been created and each time it is updated, you must run the
+command `dart run build_runner build` from the root of the project. This will
+generate/update the requisite dart files, which have been intentionally excluded
+from version control.
