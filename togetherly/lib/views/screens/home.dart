@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 
@@ -11,11 +12,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Chores').build(context),
+      appBar: AppBar(
+        backgroundColor: AppColors.brandBlue,
+        title: const CustomAppBarTitle(title: 'Chores'),
+      ),
       body: const Padding(
         padding: EdgeInsets.only(top: 2, bottom: 2, left: 16.0, right: 16.0),
         child: SingleChildScrollView(

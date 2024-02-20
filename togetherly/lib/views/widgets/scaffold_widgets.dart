@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
-import '../../themes.dart';
+import 'package:togetherly/themes.dart';
 
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key, required this.title});
+class CustomAppBarTitle extends StatelessWidget {
+  const CustomAppBarTitle({super.key, required this.title});
   final String title;
 
   @override
-  PreferredSizeWidget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.brandBlue,
-      title: Padding(
-        padding: const EdgeInsets.all(
-            0.0), // May need to specify, but default seems to line up
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              'assets/images/logo-name.png',
-              width: 150.0,
-              fit: BoxFit.contain,
-            ),
-            Text(
-              title,
-              style: AppTextStyles.brandHeading,
-            ),
-          ],
-        ),
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(
+          0.0), // May need to specify, but default seems to line up
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/images/logo-name.png',
+            width: 150.0,
+            fit: BoxFit.contain,
+          ),
+          Text(
+            title,
+            style: AppTextStyles.brandHeading,
+          ),
+        ],
       ),
     );
   }
