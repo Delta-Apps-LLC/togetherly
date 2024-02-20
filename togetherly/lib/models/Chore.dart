@@ -3,9 +3,9 @@
 import 'Person.dart';
 
 enum ChoreStatus {
-  ASSIGNED,
-  PENDING,
-  COMPLETED,
+  assigned,
+  pending,
+  completed,
   // Add more statuses as needed
 }
 

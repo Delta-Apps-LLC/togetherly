@@ -1,8 +1,8 @@
 
 
 enum FamilyRole {
-  PARENT,
-  CHILD
+  parent,
+  child
   // Add more statuses as needed
 }
 
