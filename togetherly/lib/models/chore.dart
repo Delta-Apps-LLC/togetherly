@@ -1,9 +1,9 @@
-// ignore_for_file: constant_identifier_names
+// Model class for the Chore entity
 
 enum ChoreStatus {
-  ASSIGNED,
-  PENDING,
-  COMPLETED,
+  assigned,
+  pending,
+  completed,
   // Add more statuses as needed
 }
 
@@ -21,6 +21,6 @@ class Chore {
     required this.dueDate,
     required this.points,
     required this.isBonus,
-    this.status = ChoreStatus.ASSIGNED,
+    this.status = ChoreStatus.assigned,
   });
 }

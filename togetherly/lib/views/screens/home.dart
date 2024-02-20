@@ -11,12 +11,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final bottomNavBar = BottomNavBar();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Chores').builtWidget,
+      appBar: const CustomAppBar(title: 'Chores').build(context),
       body: const Padding(
         padding: EdgeInsets.only(top: 2, bottom: 2, left: 16.0, right: 16.0),
         child: SingleChildScrollView(
@@ -38,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: bottomNavBar.builtWidget,
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
