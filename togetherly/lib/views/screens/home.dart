@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:togetherly/views/widgets/special_widgets.dart';
+import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 
 class HomePage extends StatefulWidget {
