@@ -1,6 +1,6 @@
 
 
-import 'Person.dart';
+import 'person.dart';
 
 enum ChoreStatus {
   assigned,
