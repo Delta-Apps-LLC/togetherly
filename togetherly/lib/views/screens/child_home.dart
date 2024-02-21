@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/app_bar.dart';
+import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
-import 'package:togetherly/views/widgets/nav_bar.dart';
 import 'package:togetherly/views/widgets/points.dart';
 
 class ChildHomePage extends StatefulWidget {
@@ -16,9 +15,10 @@ class _ChildHomePageState extends State<ChildHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Chores',
-      ).build(context),
+      appBar: AppBar(
+        backgroundColor: AppColors.brandBlue,
+        title: const CustomAppBarTitle(title: 'Chores'),
+      ),
       body: const Padding(
         padding: AppWidgetStyles.appPadding,
         child: SingleChildScrollView(
