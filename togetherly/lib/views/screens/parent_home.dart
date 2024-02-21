@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/app_bar.dart';
+import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/widgets/family_list.dart';
-import 'package:togetherly/views/widgets/nav_bar.dart';
 
 class ParentHomePage extends StatefulWidget {
   const ParentHomePage({super.key});
@@ -15,7 +14,10 @@ class _ParentHomePageState extends State<ParentHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Family').build(context),
+      appBar: AppBar(
+        backgroundColor: AppColors.brandBlue,
+        title: const CustomAppBarTitle(title: 'Family')
+      ),
       body: const Padding(
         padding: AppWidgetStyles.appPadding,
         child: SingleChildScrollView(
