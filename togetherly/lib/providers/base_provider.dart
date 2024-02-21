@@ -96,6 +96,7 @@ abstract class BaseProvider with ChangeNotifier {
   /// The state stored in the class should be updated and notifyListeners should
   /// be called as values are returned from services.
   ///
-  /// This method will be called to initialize the state of the provider.
+  /// This method should be called in the constructor to initialize the state of
+  /// the provider.
   Future<void> refresh();
 }

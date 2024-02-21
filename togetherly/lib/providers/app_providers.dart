@@ -20,6 +20,8 @@ class _AppProvidersState extends State<AppProviders> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // Any additional providers that maintain app-wide state should be added
+        // to this list.
         ChangeNotifierProvider<ExampleProvider>(
             create: (_) => ExampleProvider(exampleService))
       ],
