@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:togetherly/views/widgets/special_widgets.dart';
+import 'package:togetherly/themes.dart';
+import 'package:togetherly/views/widgets/app_bar.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
+import 'package:togetherly/views/widgets/nav_bar.dart';
+import 'package:togetherly/views/widgets/points.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-  final String title;
+class ChildHomePage extends StatefulWidget {
+  const ChildHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ChildHomePage> createState() => _ChildHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _ChildHomePageState extends State<ChildHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Chores').build(context),
+      appBar: const CustomAppBar(
+        title: 'Chores',
+      ).build(context),
       body: const Padding(
-        padding: EdgeInsets.only(top: 2, bottom: 2, left: 16.0, right: 16.0),
+        padding: AppWidgetStyles.appPadding,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              Points(),
               ChoreList(
                 title: 'Today',
               ),
