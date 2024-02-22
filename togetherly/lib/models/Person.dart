@@ -1,22 +1,31 @@
-
-
-enum FamilyRole {
-  PARENT,
-  CHILD
-  // Add more statuses as needed
+enum profileIcon {
+  ASSIGNED,
+  PENDING,
+  COMPLETED,
 }
 
 class Person {
-  final int id; //TODO set to auto increment in the database
-  final int familyId;
-  final String name;
-  final FamilyRole role;
+  final int _id;
+  final int _familyId;
+  final String _name;
+  final bool _isParent;
+  profileIcon _icon;
 
-  // Add other properties as needed
-  const Person({
-    required this.familyId,
-    required this.name,
-    required this.role,
-    this.id = 0 //TODO FIX!
-  });
+  Person(
+    this._id,
+    this._familyId,
+    this._name,
+    this._isParent,
+    this._icon
+  );
+
+  bool get isParent => _isParent;
+
+  String get name => _name;
+
+  int get familyId => _familyId;
+
+  int get id => _id;
 }
+
+
