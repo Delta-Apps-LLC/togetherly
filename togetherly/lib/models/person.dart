@@ -1,7 +1,7 @@
+
 enum profileIcon {
-  ASSIGNED,
-  PENDING,
-  COMPLETED,
+  PANDA,
+  BEAR,
 }
 
 class Person {
@@ -26,6 +26,8 @@ class Person {
   int get familyId => _familyId;
 
   int get id => _id;
+
+  profileIcon get icon => _icon;
 }
 
 

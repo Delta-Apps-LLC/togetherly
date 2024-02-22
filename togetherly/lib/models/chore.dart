@@ -1,14 +1,15 @@
-
-import 'Person.dart';
+import 'person.dart';
 
 enum ChoreStatus {
   ASSIGNED,
   PENDING,
   COMPLETED,
+
 }
 
 
 class Chore {
+
   final int _id;
   Person _assignedPerson;
   String _title;

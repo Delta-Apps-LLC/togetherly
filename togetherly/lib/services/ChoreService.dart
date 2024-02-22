@@ -8,14 +8,14 @@ class ChoreService {
   Future<List<Chore>> getChores() async {
     //TODO FIX select based on column titles
     var result = await Supabase.instance.client.from('Chore')
-        .select('id, name, due, completion, points');
+        .select('id, assignedPerson,title, description, dueDate, points, status');
     // result might give a list of database rows
     List<Chore> chores = [];
-    result.forEach((map) {
-      var chore = Chore(
-      map['id'], map['assignedPerson'], map['title'], map['description'],map['dueDate'], map['points'], map['status']);
-      chores.add(chore);
-    });
+    // result.forEach((map) {
+    //   var chore = Chore(
+    //   map['id'], map['assignedPerson'], map['title'], map['description'],map['dueDate'], map['points'], map['status']);
+    //   chores.add(chore);
+    // });
 
     return Future<List<Chore>>.value(chores);
   }
