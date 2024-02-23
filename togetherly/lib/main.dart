@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/providers/app_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:togetherly/utilities/env.dart';
 import 'views/screens/home.dart';
 
 Future<void> main() async {
@@ -8,7 +9,7 @@ Future<void> main() async {
 
   await Supabase.initialize(
     url: 'https://ejsdquitvcfduhsrdwvx.supabase.co',
-    anonKey: '',
+    anonKey: Env.supabaseAnonKey,
   );
   runApp(const MyApp());
 }
