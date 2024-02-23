@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:togetherly/providers/app_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:togetherly/utilities/env.dart';
-import 'views/screens/home.dart';
+import 'package:togetherly/views/screens/child_home.dart';
+import 'package:togetherly/views/screens/parent_home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,13 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppProviders(
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Togetherly',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const HomePage(title: 'Home Page'),
+        home: ParentHomePage(),
+        // home: ChildHomePage(),
       ),
     );
   }

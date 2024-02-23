@@ -65,3 +65,12 @@ class AppTextStyles {
     fontSize: 20,
   );
 }
+
+class AppWidgetStyles {
+  static const EdgeInsets appPadding = EdgeInsets.only(
+    top: 10,
+    bottom: 1,
+    left: 16,
+    right: 16,
+  );
+}
