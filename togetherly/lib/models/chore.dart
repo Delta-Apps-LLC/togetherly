@@ -1,5 +1,4 @@
 import 'person.dart';
-
 enum ChoreStatus {
   ASSIGNED,
   PENDING,

@@ -10,13 +10,15 @@ class Person {
   final String _name;
   final bool _isParent;
   profileIcon _icon;
+  int _totalPoints;
 
   Person(
     this._id,
     this._familyId,
     this._name,
     this._isParent,
-    this._icon
+    this._icon,
+    this._totalPoints
   );
 
   bool get isParent => _isParent;
