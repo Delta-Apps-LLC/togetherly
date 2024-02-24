@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
     return AppProviders(
       child: const MaterialApp(
         title: 'Togetherly',
-        home: ParentHomePage(),
-        // home: ChildHomePage(),
+        // home: ParentHomePage(),
+        home: ChildHomePage(),
       ),
     );
   }
