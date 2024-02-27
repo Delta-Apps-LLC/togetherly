@@ -92,6 +92,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: BottomNavigationBar(
           items: items,
           currentIndex: widget.index,
+          type: BottomNavigationBarType.fixed,
           backgroundColor: AppColors.brandBlue,
           selectedItemColor: AppColors.brandGold,
           unselectedItemColor: AppColors.brandBlack,
