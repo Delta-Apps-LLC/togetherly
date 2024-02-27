@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     provider.setNavIndex(index);
     switch (index) {
       case 0:
-        provider.setAppBarTitle('Chores');
+        provider.setAppBarTitle('Family');
         break;
       case 1:
         provider.setAppBarTitle('Approval');

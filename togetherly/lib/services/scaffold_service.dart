@@ -8,7 +8,7 @@ abstract interface class ScaffoldService {
 
 class ScaffoldServiceImpl implements ScaffoldService {
   int navIndex = 0;
-  String appBarTitle = 'Chores';
+  String appBarTitle = 'Family';
 
   @override
   Future<int> getNavIndex() async => navIndex;
