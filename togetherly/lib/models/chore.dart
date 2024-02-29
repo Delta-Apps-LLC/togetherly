@@ -1,6 +1,6 @@
 // Model class for the Chore entity
 
-import 'person.dart';
+import 'child.dart';
 
 enum ChoreStatus {
   assigned,
@@ -12,7 +12,7 @@ enum ChoreStatus {
 class Chore {
 
   final int _id;
-  Person _assignedPerson;
+  Child _assignedChild;
   String _title;
   String _description;
   DateTime _dueDate;
@@ -20,7 +20,7 @@ class Chore {
   ChoreStatus _status;
   // later add bool isshared
 
-  Chore(this._id, this._assignedPerson, this._title, this._description,
+  Chore(this._id, this._assignedChild, this._title, this._description,
       this._dueDate, this._points, this._status);
 
   ChoreStatus get status => _status;
@@ -53,10 +53,10 @@ class Chore {
     _title = value;
   }
 
-  Person get assignedPerson => _assignedPerson;
+  Child get assignedPerson => _assignedChild;
 
-  set assignedPerson(Person value) {
-    _assignedPerson = value;
+  set assignedChild(Child value) {
+    _assignedChild = value;
   }
 
   int get id => _id;
