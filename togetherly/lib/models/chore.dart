@@ -18,10 +18,10 @@ class Chore {
   DateTime _dueDate;
   int _points;
   ChoreStatus _status;
-  // later add bool isshared
+  bool _isShared;
 
   Chore(this._id, this._assignedChild, this._title, this._description,
-      this._dueDate, this._points, this._status);
+      this._dueDate, this._points, this._status, this._isShared);
 
   ChoreStatus get status => _status;
 
@@ -61,4 +61,9 @@ class Chore {
 
   int get id => _id;
 
+  bool get isshared => _isShared;
+
+  set isshared(bool value) {
+    _isShared = value;
+  }
 }
