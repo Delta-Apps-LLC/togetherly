@@ -5,7 +5,6 @@ import 'package:togetherly/models/chore.dart';
 class ChoreService {
 
   Future<List<Chore>> getChores() async {
-    //TODO FIX select based on column titles
     var result = await Supabase.instance.client.from('Chore')
         .select('id, assignedPerson,title, description, dueDate, points, status');
     // result might give a list of database rows
@@ -24,7 +23,6 @@ class ChoreService {
     var result = await Supabase.instance.client.from('Chore')
         .select('id, assignedPerson,title, description, dueDate, points, status')
         .eq('personId', personId);
-    // result might give a list of database rows
     List<Chore> chores = [];
     result.forEach((map) {
       var chore = Chore(
@@ -42,10 +40,10 @@ class ChoreService {
         .insert({
       'title': chore.title,
       'description': chore.description,
-      'title': chore.title,
-      'description': chore.description,
-      'title': chore.title,
-      'description': chore.description
+      'dateDue': chore.dateDue,
+      'points': chore.points,
+      'status': chore.status,
+      'personId': chore.personId
     });
   }
 
@@ -62,13 +60,13 @@ class ChoreService {
     await supabase
         .from('cities')
         .update({
-      'title': chore.title,
-      'description': chore.description,
-      'title': chore.title,
-      'description': chore.description,
-      'title': chore.title,
-      'description': chore.description
-    })
+          'title': chore.title,
+          'description': chore.description,
+          'dateDue': chore.dateDue,
+          'points': chore.points,
+          'status': chore.status,
+          'personId': chore.personId
+        })
         .match({ 'id': chore.id });
   }
 
