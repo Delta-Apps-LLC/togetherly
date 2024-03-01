@@ -8,9 +8,9 @@ import '../services/chore_service.dart';
 
 class ChoreProvider extends BaseProvider {
   final ChoreService service;
+  final int personId;
 
-  //TODO Is this where we need to initialize the list?
-  ChoreProvider(this.service) {
+  ChoreProvider(this.service, this.personId) {
     log("ChoreProvider created!");
     refresh();
   }
@@ -20,35 +20,26 @@ class ChoreProvider extends BaseProvider {
 
   Future<void> addChore(Chore chore) async {
     await service.addChore(chore);
-    notifyListeners();
+    await refresh();
   }
 
   Future<void> deleteChore(Chore chore) async {
     await service.deleteChore(chore);
-    notifyListeners();
+    await refresh();
   }
 
   Future<void> updateChore(Chore chore) async {
     await service.addChore(chore);
-    notifyListeners();
+    await refresh();
   }
 
-  //TODO: make sure you are doing the personId correctly
   @override
   Future<void> refresh() async {
     //Can we have a variable passed in for this function? If so,
-    _choreList = await service.getChoreList(this._personId);
+    _choreList = await service.getChoreList(personId);
     notifyListeners();
     log("Update ChoreProvider!");
   }
-
-  Future<List<Chore>> getChoreList(int personId) async {
-    return await service.getChoreList(personId);
-    notifyListeners();
-  }
-
-  //Get ChoreList
-
 
   //Demo 2
   void sortChoresByDueDate() {
