@@ -9,7 +9,7 @@ abstract class Person {
   final int _id;
   final int _familyId;
   final String _name;
-  profileIcon _icon;
+  final profileIcon _icon;
 
   Person(
       this._id,
