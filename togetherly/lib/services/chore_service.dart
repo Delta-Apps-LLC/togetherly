@@ -11,7 +11,7 @@ class ChoreService {
     List<Chore> chores = [];
     result.forEach((map) {
       var chore = Chore(
-          map['id'], map['personId'], map['title'], map['description'],map['dueDate'], map['points'], map['status'], map[shared]);
+          map['id'], map['personId'], map['title'], map['description'],map['dueDate'], map['points'], map['status'], map['shared']);
       chores.add(chore);
     });
 
@@ -26,7 +26,7 @@ class ChoreService {
     List<Chore> chores = [];
     result.forEach((map) {
       var chore = Chore(
-          map['id'], map['personId'], map['title'], map['description'],map['dueDate'], map['points'], map['status'], map[shared]);
+          map['id'], map['personId'], map['title'], map['description'],map['dueDate'], map['points'], map['status'], map['shared']);
       chores.add(chore);
     });
 
@@ -40,10 +40,10 @@ class ChoreService {
         .insert({
       'title': chore.title,
       'description': chore.description,
-      'dateDue': chore.dateDue,
+      'dateDue': chore.dueDate,
       'points': chore.points,
       'status': chore.status,
-      'personId': chore.personId
+      'personId': chore.assignedPerson
     });
   }
 
@@ -62,10 +62,10 @@ class ChoreService {
         .update({
       'title': chore.title,
       'description': chore.description,
-      'dateDue': chore.dateDue,
+      'dateDue': chore.dueDate,
       'points': chore.points,
       'status': chore.status,
-      'personId': chore.personId
+      'personId': chore.assignedPerson
     })
         .match({ 'id': chore.id });
   }
