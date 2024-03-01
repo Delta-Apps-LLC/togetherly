@@ -10,15 +10,13 @@ class ChoreProvider extends BaseProvider {
   final ChoreService service;
 
   //TODO Is this where we need to initialize the list?
-  ChoreProvider(this.service, this._personId) {
-    log("ExampleProvider created!");
+  ChoreProvider(this.service) {
+    log("ChoreProvider created!");
     refresh();
   }
 
   List<Chore> _choreList = [];
   List<Chore> get choreList => _choreList;
-  int _personId;
-  int get personId => _personId;
 
   Future<void> addChore(Chore chore) async {
     await service.addChore(chore);
@@ -41,8 +39,16 @@ class ChoreProvider extends BaseProvider {
     //Can we have a variable passed in for this function? If so,
     _choreList = await service.getChoreList(this._personId);
     notifyListeners();
-    log("ExampleProvider refreshed!");
+    log("Update ChoreProvider!");
   }
+
+  Future<List<Chore>> getChoreList(int personId) async {
+    return await service.getChoreList(personId);
+    notifyListeners();
+  }
+
+  //Get ChoreList
+
 
   //Demo 2
   void sortChoresByDueDate() {
