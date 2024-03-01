@@ -4,12 +4,9 @@ import 'child.dart';
 
 class Family {
 
-  final int _id;
-  final String _name;
+  final int? id;
+  final String name;
 
-  Family(this._id, this._name);
+  const Family({this.id, required this.name});
 
-  String get name => _name;
-
-  int get id => _id;
 }

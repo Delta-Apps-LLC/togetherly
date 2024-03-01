@@ -3,6 +3,6 @@ import 'package:togetherly/models/person.dart';
 
 class Parent extends Person {
 
-  Parent(super.id, super.familyId, super.name, super.icon);
+  const Parent({super.id, required super.familyId, required super.name, required super.icon});
 
 }
