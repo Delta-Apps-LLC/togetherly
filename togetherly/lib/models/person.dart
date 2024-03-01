@@ -1,6 +1,16 @@
 enum profileIcon {
-  PANDA,
-  BEAR,
+  bear,
+  cat,
+  chicken,
+  dog,
+  fish,
+  fox,
+  giraffe,
+  gorilla,
+  koala,
+  panda,
+  rabbit,
+  tiger,
 }
 
 //Database table will include totalPoints and isParent
