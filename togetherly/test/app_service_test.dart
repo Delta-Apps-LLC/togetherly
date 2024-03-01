@@ -1,0 +1,2 @@
+@GenerateMocks([ChoreService])
+void main() {}
