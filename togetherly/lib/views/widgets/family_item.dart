@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togetherly/models/person.dart';
+import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/screens/child_home.dart';
 
 class FamilyItem extends StatelessWidget {
   const FamilyItem({super.key, required this.member});
@@ -36,11 +37,11 @@ class FamilyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ScaffoldProvider>(context, listen: false);
+
     return InkWell(
       onTap: () => {
-        // Extract to function above, pass in child information
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const ChildHomePage())))
+        provider.setAppBarTitle('Chores')
       },
       child: Container(
         height: 95,

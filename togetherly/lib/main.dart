@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:togetherly/providers/app_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:togetherly/utilities/env.dart';
-import 'package:togetherly/views/screens/child_home.dart';
-import 'package:togetherly/views/screens/parent_home.dart';
+import 'package:togetherly/views/widgets/custom_material_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,12 +19,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return AppProviders(
-      child: const MaterialApp(
-        title: 'Togetherly',
-        home: ParentHomePage(),
-        // home: ChildHomePage(),
-      ),
-    );
+    return const CustomMaterialApp();
   }
 }

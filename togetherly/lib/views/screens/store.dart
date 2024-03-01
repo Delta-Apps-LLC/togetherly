@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/family_list.dart';
 
-class ParentHomePage extends StatefulWidget {
-  const ParentHomePage({super.key});
+class StorePage extends StatefulWidget {
+  const StorePage({
+    super.key
+  });
 
   @override
-  State<ParentHomePage> createState() => _ParentHomePageState();
+  State<StorePage> createState() => _StorePageState();
 }
 
-class _ParentHomePageState extends State<ParentHomePage> {
+class _StorePageState extends State<StorePage> {
   @override
   Widget build(BuildContext context) {
     return const Padding(
@@ -18,7 +19,9 @@ class _ParentHomePageState extends State<ParentHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            FamilyList(title: 'Members'),
+            Center(
+              child: Text('Hello there! This is the Store page.'),
+            ),
           ],
         ),
       ),
