@@ -1,5 +1,7 @@
 // Model class for the Chore entity
 
+import 'package:togetherly/utilities/value.dart';
+
 enum ChoreStatus {
   assigned,
   pending,
@@ -28,14 +30,24 @@ class Chore {
     required this.isShared,
   });
 
-  // Chore(Chore original, {int? assignedChildId, String? title, String? description,
-  //   DateTime? dueDate, int? points, ChoreStatus? status, bool? isShared})
-  // : id = original.id,
-  //   assignedChildId = assignedChildId ?? original.assignedChildId,
-  //   title = title ?? original.title,
-  //   description = description ?? original.description,
-  //   dueDate = dueDate ?? original.dueDate,
-  //   points = points ?? original.points,
-  //   status = status ?? original.status,
-  //   isShared = isShared ?? original.isShared;
+  Chore copyWith({
+    Value<int?>? id,
+    int? assignedChildId,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    int? points,
+    ChoreStatus? status,
+    bool? isShared,
+  }) =>
+      Chore(
+        id: (id ?? Value(this.id)).value,
+        assignedChildId: assignedChildId ?? this.assignedChildId,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        dueDate: dueDate ?? this.dueDate,
+        points: points ?? this.points,
+        status: status ?? this.status,
+        isShared: isShared ?? this.isShared,
+      );
 }
