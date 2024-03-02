@@ -29,7 +29,7 @@ class _AppProvidersState extends State<AppProviders> {
         ChangeNotifierProvider<ScaffoldProvider>(
             create: (_) => ScaffoldProvider()),
         ChangeNotifierProvider<ChoreProvider>(
-            create: (_) => ChoreProvider(choreService, 0)),
+            create: (_) => ChoreProvider(choreService, 1)),
       ],
       child: widget.child,
     );

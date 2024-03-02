@@ -6,7 +6,7 @@ class ChoreService {
 
   Future<List<Chore>> getChores() async {
     var result = await Supabase.instance.client.from(_choreTable).select(
-        'id, assignedpersonid, title, description, datedue, points, status');
+        'id, assignedpersonid, title, description, datedue, points, status, shared');
     return result.map(_mapToChore).toList();
   }
 
@@ -15,7 +15,7 @@ class ChoreService {
     var result = await Supabase.instance.client
         .from(_choreTable)
         .select(
-            'id, assignedpersonid, title, description, datedue, points, status')
+            'id, assignedpersonid, title, description, datedue, points, status, shared')
         .eq('assignedpersonid', personId);
     return result.map(_mapToChore).toList();
   }
