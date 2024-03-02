@@ -61,15 +61,15 @@ class ChoreItem extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  if (chore.isBonus)
-                    const Icon(
-                      Icons.star,
-                      color: AppColors.brandGold,
-                    ),
-                  if (chore.isBonus)
-                    const SizedBox(
-                      width: 5,
-                    ),
+                  // if (chore.isBonus)
+                  //   const Icon(
+                  //     Icons.star,
+                  //     color: AppColors.brandGold,
+                  //   ),
+                  // if (chore.isBonus)
+                  //   const SizedBox(
+                  //     width: 5,
+                  //   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,

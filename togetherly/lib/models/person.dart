@@ -1,4 +1,4 @@
-enum profileIcon {
+enum ProfileIcon {
   bear,
   cat,
   chicken,
@@ -13,26 +13,16 @@ enum profileIcon {
   tiger,
 }
 
-//Database table will include totalPoints and isParent
-
 abstract class Person {
-  final int _id;
-  final int _familyId;
-  final String _name;
-  profileIcon _icon;
+  final int? id;
+  final int familyId;
+  final String name;
+  final ProfileIcon icon;
 
-  Person(
-      this._id,
-      this._familyId,
-      this._name,
-      this._icon,
-      );
-
-  String get name => _name;
-
-  int get familyId => _familyId;
-
-  int get id => _id;
-
-  profileIcon get icon => _icon;
+  const Person({
+    this.id,
+    required this.familyId,
+    required this.name,
+    required this.icon,
+  });
 }
