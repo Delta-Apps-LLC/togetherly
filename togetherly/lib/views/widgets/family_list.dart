@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/family_item.dart';
@@ -12,26 +13,30 @@ class FamilyList extends StatefulWidget {
 }
 
 class _FamilyListState extends State<FamilyList> {
-  List<Person> children = [
-    Person(
+  List<Child> children = const [
+    Child(
+      familyId: 0,
       name: 'Emma',
-      avatar: 1,
-      points: 45,
+      icon: ProfileIcon.bear,
+      totalPoints: 45,
     ),
-    Person(
+    Child(
+      familyId: 0,
       name: 'Jacob',
-      avatar: 2,
-      points: 80,
+      icon: ProfileIcon.dog,
+      totalPoints: 80,
     ),
-    Person(
+    Child(
+      familyId: 0,
       name: 'Natalie',
-      avatar: 3,
-      points: 65,
+      icon: ProfileIcon.cat,
+      totalPoints: 65,
     ),
-    Person(
+    Child(
+      familyId: 0,
       name: 'Robert',
-      avatar: 4,
-      points: 30,
+      icon: ProfileIcon.giraffe,
+      totalPoints: 30,
     ),
   ];
 

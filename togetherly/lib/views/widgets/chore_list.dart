@@ -17,21 +17,24 @@ class _ChoreListState extends State<ChoreList> {
       title: 'Do the dishes',
       dueDate: DateTime(2024, 2, 15),
       points: 15,
-      isBonus: false,
+      assignedChildId: 0,
+      isShared: false,
     ),
     Chore(
       title: 'Pick up the living room',
       dueDate: DateTime(2024, 2, 14),
       points: 10,
-      isBonus: false,
       status: ChoreStatus.pending,
+      assignedChildId: 0,
+      isShared: false,
     ),
     Chore(
       title: 'Walk the dog',
       dueDate: DateTime(2024, 2, 14),
       points: 20,
-      isBonus: true,
       status: ChoreStatus.completed,
+      assignedChildId: 0,
+      isShared: false,
     ),
   ];
 
