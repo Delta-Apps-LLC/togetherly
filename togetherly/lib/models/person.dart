@@ -1,4 +1,4 @@
-enum profileIcon {
+enum ProfileIcon {
   bear,
   cat,
   chicken,
@@ -17,7 +17,7 @@ abstract class Person {
   final int? id;
   final int familyId;
   final String name;
-  final profileIcon icon;
+  final ProfileIcon icon;
 
   const Person({
     this.id,

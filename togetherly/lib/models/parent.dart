@@ -13,7 +13,7 @@ class Parent extends Person {
     Value<int?>? id,
     int? familyId,
     String? name,
-    profileIcon? icon,
+    ProfileIcon? icon,
   }) =>
       Parent(
         id: (id ?? Value(this.id)).value,

@@ -17,7 +17,7 @@ class Child extends Person {
     Value<int?>? id,
     int? familyId,
     String? name,
-    profileIcon? icon,
+    ProfileIcon? icon,
     int? totalPoints,
   }) =>
       Child(
