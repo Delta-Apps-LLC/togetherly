@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'package:togetherly/providers/example_provider.dart';
+import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
-import 'package:togetherly/services/example_service.dart';
+import 'package:togetherly/services/chore_service.dart';
 
 class AppProviders extends StatefulWidget {
   final Widget child;
@@ -15,7 +15,8 @@ class AppProviders extends StatefulWidget {
 }
 
 class _AppProvidersState extends State<AppProviders> {
-  final ExampleService exampleService = ExampleServiceImpl();
+  // final ExampleService exampleService = ExampleServiceImpl();
+  final ChoreService choreService = ChoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,12 @@ class _AppProvidersState extends State<AppProviders> {
       providers: [
         // Any additional providers that maintain app-wide state should be added
         // to this list.
-        ChangeNotifierProvider<ExampleProvider>(
-            create: (_) => ExampleProvider(exampleService)),
+        // ChangeNotifierProvider<ExampleProvider>(
+        //     create: (_) => ExampleProvider(exampleService)),
         ChangeNotifierProvider<ScaffoldProvider>(
             create: (_) => ScaffoldProvider()),
+        ChangeNotifierProvider<ChoreProvider>(
+            create: (_) => ChoreProvider(choreService, 0)),
       ],
       child: widget.child,
     );
