@@ -13,34 +13,30 @@ class FamilyList extends StatefulWidget {
 }
 
 class _FamilyListState extends State<FamilyList> {
-  List<Child> children = [
+  List<Child> members = const [
     Child(
-      id: 1,
-      familyId: 1,
+      familyId: 0,
       name: 'Emma',
-      icon: profileIcon.BEAR,
-      totalPoints: 40,
+      icon: ProfileIcon.bear,
+      totalPoints: 45,
     ),
     Child(
-      id: 2,
-      familyId: 1,
+      familyId: 0,
       name: 'Jacob',
-      icon: profileIcon.PANDA,
+      icon: ProfileIcon.dog,
       totalPoints: 80,
     ),
     Child(
-      id: 3,
-      familyId: 1,
+      familyId: 0,
       name: 'Natalie',
-      icon: profileIcon.BEAR,
+      icon: ProfileIcon.cat,
       totalPoints: 65,
     ),
     Child(
-      id: 4,
-      familyId: 1,
+      familyId: 0,
       name: 'Robert',
-      icon: profileIcon.PANDA,
-      totalPoints: 35,
+      icon: ProfileIcon.giraffe,
+      totalPoints: 30,
     ),
   ];
 
@@ -72,7 +68,7 @@ class _FamilyListState extends State<FamilyList> {
         ),
         Column(
           children: <Widget>[
-            for (final child in children) FamilyItem(child: child)
+            for (final child in members) FamilyItem(member: child)
           ],
         ),
       ],

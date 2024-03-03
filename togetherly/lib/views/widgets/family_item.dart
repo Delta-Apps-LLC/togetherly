@@ -6,20 +6,49 @@ import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class FamilyItem extends StatelessWidget {
-  const FamilyItem({super.key, required this.child});
-  final Child child;
+  final Child member;
+
+  const FamilyItem({super.key, required this.member});
 
   Widget getAvatar(Child child) {
     Widget avatar = const Placeholder();
-    String image = '';
-    switch (child.icon) {
-      case profileIcon.BEAR:
-        image = 'bear';
-        break;
-      case profileIcon.PANDA:
-        image = 'panda';
-        break;
-      // TODO: add the rest of the cases
+    switch (member.icon) {
+      case ProfileIcon.bear:
+        avatar = Image.asset(
+          'assets/images/avatars/bear.png',
+          width: 60,
+        );
+      case ProfileIcon.cat:
+        avatar = Image.asset(
+          'assets/images/avatars/cat.png',
+          width: 60,
+        );
+      case ProfileIcon.chicken:
+      // TODO: Handle this case.
+      case ProfileIcon.dog:
+        avatar = Image.asset(
+          'assets/images/avatars/dog.png',
+          width: 60,
+        );
+      case ProfileIcon.fish:
+      // TODO: Handle this case.
+      case ProfileIcon.fox:
+      // TODO: Handle this case.
+      case ProfileIcon.giraffe:
+      // TODO: Handle this case.
+      case ProfileIcon.gorilla:
+      // TODO: Handle this case.
+      case ProfileIcon.koala:
+      // TODO: Handle this case.
+      case ProfileIcon.panda:
+        avatar = Image.asset(
+          'assets/images/avatars/panda.png',
+          width: 60,
+        );
+      case ProfileIcon.rabbit:
+      // TODO: Handle this case.
+      case ProfileIcon.tiger:
+      // TODO: Handle this case.
     }
     avatar = Image.asset(
       'assets/images/avatars/$image.png',
@@ -49,12 +78,12 @@ class FamilyItem extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    getAvatar(child),
+                    getAvatar(member),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      child.name,
+                      member.name,
                       style:
                           AppTextStyles.brandBodyLarge.copyWith(fontSize: 22),
                     ),
@@ -68,7 +97,7 @@ class FamilyItem extends StatelessWidget {
                       color: AppColors.brandGold,
                     ),
                     Text(
-                      child.totalPoints.toString(),
+                      member.totalPoints.toString(),
                       style:
                           AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                     ),

@@ -1,14 +1,11 @@
-
-import 'package:togetherly/models/parent.dart';
-import 'child.dart';
+import 'package:togetherly/utilities/value.dart';
 
 class Family {
+  final int? id;
+  final String name;
 
-  final int _id;
-  String _name;
-  //List<Parent> _parents;
-  //List<Child> _children;
+  const Family({this.id, required this.name});
 
-  Family(this._id, this._name);
-
+  Family copyWith({Value<int?>? id, String? name}) =>
+      Family(id: (id ?? Value(this.id)).value, name: name ?? this.name);
 }
