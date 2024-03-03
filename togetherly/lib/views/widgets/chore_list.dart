@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
+import 'package:togetherly/models/person.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
@@ -14,24 +16,68 @@ class ChoreList extends StatefulWidget {
 class _ChoreListState extends State<ChoreList> {
   List<Chore> chores = [
     Chore(
-      title: 'Do the dishes',
-      dueDate: DateTime(2024, 2, 15),
-      points: 15,
-      isBonus: false,
+      1,
+      Child(
+        id: 1,
+        familyId: 1,
+        name: 'Emma',
+        icon: profileIcon.BEAR,
+        totalPoints: 40,
+      ),
+      'Do the dishes',
+      'Make sure you use soap',
+      DateTime(2024, 3, 14),
+      10,
+      ChoreStatus.assigned,
+      false,
     ),
     Chore(
-      title: 'Pick up the living room',
-      dueDate: DateTime(2024, 2, 14),
-      points: 10,
-      isBonus: false,
-      status: ChoreStatus.pending,
+      2,
+      Child(
+        id: 1,
+        familyId: 1,
+        name: 'Emma',
+        icon: profileIcon.BEAR,
+        totalPoints: 40,
+      ),
+      'Walk the dog',
+      '',
+      DateTime(2024, 3, 15),
+      15,
+      ChoreStatus.pending,
+      false,
     ),
     Chore(
-      title: 'Walk the dog',
-      dueDate: DateTime(2024, 2, 14),
-      points: 20,
-      isBonus: true,
-      status: ChoreStatus.completed,
+      3,
+      Child(
+        id: 1,
+        familyId: 1,
+        name: 'Emma',
+        icon: profileIcon.BEAR,
+        totalPoints: 40,
+      ),
+      'Make your bed',
+      '',
+      DateTime(2024, 3, 1),
+      5,
+      ChoreStatus.completed,
+      false,
+    ),
+    Chore(
+      4,
+      Child(
+        id: 1,
+        familyId: 1,
+        name: 'Emma',
+        icon: profileIcon.BEAR,
+        totalPoints: 40,
+      ),
+      'Dust and vacuum the living room',
+      'Use a rag and the surface cleaner for dusting, don\'t forget the baseboards',
+      DateTime(2024, 3, 3),
+      15,
+      ChoreStatus.assigned,
+      true,
     ),
   ];
 
@@ -47,8 +93,7 @@ class _ChoreListState extends State<ChoreList> {
         ),
         Column(
           children: <Widget>[
-            for (final chore in chores)
-              ChoreItem(chore: chore),
+            for (final chore in chores) ChoreItem(chore: chore),
           ],
         ),
       ],

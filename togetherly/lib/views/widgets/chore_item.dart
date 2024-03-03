@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatelessWidget {
   const ChoreItem({super.key, required this.chore});
@@ -46,68 +47,80 @@ class ChoreItem extends StatelessWidget {
       }
     }
 
-    return Container(
-      height: 65,
-      margin: const EdgeInsets.only(top: 5),
-      child: PhysicalModel(
-        borderRadius: BorderRadius.circular(5),
-        color: AppColors.brandLightGray,
-        elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.only(
-              top: 6.0, bottom: 6.0, right: 10.0, left: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  if (chore.isBonus)
+    Future<void> buildDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ChoreDetailsDialog(chore: chore);
+        },
+      );
+    }
+
+    return InkWell(
+      onTap: () => buildDialog(context),
+      child: Container(
+        height: 65,
+        margin: const EdgeInsets.only(top: 5),
+        child: PhysicalModel(
+          borderRadius: BorderRadius.circular(5),
+          color: AppColors.brandLightGray,
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                top: 6.0, bottom: 6.0, right: 10.0, left: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    // if (chore.isBonus)
+                    //   const Icon(
+                    //     Icons.star,
+                    //     color: AppColors.brandGold,
+                    //   ),
+                    // if (chore.isBonus)
+                    //   const SizedBox(
+                    //     width: 5,
+                    //   ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          chore.title,
+                          style: chore.status == ChoreStatus.pending ||
+                                  chore.status == ChoreStatus.completed
+                              ? AppTextStyles.brandBodyStrike
+                              : AppTextStyles.brandBody,
+                        ),
+                        if (isDueToday(chore))
+                          Text(
+                            prettyDate(chore.dueDate),
+                            style: AppTextStyles.brandAccentSub,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
                     const Icon(
-                      Icons.star,
+                      Icons.bolt,
+                      size: 32,
                       color: AppColors.brandGold,
                     ),
-                  if (chore.isBonus)
-                    const SizedBox(
-                      width: 5,
+                    Text(
+                      chore.points.toString(),
+                      style: AppTextStyles.brandAccentLarge,
                     ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        chore.title,
-                        style: chore.status == ChoreStatus.pending ||
-                                chore.status == ChoreStatus.completed
-                            ? AppTextStyles.brandBodyStrike
-                            : AppTextStyles.brandBody,
-                      ),
-                      if (isDueToday(chore))
-                        Text(
-                          prettyDate(chore.dueDate),
-                          style: AppTextStyles.brandAccentSub,
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  const Icon(
-                    Icons.bolt,
-                    size: 32,
-                    color: AppColors.brandGold,
-                  ),
-                  Text(
-                    chore.points.toString(),
-                    style: AppTextStyles.brandAccentLarge,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  getStatusIcon(chore),
-                ],
-              ),
-            ],
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    getStatusIcon(chore),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
