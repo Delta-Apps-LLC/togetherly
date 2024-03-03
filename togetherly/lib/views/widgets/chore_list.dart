@@ -4,51 +4,15 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatefulWidget {
-  const ChoreList({super.key, required this.title});
+  const ChoreList({super.key, required this.title, required this.choreList});
   final String title;
+  final List<Chore> choreList;
 
   @override
   State<ChoreList> createState() => _ChoreListState();
 }
 
 class _ChoreListState extends State<ChoreList> {
-  List<Chore> chores = [
-    Chore(
-      title: 'Do the dishes',
-      description: 'Don\'t forget to use soap',
-      dueDate: DateTime(2024, 2, 15),
-      points: 15,
-      assignedChildId: 0,
-      isShared: false,
-    ),
-    Chore(
-      title: 'Pick up the living room',
-      description: 'Make sure you put things away in their correct spot, sweep, and vacuum',
-      dueDate: DateTime(2024, 2, 14),
-      points: 10,
-      status: ChoreStatus.pending,
-      assignedChildId: 0,
-      isShared: false,
-    ),
-    Chore(
-      title: 'Walk the dog',
-      description: 'The leash is by the door, don\'t forget poop bags',
-      dueDate: DateTime(2024, 2, 14),
-      points: 20,
-      status: ChoreStatus.completed,
-      assignedChildId: 0,
-      isShared: false,
-    ),
-    Chore(
-      title: 'Bake pies for Thanksgiving dinner',
-      description: 'Strawberry, Apple, and Key Lime',
-      dueDate: DateTime(2024, 2, 14),
-      points: 20,
-      status: ChoreStatus.completed,
-      assignedChildId: 0,
-      isShared: false,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +25,9 @@ class _ChoreListState extends State<ChoreList> {
           style: AppTextStyles.brandAccentLarge,
         ),
         Column(
-          children: <Widget>[
-            for (final chore in chores) ChoreItem(chore: chore),
-          ],
+          children: widget.choreList.map((chore) {
+            return ChoreItem(chore: chore,);
+          }).toList(),
         ),
       ],
     );

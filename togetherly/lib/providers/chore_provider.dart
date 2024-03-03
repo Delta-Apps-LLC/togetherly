@@ -1,9 +1,8 @@
 import 'dart:developer';
 
+import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/base_provider.dart';
-
-import '../models/chore.dart';
-import '../services/chore_service.dart';
+import 'package:togetherly/services/chore_service.dart';
 
 class ChoreProvider extends BaseProvider {
   final ChoreService service;
@@ -36,6 +35,7 @@ class ChoreProvider extends BaseProvider {
   Future<void> refresh() async {
     //Can we have a variable passed in for this function? If so,
     _choreList = await service.getChoreList(personId);
+    log(_choreList.toString());
     notifyListeners();
     log("ChoreProvider refreshed!");
   }
