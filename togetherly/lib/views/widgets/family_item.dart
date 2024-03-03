@@ -6,49 +6,49 @@ import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class FamilyItem extends StatelessWidget {
-  final Child member;
-
   const FamilyItem({super.key, required this.member});
+  final Child member;
 
   Widget getAvatar(Child child) {
     Widget avatar = const Placeholder();
+    String image = '';
     switch (member.icon) {
       case ProfileIcon.bear:
-        avatar = Image.asset(
-          'assets/images/avatars/bear.png',
-          width: 60,
-        );
+        image = 'bear';
+        break;
       case ProfileIcon.cat:
-        avatar = Image.asset(
-          'assets/images/avatars/cat.png',
-          width: 60,
-        );
+        image = 'cat';
+        break;
       case ProfileIcon.chicken:
-      // TODO: Handle this case.
+        image = 'bear';
+        break;
       case ProfileIcon.dog:
-        avatar = Image.asset(
-          'assets/images/avatars/dog.png',
-          width: 60,
-        );
+        image = 'dog';
+        break;
       case ProfileIcon.fish:
-      // TODO: Handle this case.
+        image = 'fish';
+        break;
       case ProfileIcon.fox:
-      // TODO: Handle this case.
+        image = 'fox';
+        break;
       case ProfileIcon.giraffe:
-      // TODO: Handle this case.
+        image = 'giraffe';
+        break;
       case ProfileIcon.gorilla:
-      // TODO: Handle this case.
+        image = 'gorilla';
+        break;
       case ProfileIcon.koala:
-      // TODO: Handle this case.
+        image = 'koala';
+        break;
       case ProfileIcon.panda:
-        avatar = Image.asset(
-          'assets/images/avatars/panda.png',
-          width: 60,
-        );
+        image = 'panda';
+        break;
       case ProfileIcon.rabbit:
-      // TODO: Handle this case.
+        image = 'rabbit';
+        break;
       case ProfileIcon.tiger:
-      // TODO: Handle this case.
+        image = 'tiger';
+        break;
     }
     avatar = Image.asset(
       'assets/images/avatars/$image.png',

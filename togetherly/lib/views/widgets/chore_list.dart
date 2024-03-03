@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
-import 'package:togetherly/models/person.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
@@ -17,6 +15,7 @@ class _ChoreListState extends State<ChoreList> {
   List<Chore> chores = [
     Chore(
       title: 'Do the dishes',
+      description: 'Don\'t forget to use soap',
       dueDate: DateTime(2024, 2, 15),
       points: 15,
       assignedChildId: 0,
@@ -24,6 +23,7 @@ class _ChoreListState extends State<ChoreList> {
     ),
     Chore(
       title: 'Pick up the living room',
+      description: 'Make sure you put things away in their correct spot, sweep, and vacuum',
       dueDate: DateTime(2024, 2, 14),
       points: 10,
       status: ChoreStatus.pending,
@@ -32,6 +32,16 @@ class _ChoreListState extends State<ChoreList> {
     ),
     Chore(
       title: 'Walk the dog',
+      description: 'The leash is by the door, don\'t forget poop bags',
+      dueDate: DateTime(2024, 2, 14),
+      points: 20,
+      status: ChoreStatus.completed,
+      assignedChildId: 0,
+      isShared: false,
+    ),
+    Chore(
+      title: 'Bake pies for Thanksgiving dinner',
+      description: 'Strawberry, Apple, and Key Lime',
       dueDate: DateTime(2024, 2, 14),
       points: 20,
       status: ChoreStatus.completed,

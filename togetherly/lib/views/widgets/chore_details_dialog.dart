@@ -93,7 +93,7 @@ class ChoreDetailsDialog extends StatelessWidget {
                       style: AppTextStyles.brandBody,
                     ),
                   ),
-                  if (chore.isshared)
+                  if (chore.isShared)
                     const Padding(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Text(
