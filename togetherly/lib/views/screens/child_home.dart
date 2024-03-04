@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/person.dart';
-import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/new_chore_dialog.dart';

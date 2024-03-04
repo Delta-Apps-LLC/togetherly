@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
@@ -172,14 +173,11 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                   style: AppTextStyles.brandBody,
                   controller: _pointsController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: (value) => validatePoints(value),
                   validator: (value) {
-                    if (int.tryParse(value!) != null) {
-                      if (int.tryParse(value)! > 100) {
-                        return 'Value cannot be larger than 100';
-                      }
-                    } else {
-                      return 'Value can only contain numeric characters';
+                    if (int.tryParse(value!)! > 100) {
+                      return 'Value cannot be larger than 100';
                     }
                     return null;
                   },
