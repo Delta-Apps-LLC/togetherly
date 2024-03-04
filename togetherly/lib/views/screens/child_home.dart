@@ -35,8 +35,7 @@ class _ChildHomePageState extends State<ChildHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChoreProvider>(
-      builder: (context, provider, child) => Padding(
+    return Padding(
         padding: AppWidgetStyles.appPadding,
         child: SingleChildScrollView(
           child: Column(
@@ -57,24 +56,11 @@ class _ChildHomePageState extends State<ChildHomePage> {
                   ),
                 ],
               ),
-              ChoreList(
-                title: 'Today',
-                choreList: provider.choreList,
-              ),
+              const ChoreList(),
               const SizedBox(height: 20.0),
-              // ChoreList(
-              //   title: 'Upcoming',
-              //   choreList: provider.choreList,
-              // ),
-              // const SizedBox(height: 20.0),
-              // ChoreList(
-              //   title: 'Overdue',
-              //   choreList: provider.choreList,
-              // ),
             ],
           ),
         ),
-      ),
     );
   }
 }

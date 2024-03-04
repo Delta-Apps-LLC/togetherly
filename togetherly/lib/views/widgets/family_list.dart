@@ -67,9 +67,11 @@ class _FamilyListState extends State<FamilyList> {
           ],
         ),
         Column(
-          children: <Widget>[
-            for (final child in members) FamilyItem(member: child)
-          ],
+          children: members
+              .map((child) => FamilyItem(
+                    member: child,
+                  ))
+              .toList(),
         ),
       ],
     );
