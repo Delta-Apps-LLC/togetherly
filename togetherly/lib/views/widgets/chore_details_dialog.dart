@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/date.dart';
 
 class ChoreDetailsDialog extends StatelessWidget {
   const ChoreDetailsDialog({super.key, required this.chore});
@@ -51,14 +52,9 @@ class ChoreDetailsDialog extends StatelessWidget {
     );
   }
 
-  String prettyDate(String date) {
-    List<String> dateTimeArr = date.split(' ');
-    List<String> dateArr = dateTimeArr.elementAt(0).split('-');
-    return '${dateArr.elementAt(1)}/${dateArr.elementAt(2)}/${dateArr.elementAt(0)}';
-  }
-
   @override
   Widget build(BuildContext context) {
+    DateHelpers dateHelpers = DateHelpers();
     return AlertDialog(
       title: const Center(
         child: Text(
@@ -82,7 +78,7 @@ class ChoreDetailsDialog extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      'Due: ${prettyDate(chore.dueDate.toString())}',
+                      'Due: ${dateHelpers.prettyDate(chore.dueDate)}',
                       style: AppTextStyles.brandBody,
                     ),
                   ),

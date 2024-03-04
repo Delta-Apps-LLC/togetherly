@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatelessWidget {
@@ -9,19 +10,7 @@ class ChoreItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String prettyDate(DateTime dueDate) {
-      return "${dueDate.month}/${dueDate.day}/${dueDate.year}";
-    }
-
-    DateTime getDateToday() {
-      DateTime date = DateTime.now();
-      return DateTime(date.year, date.month, date.day);
-    }
-
-    bool isDueToday(Chore chore) {
-      return chore.dueDate.toString().split(' ')[0] ==
-          getDateToday().toString();
-    }
+    DateHelpers dateHelpers = DateHelpers();
 
     Widget getStatusIcon(Chore chore) {
       switch (chore.status) {
@@ -94,9 +83,9 @@ class ChoreItem extends StatelessWidget {
                               ? AppTextStyles.brandBodyStrike
                               : AppTextStyles.brandBody,
                         ),
-                        if (!isDueToday(chore))
+                        if (!dateHelpers.isDueToday(chore.dueDate))
                           Text(
-                            prettyDate(chore.dueDate),
+                            dateHelpers.prettyDate(chore.dueDate),
                             style: AppTextStyles.brandAccentSub,
                           ),
                       ],

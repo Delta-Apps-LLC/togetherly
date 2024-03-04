@@ -5,6 +5,7 @@ import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/date.dart';
 
 class NewChoreDialog extends StatefulWidget {
   const NewChoreDialog({super.key, this.assignedChildId});
@@ -123,13 +124,9 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     return null;
   }
 
-  String prettyDate(String date) {
-    List<String> dateTimeArr = date.split(' ');
-    List<String> dateArr = dateTimeArr.elementAt(0).split('-');
-    return '${dateArr.elementAt(1)}/${dateArr.elementAt(2)}/${dateArr.elementAt(0)}';
-  }
-
   Widget buildForm(BuildContext context) {
+    DateHelpers dateHelpers = DateHelpers();
+
     return Form(
       key: _formKey,
       child: Column(
@@ -197,7 +194,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Due: ${prettyDate(_dueDate.toString())}',
+                'Due: ${dateHelpers.prettyDate(_dueDate)}',
                 style: AppTextStyles.brandBody,
               ),
               TextButton(
