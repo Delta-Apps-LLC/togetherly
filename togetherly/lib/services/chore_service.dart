@@ -56,7 +56,7 @@ class ChoreService {
         'assignedpersonid': chore.assignedChildId,
         'title': chore.title,
         'description': chore.description,
-        'datedue': chore.dueDate,
+        'datedue': chore.dueDate.toString(),
         'points': chore.points,
         'status': _choreStatusToString(chore.status),
         'shared': chore.isShared,
