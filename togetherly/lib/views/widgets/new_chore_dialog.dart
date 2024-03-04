@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
+import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/person.dart';
+import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class NewChoreDialog extends StatefulWidget {
@@ -22,6 +25,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   int _points = 0;
   bool _isBonus = false;
   bool _isShared = false;
+  bool _loading = false;
   final List<Map<String, dynamic>> _repeatingWeekdays = [
     {
       'day': 'S',
@@ -88,15 +92,21 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     ),
   ];
 
-  void submitChore() {
-    print(_title);
-    print(_description);
-    print(_points);
-    print(_dueDate);
-    print(_isBonus);
-    print(_isShared);
-    print(_repeatingWeekdays);
-    print(_assignedPeople);
+  void submitChore(BuildContext context, ChoreProvider provider) {
+    if (_formKey.currentState!.validate()) {
+      final newChore = Chore(
+        title: _title,
+        description: _description,
+        points: _points,
+        dueDate: _dueDate,
+        isShared: _isShared,
+        assignedChildId: 1,
+      );
+      setState(() => _loading = true);
+      provider.addChore(newChore);
+      setState(() => _loading = false);
+      Navigator.of(context).pop();
+    }
   }
 
   String? validatePoints(String value) {
@@ -334,6 +344,8 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                     setState(() {
                       if (!_assignedPeople.contains(value)) {
                         _assignedPeople.add(value!);
+                      } else {
+                        _assignedPeople.remove(value);
                       }
                     });
                   },
@@ -348,37 +360,41 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      scrollable: true,
-      title: const Center(
-        child: Text(
-          'New Chore',
-          style: AppTextStyles.brandHeading,
+    return Consumer<ChoreProvider>(
+      builder: (context, provider, child) => AlertDialog(
+        scrollable: true,
+        title: const Center(
+          child: Text(
+            'New Chore',
+            style: AppTextStyles.brandHeading,
+          ),
         ),
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          buildForm(context),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            buildForm(context),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: AppTextStyles.brandAccent,
+            ),
+          ),
+          ElevatedButton(
+            style: AppWidgetStyles.submitButton,
+            onPressed: () => submitChore(context, provider),
+            child: _loading
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Save',
+                    style: AppTextStyles.brandAccent,
+                  ),
+          ),
         ],
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text(
-            'Cancel',
-            style: AppTextStyles.brandAccent,
-          ),
-        ),
-        ElevatedButton(
-          style: AppWidgetStyles.submitButton,
-          onPressed: () => submitChore(),
-          child: const Text(
-            'Save',
-            style: AppTextStyles.brandAccent,
-          ),
-        ),
-      ],
     );
   }
 }

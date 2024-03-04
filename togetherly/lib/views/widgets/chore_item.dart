@@ -19,7 +19,8 @@ class ChoreItem extends StatelessWidget {
     }
 
     bool isDueToday(Chore chore) {
-      return chore.dueDate == getDateToday();
+      return chore.dueDate.toString().split(' ')[0] ==
+          getDateToday().toString();
     }
 
     Widget getStatusIcon(Chore chore) {
@@ -93,7 +94,7 @@ class ChoreItem extends StatelessWidget {
                               ? AppTextStyles.brandBodyStrike
                               : AppTextStyles.brandBody,
                         ),
-                        if (isDueToday(chore))
+                        if (!isDueToday(chore))
                           Text(
                             prettyDate(chore.dueDate),
                             style: AppTextStyles.brandAccentSub,
