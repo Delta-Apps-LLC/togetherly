@@ -92,7 +92,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     ),
   ];
 
-  void submitChore(BuildContext context, ChoreProvider provider) {
+  void submitChore(BuildContext context, ChoreProvider provider) async {
     if (_formKey.currentState!.validate()) {
       final newChore = Chore(
         title: _title,
@@ -103,7 +103,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
         assignedChildId: 1,
       );
       setState(() => _loading = true);
-      provider.addChore(newChore);
+      await provider.addChore(newChore);
       setState(() => _loading = false);
       Navigator.of(context).pop();
     }
