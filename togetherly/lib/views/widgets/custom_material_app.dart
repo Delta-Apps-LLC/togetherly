@@ -10,14 +10,15 @@ import 'package:togetherly/views/screens/settings.dart';
 import 'package:togetherly/views/screens/store.dart';
 
 class CustomMaterialApp extends StatelessWidget {
-  CustomMaterialApp({super.key, this.page});
+  const CustomMaterialApp({super.key, this.page});
+
   final Widget? page;
 
-  final List<Widget> screens = [
-    const HomePage(),
-    const ApprovalPage(),
-    const StorePage(),
-    const SettingsPage(),
+  final List<Widget> screens = const [
+    HomePage(),
+    ApprovalPage(),
+    StorePage(),
+    SettingsPage(),
   ];
 
   @override
