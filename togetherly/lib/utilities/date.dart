@@ -1,14 +1,15 @@
 class DateHelpers {
-  DateTime getDateToday() {
-    DateTime date = DateTime.now();
-    return DateTime(date.year, date.month, date.day);
-  }
+  /// Gets today's date.
+  static DateTime getDateToday() => DateTime.now().date;
+}
 
-  bool isDueToday(DateTime dueDate) {
-    return dueDate.toString().split(' ')[0] == getDateToday().toString();
-  }
+extension DateExtensions on DateTime {
+  /// Gets the date component of this DateTime.
+  DateTime get date => DateTime(year, month, day);
 
-  String prettyDate(DateTime dueDate) {
-    return "${dueDate.month}/${dueDate.day}/${dueDate.year}";
-  }
+  /// Returns true if this DateTime has today's date.
+  bool isToday() => date == DateHelpers.getDateToday().date;
+
+  /// Returns this DateTime's date as a string in m/d/y format.
+  String prettyDate() => "$month/$day/$year";
 }
