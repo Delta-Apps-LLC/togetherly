@@ -6,51 +6,28 @@ import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class FamilyItem extends StatelessWidget {
+  const FamilyItem({super.key, required this.member});
   final Child member;
 
-  const FamilyItem({super.key, required this.member});
-
-  Widget getAvatar(Person member) {
-    Widget avatar = const Placeholder();
-    switch (member.icon) {
-      case ProfileIcon.bear:
-        avatar = Image.asset(
-          'assets/images/avatars/bear.png',
-          width: 60,
-        );
-      case ProfileIcon.cat:
-        avatar = Image.asset(
-          'assets/images/avatars/cat.png',
-          width: 60,
-        );
-      case ProfileIcon.chicken:
-      // TODO: Handle this case.
-      case ProfileIcon.dog:
-        avatar = Image.asset(
-          'assets/images/avatars/dog.png',
-          width: 60,
-        );
-      case ProfileIcon.fish:
-      // TODO: Handle this case.
-      case ProfileIcon.fox:
-      // TODO: Handle this case.
-      case ProfileIcon.giraffe:
-      // TODO: Handle this case.
-      case ProfileIcon.gorilla:
-      // TODO: Handle this case.
-      case ProfileIcon.koala:
-      // TODO: Handle this case.
-      case ProfileIcon.panda:
-        avatar = Image.asset(
-          'assets/images/avatars/panda.png',
-          width: 60,
-        );
-      case ProfileIcon.rabbit:
-      // TODO: Handle this case.
-      case ProfileIcon.tiger:
-      // TODO: Handle this case.
-    }
-    return avatar;
+  Widget getAvatar(Child child) {
+    String image = switch (member.icon) {
+      ProfileIcon.bear => 'bear',
+      ProfileIcon.cat => 'cat',
+      ProfileIcon.chicken => 'chicken',
+      ProfileIcon.dog => 'dog',
+      ProfileIcon.fish => 'fish',
+      ProfileIcon.fox => 'fox',
+      ProfileIcon.giraffe => 'giraffe',
+      ProfileIcon.gorilla => 'gorilla',
+      ProfileIcon.koala => 'koala',
+      ProfileIcon.panda => 'panda',
+      ProfileIcon.rabbit => 'rabbit',
+      ProfileIcon.tiger => 'tiger',
+    };
+    return Image.asset(
+      'assets/images/avatars/$image.png',
+      width: 60,
+    );
   }
 
   @override
@@ -58,9 +35,7 @@ class FamilyItem extends StatelessWidget {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
     return InkWell(
-      onTap: () => {
-        provider.setAppBarTitle('Chores')
-      },
+      onTap: () => provider.setAppBarTitle('Chores'),
       child: Container(
         height: 95,
         margin: const EdgeInsets.only(top: 8),

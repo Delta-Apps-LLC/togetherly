@@ -10,7 +10,7 @@ class ScaffoldProvider extends BaseProvider {
   int? _index = 0;
   int? get index => _index;
 
-  String? _title = 'Family';
+  String? _title = 'Chores';
   String? get title => _title;
 
   void setNavIndex(int index) {

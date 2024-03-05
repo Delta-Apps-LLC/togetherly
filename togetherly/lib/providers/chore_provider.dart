@@ -1,9 +1,8 @@
 import 'dart:developer';
 
+import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/base_provider.dart';
-
-import '../models/chore.dart';
-import '../services/chore_service.dart';
+import 'package:togetherly/services/chore_service.dart';
 
 class ChoreProvider extends BaseProvider {
   final ChoreService service;

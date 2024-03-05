@@ -13,7 +13,7 @@ class FamilyList extends StatefulWidget {
 }
 
 class _FamilyListState extends State<FamilyList> {
-  List<Child> children = const [
+  List<Child> members = const [
     Child(
       familyId: 0,
       name: 'Emma',
@@ -67,9 +67,11 @@ class _FamilyListState extends State<FamilyList> {
           ],
         ),
         Column(
-          children: <Widget>[
-            for (final person in children) FamilyItem(member: person)
-          ],
+          children: members
+              .map((child) => FamilyItem(
+                    member: child,
+                  ))
+              .toList(),
         ),
       ],
     );
