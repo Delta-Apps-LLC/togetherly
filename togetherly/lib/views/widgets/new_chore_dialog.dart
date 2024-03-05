@@ -17,10 +17,13 @@ class NewChoreDialog extends StatefulWidget {
 }
 
 class _NewChoreDialogState extends State<NewChoreDialog> {
+  static const List<String> _weekdayAbbreviations = ['S', 'M', 'T', 'W', 'Th', 'F', 'Sa'];
+
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _pointsController = TextEditingController();
+
   DateTime _dueDate = DateTime.now();
   String _title = '';
   String _description = '';
@@ -28,43 +31,8 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   bool _isBonus = false;
   bool _isShared = false;
   bool _loading = false;
-  final List<Map<String, dynamic>> _repeatingWeekdays = [
-    {
-      'day': 'S',
-      'index': 0,
-      'selected': false,
-    },
-    {
-      'day': 'M',
-      'index': 1,
-      'selected': false,
-    },
-    {
-      'day': 'T',
-      'index': 2,
-      'selected': false,
-    },
-    {
-      'day': 'W',
-      'index': 3,
-      'selected': false,
-    },
-    {
-      'day': 'Th',
-      'index': 4,
-      'selected': false,
-    },
-    {
-      'day': 'F',
-      'index': 5,
-      'selected': false,
-    },
-    {
-      'day': 'Sa',
-      'index': 6,
-      'selected': false,
-    },
-  ];
+
+  final List<bool> _repeatingWeekdays = List.filled(7, false);
   final List<Child> _assignedPeople = [];
 
   List<Child> peopleList = const [
@@ -111,23 +79,29 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     }
   }
 
-  String? validatePoints(String value) {
-    if (value.isEmpty) {
-      setState(() => _points = 0);
-    } else {
-      final numericRegex = RegExp(r'^[0-9]+$');
-      if (numericRegex.hasMatch(value)) {
-        setState(() => _points = int.tryParse(value) ?? 0);
-      } else {
-        return 'Value can only contain numeric characters';
-      }
+  void updatePoints(String value) {
+    int? intValue = int.tryParse(value);
+    if (intValue != null) {
+      setState(() => _points = intValue);
+    }
+  }
+
+  String? validatePoints(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a point value";
+    }
+    // FilteringTestInputFormatter.digitsOnly prevents non-integers from being entered.
+    int intValue = int.parse(value);
+    if (intValue > 100) {
+      return 'Value cannot be larger than 100';
     }
     return null;
   }
 
-  Widget buildForm(BuildContext context) {
-    DateHelpers dateHelpers = DateHelpers();
+  void toggleWeekday(int i) =>
+      setState(() => _repeatingWeekdays[i] = !_repeatingWeekdays[i]);
 
+  Widget buildForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -174,13 +148,8 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                   controller: _pointsController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onChanged: (value) => validatePoints(value),
-                  validator: (value) {
-                    if (int.tryParse(value!)! > 100) {
-                      return 'Value cannot be larger than 100';
-                    }
-                    return null;
-                  },
+                  onChanged: updatePoints,
+                  validator: validatePoints,
                 ),
               ),
             ],
@@ -192,7 +161,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Due: ${dateHelpers.prettyDate(_dueDate)}',
+                'Due: ${_dueDate.prettyDate()}',
                 style: AppTextStyles.brandBody,
               ),
               TextButton(
@@ -256,13 +225,13 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _repeatingWeekdays.map((day) {
+                children: [0,1,2,3,4,5,6].map((i) {
                   return InkWell(
                     child: Container(
                       alignment: Alignment.center,
                       height: 28,
                       width: 28,
-                      decoration: day['selected']
+                      decoration: _repeatingWeekdays[i]
                           ? BoxDecoration(
                               border: Border.all(
                                 color: AppColors.brandBlack,
@@ -274,13 +243,12 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          day['day'],
+                          _weekdayAbbreviations[i],
                           style: AppTextStyles.brandBodySmall,
                         ),
                       ),
                     ),
-                    onTap: () =>
-                        setState(() => day['selected'] = !day['selected']),
+                    onTap: () => toggleWeekday(i),
                   );
                 }).toList(),
               ),

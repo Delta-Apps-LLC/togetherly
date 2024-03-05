@@ -10,51 +10,24 @@ class FamilyItem extends StatelessWidget {
   final Child member;
 
   Widget getAvatar(Child child) {
-    Widget avatar = const Placeholder();
-    String image = '';
-    switch (member.icon) {
-      case ProfileIcon.bear:
-        image = 'bear';
-        break;
-      case ProfileIcon.cat:
-        image = 'cat';
-        break;
-      case ProfileIcon.chicken:
-        image = 'bear';
-        break;
-      case ProfileIcon.dog:
-        image = 'dog';
-        break;
-      case ProfileIcon.fish:
-        image = 'fish';
-        break;
-      case ProfileIcon.fox:
-        image = 'fox';
-        break;
-      case ProfileIcon.giraffe:
-        image = 'giraffe';
-        break;
-      case ProfileIcon.gorilla:
-        image = 'gorilla';
-        break;
-      case ProfileIcon.koala:
-        image = 'koala';
-        break;
-      case ProfileIcon.panda:
-        image = 'panda';
-        break;
-      case ProfileIcon.rabbit:
-        image = 'rabbit';
-        break;
-      case ProfileIcon.tiger:
-        image = 'tiger';
-        break;
-    }
-    avatar = Image.asset(
+    String image = switch (member.icon) {
+      ProfileIcon.bear => 'bear',
+      ProfileIcon.cat => 'cat',
+      ProfileIcon.chicken => 'chicken',
+      ProfileIcon.dog => 'dog',
+      ProfileIcon.fish => 'fish',
+      ProfileIcon.fox => 'fox',
+      ProfileIcon.giraffe => 'giraffe',
+      ProfileIcon.gorilla => 'gorilla',
+      ProfileIcon.koala => 'koala',
+      ProfileIcon.panda => 'panda',
+      ProfileIcon.rabbit => 'rabbit',
+      ProfileIcon.tiger => 'tiger',
+    };
+    return Image.asset(
       'assets/images/avatars/$image.png',
       width: 60,
     );
-    return avatar;
   }
 
   @override
@@ -62,7 +35,7 @@ class FamilyItem extends StatelessWidget {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
     return InkWell(
-      onTap: () => {provider.setAppBarTitle('Chores')},
+      onTap: () => provider.setAppBarTitle('Chores'),
       child: Container(
         height: 95,
         margin: const EdgeInsets.only(top: 8),
