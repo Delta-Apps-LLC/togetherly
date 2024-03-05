@@ -111,16 +111,21 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     }
   }
 
-  String? validatePoints(String value) {
-    if (value.isEmpty) {
-      setState(() => _points = 0);
-    } else {
-      final numericRegex = RegExp(r'^[0-9]+$');
-      if (numericRegex.hasMatch(value)) {
-        setState(() => _points = int.tryParse(value) ?? 0);
-      } else {
-        return 'Value can only contain numeric characters';
-      }
+  void updatePoints(String value) {
+    int? intValue = int.tryParse(value);
+    if (intValue != null) {
+      setState(() => _points = intValue);
+    }
+  }
+
+  String? validatePoints(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a point value";
+    }
+    // FilteringTestInputFormatter.digitsOnly prevents non-integers from being entered.
+    int intValue = int.parse(value);
+    if (intValue > 100) {
+      return 'Value cannot be larger than 100';
     }
     return null;
   }
@@ -172,13 +177,8 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                   controller: _pointsController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onChanged: (value) => validatePoints(value),
-                  validator: (value) {
-                    if (int.tryParse(value!)! > 100) {
-                      return 'Value cannot be larger than 100';
-                    }
-                    return null;
-                  },
+                  onChanged: updatePoints,
+                  validator: validatePoints,
                 ),
               ),
             ],
