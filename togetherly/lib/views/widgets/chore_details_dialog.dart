@@ -54,7 +54,6 @@ class ChoreDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateHelpers dateHelpers = DateHelpers();
     return AlertDialog(
       title: const Center(
         child: Text(
@@ -78,7 +77,7 @@ class ChoreDetailsDialog extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      'Due: ${dateHelpers.prettyDate(chore.dueDate)}',
+                      'Due: ${chore.dueDate.prettyDate()}',
                       style: AppTextStyles.brandBody,
                     ),
                   ),

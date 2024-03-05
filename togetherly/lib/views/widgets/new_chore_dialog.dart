@@ -126,8 +126,6 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   }
 
   Widget buildForm(BuildContext context) {
-    DateHelpers dateHelpers = DateHelpers();
-
     return Form(
       key: _formKey,
       child: Column(
@@ -192,7 +190,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Due: ${dateHelpers.prettyDate(_dueDate)}',
+                'Due: ${_dueDate.prettyDate()}',
                 style: AppTextStyles.brandBody,
               ),
               TextButton(

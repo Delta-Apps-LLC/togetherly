@@ -10,8 +10,6 @@ class ChoreItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateHelpers dateHelpers = DateHelpers();
-
     Widget getStatusIcon(Chore chore) {
       switch (chore.status) {
         case ChoreStatus.assigned:
@@ -83,9 +81,9 @@ class ChoreItem extends StatelessWidget {
                               ? AppTextStyles.brandBodyStrike
                               : AppTextStyles.brandBody,
                         ),
-                        if (!dateHelpers.isDueToday(chore.dueDate))
+                        if (!chore.dueDate.isToday())
                           Text(
-                            dateHelpers.prettyDate(chore.dueDate),
+                            chore.dueDate.prettyDate(),
                             style: AppTextStyles.brandAccentSub,
                           ),
                       ],
