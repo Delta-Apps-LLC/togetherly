@@ -17,10 +17,13 @@ class NewChoreDialog extends StatefulWidget {
 }
 
 class _NewChoreDialogState extends State<NewChoreDialog> {
+  static const List<String> _weekdayAbbreviations = ['S', 'M', 'T', 'W', 'Th', 'F', 'Sa'];
+
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _pointsController = TextEditingController();
+
   DateTime _dueDate = DateTime.now();
   String _title = '';
   String _description = '';
@@ -28,43 +31,8 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   bool _isBonus = false;
   bool _isShared = false;
   bool _loading = false;
-  final List<Map<String, dynamic>> _repeatingWeekdays = [
-    {
-      'day': 'S',
-      'index': 0,
-      'selected': false,
-    },
-    {
-      'day': 'M',
-      'index': 1,
-      'selected': false,
-    },
-    {
-      'day': 'T',
-      'index': 2,
-      'selected': false,
-    },
-    {
-      'day': 'W',
-      'index': 3,
-      'selected': false,
-    },
-    {
-      'day': 'Th',
-      'index': 4,
-      'selected': false,
-    },
-    {
-      'day': 'F',
-      'index': 5,
-      'selected': false,
-    },
-    {
-      'day': 'Sa',
-      'index': 6,
-      'selected': false,
-    },
-  ];
+
+  final List<bool> _repeatingWeekdays = List.filled(7, false);
   final List<Child> _assignedPeople = [];
 
   List<Child> peopleList = const [
@@ -129,6 +97,9 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     }
     return null;
   }
+
+  void toggleWeekday(int i) =>
+      setState(() => _repeatingWeekdays[i] = !_repeatingWeekdays[i]);
 
   Widget buildForm(BuildContext context) {
     return Form(
@@ -254,13 +225,13 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _repeatingWeekdays.map((day) {
+                children: [0,1,2,3,4,5,6].map((i) {
                   return InkWell(
                     child: Container(
                       alignment: Alignment.center,
                       height: 28,
                       width: 28,
-                      decoration: day['selected']
+                      decoration: _repeatingWeekdays[i]
                           ? BoxDecoration(
                               border: Border.all(
                                 color: AppColors.brandBlack,
@@ -272,13 +243,12 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          day['day'],
+                          _weekdayAbbreviations[i],
                           style: AppTextStyles.brandBodySmall,
                         ),
                       ),
                     ),
-                    onTap: () =>
-                        setState(() => day['selected'] = !day['selected']),
+                    onTap: () => toggleWeekday(i),
                   );
                 }).toList(),
               ),
