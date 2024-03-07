@@ -4,7 +4,6 @@ import 'package:togetherly/providers/base_provider.dart';
 class ScaffoldProvider extends BaseProvider {
   ScaffoldProvider() {
     log("ScaffoldProvider created!");
-    refresh();
   }
 
   int? _index = 0;
@@ -21,11 +20,5 @@ class ScaffoldProvider extends BaseProvider {
   void setAppBarTitle(String title) {
     _title = title;
     notifyListeners();
-  }
-
-  @override
-  Future<void> refresh() async {
-    notifyListeners();
-    log("ScaffoldProvider refreshed!");
   }
 }

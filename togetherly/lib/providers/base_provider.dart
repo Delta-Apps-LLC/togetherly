@@ -91,12 +91,4 @@ abstract class BaseProvider with ChangeNotifier {
   //     _currentSearchResults = resultSet;
   //     notifyListeners();
   //   }
-
-  /// Refreshes the state by querying any relevant services.
-  /// The state stored in the class should be updated and notifyListeners should
-  /// be called as values are returned from services.
-  ///
-  /// This method should be called in the constructor to initialize the state of
-  /// the provider.
-  Future<void> refresh();
 }

@@ -6,15 +6,17 @@ import 'package:togetherly/services/chore_service.dart';
 
 class ChoreProvider extends BaseProvider {
   final ChoreService service;
-  final int personId;
 
-  ChoreProvider(this.service, this.personId) {
+  ChoreProvider(this.service) {
     log("ChoreProvider created!");
     refresh();
   }
 
-  List<Chore> _choreList = [];
-  List<Chore> get choreList => _choreList;
+  List<Chore> _allChores = [];
+  List<Chore> get allChores => _allChores;
+
+  Iterable<Chore> choresAssignedToPerson(int personId)
+    => allChores.where((chore) => chore.assignedChildId == personId);
 
   Future<void> addChore(Chore chore) async {
     await service.insertChore(chore);
@@ -31,10 +33,8 @@ class ChoreProvider extends BaseProvider {
     await refresh();
   }
 
-  @override
   Future<void> refresh() async {
-    //Can we have a variable passed in for this function? If so,
-    _choreList = await service.getChoreList(personId);
+    _allChores = await service.getChores();
     notifyListeners();
     log("ChoreProvider refreshed!");
   }

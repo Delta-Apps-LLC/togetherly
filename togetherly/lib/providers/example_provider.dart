@@ -20,7 +20,14 @@ class ExampleProvider extends BaseProvider {
     notifyListeners();
   }
 
-  @override
+  // This method is only necessary if a provider talks to services.
+  //
+  // Refreshes the state by querying any relevant services.
+  // After the services have returned all relevant data, the state stored in
+  // the provider should be updated and notifyListeners should be called.
+  //
+  // If present, this method should be called in the constructor to load the
+  // initial state of the provider.
   Future<void> refresh() async {
     _value = await service.getValue();
     notifyListeners();
