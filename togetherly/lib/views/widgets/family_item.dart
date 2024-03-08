@@ -37,7 +37,7 @@ class FamilyItem extends StatelessWidget {
     return InkWell(
       onTap: () => provider.setAppBarTitle('Chores'),
       child: Container(
-        height: 95,
+        height: 80,
         margin: const EdgeInsets.only(top: 8),
         child: PhysicalModel(
           borderRadius: BorderRadius.circular(5),
@@ -53,7 +53,7 @@ class FamilyItem extends StatelessWidget {
                   children: <Widget>[
                     getAvatar(member),
                     const SizedBox(
-                      width: 10,
+                      width: 15,
                     ),
                     Text(
                       member.name,
