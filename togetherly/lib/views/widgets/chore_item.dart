@@ -5,11 +5,26 @@ import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatelessWidget {
-  const ChoreItem({super.key, required this.chore});
+  const ChoreItem({super.key, required this.chore, required this.home});
   final Chore chore;
+  final String home;
 
   @override
   Widget build(BuildContext context) {
+    final List<String> avatars = [
+      'bear',
+      'cat',
+      'chicken',
+      'dog',
+      'fish',
+      'fox',
+      'giraffe',
+      'gorilla',
+      'koala',
+      'panda',
+      'rabbit',
+      'tiger'
+    ];
     Widget getStatusIcon(Chore chore) {
       switch (chore.status) {
         case ChoreStatus.assigned:
@@ -42,6 +57,33 @@ class ChoreItem extends StatelessWidget {
           return ChoreDetailsDialog(chore: chore);
         },
       );
+    }
+
+    Widget assignedAvatars() {
+      if (avatars.length > 3) {
+        return Row(
+          children: <Widget>[
+            for (int i = 0; i < 3; ++i)
+              Image.asset(
+                'assets/images/avatars/${avatars[i]}.png',
+                width: 30,
+              ),
+            Text(
+              '+${avatars.length - 3}',
+              style: AppTextStyles.brandBodySmall,
+            )
+          ],
+        );
+      } else {
+        return Row(
+          children: avatars
+              .map((image) => Image.asset(
+                    'assets/images/avatars/$image.png',
+                    width: 30,
+                  ))
+              .toList(),
+        );
+      }
     }
 
     return InkWell(
@@ -90,23 +132,7 @@ class ChoreItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  children: <Widget>[
-                    const Icon(
-                      Icons.bolt,
-                      size: 32,
-                      color: AppColors.brandGold,
-                    ),
-                    Text(
-                      chore.points.toString(),
-                      style: AppTextStyles.brandAccentLarge,
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    getStatusIcon(chore),
-                  ],
-                ),
+                assignedAvatars(),
               ],
             ),
           ),
