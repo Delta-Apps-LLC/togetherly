@@ -54,7 +54,7 @@ class _ChildHomePageState extends State<ChildHomePage> {
                   ),
                 ],
               ),
-              const ChoreList(),
+              const ChoreList(home: 'child',),
               const SizedBox(height: 20.0),
             ],
           ),

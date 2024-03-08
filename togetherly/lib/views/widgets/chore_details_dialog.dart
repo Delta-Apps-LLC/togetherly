@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
+import 'package:togetherly/views/widgets/new_chore_dialog.dart';
 
 class ChoreDetailsDialog extends StatelessWidget {
   const ChoreDetailsDialog({super.key, required this.chore});
@@ -52,14 +53,40 @@ class ChoreDetailsDialog extends StatelessWidget {
     );
   }
 
+  Future<void> buildDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return NewChoreDialog(chore: chore);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Center(
-        child: Text(
-          'Chore Details',
-          style: AppTextStyles.brandHeading,
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.edit,
+              color: Colors.transparent,
+            ),
+          ),
+          const Text(
+            'Chore Details',
+            style: AppTextStyles.brandHeading,
+          ),
+          IconButton(
+            onPressed: () => buildDialog(context),
+            icon: const Icon(
+              Icons.edit,
+              color: AppColors.brandBlack, // TODO person.isparent ? Colors.transparent : AppColors.brandBlack
+            ),
+          ),
+        ],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -102,7 +129,7 @@ class ChoreDetailsDialog extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  // if (chore.isBonus)
+                  // if (true) // TODO: chore.isBonus
                   //   Padding(
                   //     padding: const EdgeInsets.only(top: 8.0),
                   //     child: buildIconText(Icons.star, 'Bonus'),
@@ -114,7 +141,14 @@ class ChoreDetailsDialog extends StatelessWidget {
                 ],
               )
             ],
-          )
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 8.0),
+            child: Text(
+              'Assigned: Emma, Jacob, Natalie, Robert, Kenneth, Jocelyn, Maria',
+              style: AppTextStyles.brandBody,
+            ),
+          ),
         ],
       ),
       actions: <Widget>[

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/family_list.dart';
 
 class ParentHomePage extends StatefulWidget {
@@ -19,6 +20,11 @@ class _ParentHomePageState extends State<ParentHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             FamilyList(title: 'Members'),
+            SizedBox(height: 20.0),
+            ChoreList(
+              home: 'parent',
+            ),
+            SizedBox(height: 20.0),
           ],
         ),
       ),
