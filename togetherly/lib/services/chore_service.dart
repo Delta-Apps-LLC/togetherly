@@ -6,7 +6,7 @@ class ChoreService {
 
   Future<List<Chore>> getChores() async {
     var result = await Supabase.instance.client.from(_choreTable).select(
-        'id, assignedpersonid, title, description, datedue, points, status, shared');
+        'id, assigned_personid, title, description, date_due, points, status, shared');
     return result.map(_mapToChore).toList();
   }
 
@@ -15,8 +15,8 @@ class ChoreService {
     var result = await Supabase.instance.client
         .from(_choreTable)
         .select(
-            'id, assignedpersonid, title, description, datedue, points, status, shared')
-        .eq('assignedpersonid', personId);
+            'id, assigned_personid, title, description, date_due, points, status, shared')
+        .eq('assigned_person_id', personId);
     return result.map(_mapToChore).toList();
   }
 
@@ -43,20 +43,20 @@ class ChoreService {
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
         id: map['id'],
-        assignedChildId: map['assignedpersonid'],
+        assignedChildId: map['assigned_personid'],
         title: map['title'],
         description: map['description'],
-        dueDate: DateTime.parse(map['datedue']),
+        dueDate: DateTime.parse(map['date_due']),
         points: map['points'],
         status: _parseChoreStatus(map['status']),
         isShared: map['shared'],
       );
 
   Map<String, dynamic> _choreToMap(Chore chore) => {
-        'assignedpersonid': chore.assignedChildId,
+        'assigned_personid': chore.assignedChildId,
         'title': chore.title,
         'description': chore.description,
-        'datedue': chore.dueDate.toString(),
+        'date_due': chore.dueDate.toString(),
         'points': chore.points,
         'status': _choreStatusToString(chore.status),
         'shared': chore.isShared,
