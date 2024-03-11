@@ -1,38 +1,35 @@
+import 'package:togetherly/utilities/value.dart';
 
 class Reward {
 
-  final int _id;
-  String _title;
-  String _description;
-  int _points;
-  bool _isRedeemed;
+  final int? id;
+  final String title;
+  final String description;
+  final int points;
+  final bool isRedeemed;
 
-  Reward(
-      this._id, this._title, this._description, this._points, this._isRedeemed);
+  const Reward ({
+    this.id,
+    required this.title,
+    this.description = '',
+    required this.points,
+    required this.isRedeemed,
+});
 
-  bool get isRedeemed => _isRedeemed;
+  Reward copyWith({
+    Value<int?>? id,
+    String? title,
+    String? description,
+    int? points,
+    bool? isRedeemed,
+  }) =>
+      Reward(
+        id: (id ?? Value(this.id)).value,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        points: points ?? this.points,
+        isRedeemed: isRedeemed ?? this.isRedeemed,
+      );
 
-  set isRedeemed(bool value) {
-    _isRedeemed = value;
-  }
 
-  int get points => _points;
-
-  set points(int value) {
-    _points = value;
-  }
-
-  String get description => _description;
-
-  set description(String value) {
-    _description = value;
-  }
-
-  String get title => _title;
-
-  set title(String value) {
-    _title = value;
-  }
-
-  int get id => _id;
 }
