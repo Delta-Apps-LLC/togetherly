@@ -10,6 +10,11 @@ class ChoreService {
     return result.map(_mapToChore).toList();
   }
 
+  Future<List<Chore>> getFamilyChores(int familyId) async {
+    var result = await Supabase.instance.client.from("family_chore").select().eq("family_id", familyId);
+    return result.map(_mapToChore).toList();
+  }
+
   Future<void> insertChore(Chore chore) async {
     //Service function call and pass chore
     await Supabase.instance.client.from(_choreTable).insert(_choreToMap(chore));
