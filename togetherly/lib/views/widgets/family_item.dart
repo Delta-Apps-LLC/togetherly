@@ -1,38 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class FamilyItem extends StatelessWidget {
   const FamilyItem({super.key, required this.member});
-  final Person member;
+  final Child member;
 
-  Widget getAvatar(Person member) {
-    Widget avatar = const Placeholder();
-    switch (member.avatar) {
-      case 1:
-        avatar = Image.asset(
-          'assets/images/avatars/bear.png',
-          width: 60,
-        );
-      case 2:
-        avatar = Image.asset(
-          'assets/images/avatars/cat.png',
-          width: 60,
-        );
-      case 3:
-        avatar = Image.asset(
-          'assets/images/avatars/dog.png',
-          width: 60,
-        );
-      case 4:
-        avatar = Image.asset(
-          'assets/images/avatars/panda.png',
-          width: 60,
-        );
-    }
-    return avatar;
+  Widget getAvatar(Child child) {
+    String image = switch (member.icon) {
+      ProfileIcon.bear => 'bear',
+      ProfileIcon.cat => 'cat',
+      ProfileIcon.chicken => 'chicken',
+      ProfileIcon.dog => 'dog',
+      ProfileIcon.fish => 'fish',
+      ProfileIcon.fox => 'fox',
+      ProfileIcon.giraffe => 'giraffe',
+      ProfileIcon.gorilla => 'gorilla',
+      ProfileIcon.koala => 'koala',
+      ProfileIcon.panda => 'panda',
+      ProfileIcon.rabbit => 'rabbit',
+      ProfileIcon.tiger => 'tiger',
+    };
+    return Image.asset(
+      'assets/images/avatars/$image.png',
+      width: 60,
+    );
   }
 
   @override
@@ -40,9 +35,7 @@ class FamilyItem extends StatelessWidget {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
     return InkWell(
-      onTap: () => {
-        provider.setAppBarTitle('Chores')
-      },
+      onTap: () => provider.setAppBarTitle('Chores'),
       child: Container(
         height: 95,
         margin: const EdgeInsets.only(top: 8),
@@ -77,7 +70,7 @@ class FamilyItem extends StatelessWidget {
                       color: AppColors.brandGold,
                     ),
                     Text(
-                      member.points.toString(),
+                      member.totalPoints.toString(),
                       style:
                           AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                     ),

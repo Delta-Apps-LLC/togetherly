@@ -73,4 +73,9 @@ class AppWidgetStyles {
     left: 16,
     right: 16,
   );
+
+  static const ButtonStyle submitButton = ButtonStyle(
+    textStyle: MaterialStatePropertyAll(AppTextStyles.brandAccent),
+    backgroundColor: MaterialStatePropertyAll(AppColors.brandGreen),
+  );
 }
