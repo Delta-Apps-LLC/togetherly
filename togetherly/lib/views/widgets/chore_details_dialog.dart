@@ -83,7 +83,8 @@ class ChoreDetailsDialog extends StatelessWidget {
             onPressed: () => buildDialog(context),
             icon: const Icon(
               Icons.edit,
-              color: AppColors.brandBlack, // TODO person.isparent ? Colors.transparent : AppColors.brandBlack
+              color: AppColors
+                  .brandBlack, // TODO person.isparent ? Colors.transparent : AppColors.brandBlack
             ),
           ),
         ],

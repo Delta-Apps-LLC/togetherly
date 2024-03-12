@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:togetherly/views/screens/child_home.dart';
 import 'package:togetherly/views/screens/parent_home.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final bool isParent = true;
 
   @override
