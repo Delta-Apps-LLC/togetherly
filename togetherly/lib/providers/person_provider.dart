@@ -1,5 +1,9 @@
+import 'dart:developer';
 
-import '../models/person.dart';
+import 'package:togetherly/models/child.dart';
+import 'package:togetherly/models/parent.dart';
+import 'package:togetherly/models/person.dart';
+
 import 'package:togetherly/services/person_service.dart';
 import 'base_provider.dart';
 
@@ -7,10 +11,15 @@ class PersonProvider extends BaseProvider {
   final PersonService service;
   final int personId;
 
-  ChoreProvider(this.service, this.personId) {
+  PersonProvider(this.service, this.personId) {
     log("PersonProvider created!");
     refresh();
   }
+
+  List<Parent> _parentList = [];
+  List<Parent> get parentList => _parentList;
+  List<Child> _childList = [];
+  List<Child> get childList => _childList;
 
   Future<void> addPerson(Person person) async {
     await service.insertPerson(person);
@@ -18,7 +27,7 @@ class PersonProvider extends BaseProvider {
   }
 
   Future<void> deletePerson(Person person) async {
-    await service.deletePerson(Person);
+    await service.deletePerson(person);
     await refresh();
   }
 
@@ -30,8 +39,10 @@ class PersonProvider extends BaseProvider {
   //TODO: When do we need the refresh
 
   @override
-  Future<void> refresh() {
-    // TODO: implement refresh
-    throw UnimplementedError();
+  Future<void> refresh() async {
+    _parentList = await service.getParents(1); // TODO: remove hardcode
+    _childList = await service.getChildren(1); // TODO: remove hardcode
+    notifyListeners();
+    log("PersonProvider refreshed!");
   }
 }
