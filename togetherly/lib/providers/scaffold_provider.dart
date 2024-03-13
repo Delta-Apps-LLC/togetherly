@@ -12,7 +12,7 @@ class ScaffoldProvider extends BaseProvider {
   int? _index = 0;
   int? get index => _index;
 
-  String? _title = 'Family'; // TODO: change default title
+  String? _title = 'Family'; // TODO: change default title depending on isParent ? (family name) : (child name)
   String? get title => _title;
 
   HomePageType _homePageType = HomePageType.parent;

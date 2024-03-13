@@ -23,6 +23,13 @@ class CustomMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isParentViewingChild(ScaffoldProvider provider) {
+      bool isParent = true; // TODO: replace with person provider isParent
+      return provider.index == 0 &&
+          isParent &&
+          provider.homePageType == HomePageType.child;
+    }
+
     return AppProviders(
       child: MaterialApp(
         title: 'Togetherly',
@@ -31,10 +38,15 @@ class CustomMaterialApp extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,
               // Leading will be conditional on Person model isChild/isParent
-              // leading: IconButton(
-              //   icon: const Icon(Icons.arrow_back),
-              //   onPressed: () => {provider.setAppBarTitle('Family')},
-              // ),
+              leading: isParentViewingChild(provider)
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        provider.setAppBarTitle('Family'); // TODO: replace with family name
+                        provider.setHomePageType(HomePageType.parent);
+                      },
+                    )
+                  : null,
               title: CustomAppBarTitle(title: provider.title ?? ''),
             ),
             body: page ?? screens.elementAt(provider.index ?? 0),
