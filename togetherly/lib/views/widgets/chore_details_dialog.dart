@@ -64,6 +64,8 @@ class ChoreDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isParent = true;
+
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,11 +82,10 @@ class ChoreDetailsDialog extends StatelessWidget {
             style: AppTextStyles.brandHeading,
           ),
           IconButton(
-            onPressed: () => buildDialog(context),
-            icon: const Icon(
+            onPressed: isParent ? () => buildDialog(context) : null,
+            icon: Icon(
               Icons.edit,
-              color: AppColors
-                  .brandBlack, // TODO person.isparent ? Colors.transparent : AppColors.brandBlack
+              color: isParent ? AppColors.brandBlack : Colors.transparent,
             ),
           ),
         ],

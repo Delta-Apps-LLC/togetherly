@@ -4,10 +4,11 @@ import 'package:togetherly/models/chore.dart';
 class ChoreService {
   static const String _choreTable = "chore";
 
-  Future<List<Chore>> getChores() async {
+  Future<List<Chore>> getChores(int personId) async {
     var result = await Supabase.instance.client
-        .from(_choreTable)
-        .select('id, title, description, date_due, points, status, shared');
+        .from('person_chore')
+        .select()
+        .eq('person_id', personId);
     return result.map(_mapToChore).toList();
   }
 
@@ -33,7 +34,7 @@ class ChoreService {
   }
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
-        id: map['id'],
+        id: map['chore_id'], // comes from alias in the SQL view person_chore
         title: map['title'],
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
@@ -47,7 +48,7 @@ class ChoreService {
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        'status': _choreStatusToString(chore.status),
+        // 'status': _choreStatusToString(chore.status), // removed from chore table
         'shared': chore.isShared,
       };
 

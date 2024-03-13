@@ -34,7 +34,7 @@ class ChoreProvider extends BaseProvider {
   @override
   Future<void> refresh() async {
     //Can we have a variable passed in for this function? If so,
-    _choreList = await service.getChores();
+    _choreList = await service.getChores(1); // TODO: get current personId
     // _choreList = await service.getChoreList(personId);
     notifyListeners();
     log("ChoreProvider refreshed!");
