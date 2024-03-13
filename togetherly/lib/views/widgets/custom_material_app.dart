@@ -7,7 +7,7 @@ import 'package:togetherly/views/screens/home.dart';
 import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/screens/approval.dart';
 import 'package:togetherly/views/screens/settings.dart';
-import 'package:togetherly/views/screens/store.dart';
+import 'package:togetherly/views/screens/reward.dart';
 
 class CustomMaterialApp extends StatelessWidget {
   const CustomMaterialApp({super.key, this.page});
@@ -17,7 +17,7 @@ class CustomMaterialApp extends StatelessWidget {
   final List<Widget> screens = const [
     HomePage(),
     ApprovalPage(),
-    StorePage(),
+    RewardPage(),
     SettingsPage(),
   ];
 

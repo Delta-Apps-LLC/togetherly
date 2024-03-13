@@ -7,7 +7,7 @@ class ScaffoldProvider extends BaseProvider {
     refresh();
   }
 
-  int? _index = 0;
+  int? _index = 2;
   int? get index => _index;
 
   String? _title = 'Chores';
