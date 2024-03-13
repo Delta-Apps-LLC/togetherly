@@ -13,7 +13,6 @@ class ChoreList extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Chore> choreList = [
       Chore(
-        assignedChildId: 1,
         title: 'Test Chore',
         description: 'These are some details about the chore we are testing.',
         dueDate: DateTime(2024, 3, 10),
@@ -21,7 +20,6 @@ class ChoreList extends StatelessWidget {
         isShared: false,
       ),
       Chore(
-        assignedChildId: 1,
         title: 'Test Chore',
         dueDate: DateTime(2024, 3, 10),
         points: 10,

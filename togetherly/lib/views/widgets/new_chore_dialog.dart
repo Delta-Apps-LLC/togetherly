@@ -113,7 +113,6 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
         points: _points,
         dueDate: _dueDate,
         isShared: _isShared,
-        assignedChildId: 1,
       );
       setState(() => _loading = true);
       await provider.addChore(newChore);
@@ -131,7 +130,6 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
         points: _points,
         dueDate: _dueDate,
         isShared: _isShared,
-        assignedChildId: 1,
       );
       setState(() => _loading = true);
       await provider.updateChore(updatedChore);
@@ -389,7 +387,9 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
           ),
           ElevatedButton(
             style: AppWidgetStyles.submitButton,
-            onPressed: () => submitChore(context, provider),
+            onPressed: () => widget.chore != null
+                ? updateChore(context, provider)
+                : submitChore(context, provider),
             child: _loading
                 ? const CircularProgressIndicator()
                 : const Text(

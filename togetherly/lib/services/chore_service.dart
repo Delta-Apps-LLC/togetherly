@@ -5,8 +5,9 @@ class ChoreService {
   static const String _choreTable = "chore";
 
   Future<List<Chore>> getChores() async {
-    var result = await Supabase.instance.client.from(_choreTable).select(
-        'id, title, description, date_due, points, status, shared');
+    var result = await Supabase.instance.client
+        .from(_choreTable)
+        .select('id, title, description, date_due, points, status, shared');
     return result.map(_mapToChore).toList();
   }
 
