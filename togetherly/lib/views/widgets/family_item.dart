@@ -35,7 +35,10 @@ class FamilyItem extends StatelessWidget {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
     return InkWell(
-      onTap: () => provider.setAppBarTitle('Chores'),
+      onTap: () {
+        provider.setAppBarTitle(member.name);
+        provider.setHomePageType(HomePageType.child);
+      },
       child: Container(
         height: 80,
         margin: const EdgeInsets.only(top: 8),

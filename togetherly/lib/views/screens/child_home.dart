@@ -6,14 +6,9 @@ import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/new_chore_dialog.dart';
 import 'package:togetherly/views/widgets/points.dart';
 
-class ChildHomePage extends StatefulWidget {
+class ChildHomePage extends StatelessWidget {
   const ChildHomePage({super.key});
 
-  @override
-  State<ChildHomePage> createState() => _ChildHomePageState();
-}
-
-class _ChildHomePageState extends State<ChildHomePage> {
   final Child currentChild = const Child(
     id: 1,
     familyId: 1,
