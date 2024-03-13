@@ -37,7 +37,6 @@ class CustomMaterialApp extends StatelessWidget {
           builder: (context, provider, child) => Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,
-              // Leading will be conditional on Person model isChild/isParent
               leading: isParentViewingChild(provider)
                   ? IconButton(
                       icon: const Icon(Icons.arrow_back),
