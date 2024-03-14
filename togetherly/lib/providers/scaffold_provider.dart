@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'package:togetherly/providers/base_provider.dart';
+import 'package:flutter/foundation.dart';
 
-class ScaffoldProvider extends BaseProvider {
+class ScaffoldProvider with ChangeNotifier {
   ScaffoldProvider() {
-    log("ScaffoldProvider created!");
+    log("ScaffoldProvider created");
   }
 
   int? _index = 0;

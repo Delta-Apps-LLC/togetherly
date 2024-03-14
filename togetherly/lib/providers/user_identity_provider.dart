@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:togetherly/providers/base_provider.dart';
+import 'package:flutter/foundation.dart';
 
-class UserIdentityProvider extends BaseProvider {
+class UserIdentityProvider with ChangeNotifier {
   UserIdentityProvider() {
-    log("UserProvider created!");
+    log("UserProvider created");
   }
 
   int? _familyId;

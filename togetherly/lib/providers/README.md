@@ -239,8 +239,8 @@ Future<void> updateSomeNumberTimesTwo(int someNumberTimesTwo) async {
 ## Providers that Maintain and Transform State
 
 A provider that both consumes the state of other providers and maintains state of its own is made
-available to widgets via a `ChangeNotifierProxyProvider` widget. Like providers that only maintain
-state, these providers should extend the `ChangeNotifier` mixin.
+available to widgets via a `SimpleChangeNotifierProxyProvider` widget. Like providers that only
+maintain state, these providers should extend the `ChangeNotifier` mixin.
 
 In most ways, these providers resemble a combination of the other two kinds of providers.
 However, there are a couple of differences:

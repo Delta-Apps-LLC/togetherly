@@ -1,16 +1,19 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/chore.dart';
-import 'package:togetherly/providers/base_provider.dart';
+import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/chore_service.dart';
 
-class ChoreProvider extends BaseProvider {
-  final ChoreService service;
-
-  ChoreProvider(this.service) {
-    log("ChoreProvider created!");
+class ChoreProvider with ChangeNotifier {
+  ChoreProvider(this._service, this._userIdentityProvider) {
+    log("ChoreProvider created");
     refresh();
   }
+
+  final ChoreService _service;
+
+  UserIdentityProvider _userIdentityProvider;
 
   List<Chore> _allChores = [];
   List<Chore> get allChores => _allChores;
@@ -18,25 +21,35 @@ class ChoreProvider extends BaseProvider {
   Iterable<Chore> choresAssignedToPerson(int personId)
     => allChores.where((chore) => chore.assignedChildId == personId);
 
+  Iterable<Chore>? get choresAssignedToCurrentUser {
+    int? personId = _userIdentityProvider.personId;
+    return personId == null ? null : choresAssignedToPerson(personId);
+  }
+
   Future<void> addChore(Chore chore) async {
-    await service.insertChore(chore);
+    await _service.insertChore(chore);
     await refresh();
   }
 
   Future<void> deleteChore(Chore chore) async {
-    await service.deleteChore(chore);
+    await _service.deleteChore(chore);
     await refresh();
   }
 
   Future<void> updateChore(Chore chore) async {
-    await service.updateChore(chore);
+    await _service.updateChore(chore);
     await refresh();
   }
 
   Future<void> refresh() async {
-    _allChores = await service.getChores();
+    _allChores = await _service.getChores();
     notifyListeners();
     log("ChoreProvider refreshed!");
+  }
+
+  void updateDependencies(UserIdentityProvider userIdentityProvider) {
+    _userIdentityProvider = userIdentityProvider;
+    refresh();
   }
 
   //Demo 2

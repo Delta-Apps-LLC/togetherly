@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
+import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/chore_service.dart';
 
@@ -23,17 +24,21 @@ class _AppProvidersState extends State<AppProviders> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Add to this section any providers that maintain app-wide state.
+        // Add to this section any providers that only maintain state.
         // ChangeNotifierProvider<ExampleProvider>(
         //     create: (_) => ExampleProvider(exampleService)),
         ChangeNotifierProvider<ScaffoldProvider>(
-          create: (_) => ScaffoldProvider()),
+            create: (_) => ScaffoldProvider()),
         ChangeNotifierProvider<UserIdentityProvider>(
-          create: (_) => UserIdentityProvider()),
-        ChangeNotifierProvider<ChoreProvider>(
-          create: (_) => ChoreProvider(_choreService)),
+            create: (_) => UserIdentityProvider()),
 
-        // Add to this section any proxy providers that rely upon app-wide state.
+        // Add to this section any providers that both maintain their own state
+        // and depend upon the state of other providers.
+        SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
+            create: (_, userIdentityProvider) =>
+                ChoreProvider(_choreService, userIdentityProvider),
+            update: (_, userIdentityProvider, previous) =>
+                previous.updateDependencies(userIdentityProvider)),
 
       ],
       child: widget.child,
