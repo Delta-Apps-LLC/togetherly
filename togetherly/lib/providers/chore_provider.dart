@@ -18,13 +18,13 @@ class ChoreProvider with ChangeNotifier {
   List<Chore> _allChores = [];
   List<Chore> get allChores => _allChores;
 
-  Iterable<Chore> choresAssignedToPerson(int personId)
-    => allChores.where((chore) => chore.assignedChildId == personId);
+  // Iterable<Chore> choresAssignedToPerson(int personId)
+  //   => allChores.where((chore) => chore.assignedChildId == personId);
 
-  Iterable<Chore>? get choresAssignedToCurrentUser {
-    int? personId = _userIdentityProvider.personId;
-    return personId == null ? null : choresAssignedToPerson(personId);
-  }
+  // Iterable<Chore>? get choresAssignedToCurrentUser {
+  //   int? personId = _userIdentityProvider.personId;
+  //   return personId == null ? null : choresAssignedToPerson(personId);
+  // }
 
   Future<void> addChore(Chore chore) async {
     await _service.insertChore(chore);
@@ -41,8 +41,19 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
+  //Demo 2
+  // Note: This should be implemented as a getter.
+  // void sortChoresByDueDate() {
+  //
+  // }
+
   Future<void> refresh() async {
-    _allChores = await _service.getChores();
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      _allChores = await _service.getChores(familyId);
+    } else {
+      _allChores = [];
+    }
     notifyListeners();
     log("ChoreProvider refreshed!");
   }
@@ -51,10 +62,4 @@ class ChoreProvider with ChangeNotifier {
     _userIdentityProvider = userIdentityProvider;
     refresh();
   }
-
-  //Demo 2
-  // Note: This should be implemented as a getter.
-  // void sortChoresByDueDate() {
-  //
-  // }
 }
