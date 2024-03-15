@@ -34,12 +34,22 @@ class _AppProvidersState extends State<AppProviders> {
 
         // Add to this section any providers that both maintain their own state
         // and depend upon the state of other providers.
+        // SimpleChangeNotifierProxyProvider<OtherProvider, ExampleProvider>(
+        //     create: (_, otherProvider) =>
+        //         ExampleProvider(exampleService, otherProvider),
+        //     update: (_, otherProvider, previous) =>
+        //         previous.updateDependencies(otherProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
             create: (_, userIdentityProvider) =>
                 ChoreProvider(_choreService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
 
+        // Add to this section any providers that only transform the state of
+        // other providers.
+        // ProxyProvider<OtherProvider, ExampleProvider>(
+        //     update: (_, otherProvider, __) =>
+        //         ExampleProvider(otherProvider)),
       ],
       child: widget.child,
     );
