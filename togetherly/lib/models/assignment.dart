@@ -1,4 +1,4 @@
-enum ChoreStatus {
+enum AssignmentStatus {
   assigned,
   pending,
   completed,
@@ -6,24 +6,24 @@ enum ChoreStatus {
 }
 
 class Assignment {
-  final int? personId;
-  final int? choreId;
-  final ChoreStatus status;
+  final int personId;
+  final int choreId;
+  final AssignmentStatus status;
 
   const Assignment({
     required this.personId,
     required this.choreId,
-    this.status = ChoreStatus.assigned,
+    this.status = AssignmentStatus.assigned,
   });
 
   Assignment copyWith({
     int? personId,
     int? choreId,
-    ChoreStatus? status,
+    AssignmentStatus? status,
   }) =>
       Assignment(
-          personId: personId ?? this.personId,
-          choreId: choreId ?? this.choreId,
-          status: status ?? this.status,
+        personId: personId ?? this.personId,
+        choreId: choreId ?? this.choreId,
+        status: status ?? this.status,
       );
 }
