@@ -1,20 +1,19 @@
 import 'package:togetherly/utilities/value.dart';
 
 class Reward {
-
   final int? id;
   final String title;
   final String description;
   final int points;
   final int quantity;
 
-  const Reward ({
+  const Reward({
     this.id,
     required this.title,
     this.description = '',
     required this.points,
     required this.quantity,
-});
+  });
 
   Reward copyWith({
     Value<int?>? id,
@@ -30,5 +29,4 @@ class Reward {
         points: points ?? this.points,
         quantity: quantity ?? this.quantity,
       );
-
 }
