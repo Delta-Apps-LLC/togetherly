@@ -13,8 +13,10 @@ class ChoreProvider extends BaseProvider {
     refresh();
   }
 
-  List<Chore> _choreList = [];
+  List<Chore> _choreList = []; //family chore list
   List<Chore> get choreList => _choreList;
+
+  //New function to get just the child list by child id
 
   Future<void> addChore(Chore chore) async {
     await service.insertChore(chore);

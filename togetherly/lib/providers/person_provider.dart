@@ -22,7 +22,12 @@ class PersonProvider extends BaseProvider {
   List<Child> get childList => _childList;
 
   Future<void> addPerson(Person person) async {
-    await service.insertPerson(person);
+    //figure out if it's a child or parent
+    if(person is Child) {
+      await service.insertChild(person);
+    } else if( person is Parent) {
+      await service.insertParent(person);
+    }
     await refresh();
   }
 
@@ -32,7 +37,11 @@ class PersonProvider extends BaseProvider {
   }
 
   Future<void> updatePerson(Person person) async {
-    await service.updatePerson(person);
+    if(person is Child) {
+      await service.updateChild(person);
+    } else if( person is Parent) {
+      await service.updateParent(person);
+    }
     await refresh();
   }
 
