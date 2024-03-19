@@ -1,42 +1,44 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/chore.dart';
-import 'package:togetherly/providers/base_provider.dart';
+import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/chore_service.dart';
 
-class ChoreProvider extends BaseProvider {
-  final ChoreService service;
-  final int personId;
-
-  ChoreProvider(this.service, this.personId) {
-    log("ChoreProvider created!");
+class ChoreProvider with ChangeNotifier {
+  ChoreProvider(this._service, this._userIdentityProvider) {
+    log("ChoreProvider created");
     refresh();
   }
 
-  List<Chore> _choreList = [];
-  List<Chore> get choreList => _choreList;
+  final ChoreService _service;
+
+  UserIdentityProvider _userIdentityProvider;
+
+  List<Chore> _allChores = [];
+  List<Chore> get allChores => _allChores;
+
+  // Iterable<Chore> choresAssignedToPerson(int personId)
+  //   => allChores.where((chore) => chore.assignedChildId == personId);
+
+  // Iterable<Chore>? get choresAssignedToCurrentUser {
+  //   int? personId = _userIdentityProvider.personId;
+  //   return personId == null ? null : choresAssignedToPerson(personId);
+  // }
 
   Future<void> addChore(Chore chore) async {
-    await service.insertChore(chore);
+    await _service.insertChore(chore);
     await refresh();
   }
 
   Future<void> deleteChore(Chore chore) async {
-    await service.deleteChore(chore);
+    await _service.deleteChore(chore);
     await refresh();
   }
 
   Future<void> updateChore(Chore chore) async {
-    await service.updateChore(chore);
+    await _service.updateChore(chore);
     await refresh();
-  }
-
-  @override
-  Future<void> refresh() async {
-    //Can we have a variable passed in for this function? If so,
-    _choreList = await service.getChoreList(personId);
-    notifyListeners();
-    log("ChoreProvider refreshed!");
   }
 
   //Demo 2
@@ -44,4 +46,20 @@ class ChoreProvider extends BaseProvider {
   // void sortChoresByDueDate() {
   //
   // }
+
+  Future<void> refresh() async {
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      _allChores = await _service.getChores(familyId);
+    } else {
+      _allChores = [];
+    }
+    notifyListeners();
+    log("ChoreProvider refreshed!");
+  }
+
+  void updateDependencies(UserIdentityProvider userIdentityProvider) {
+    _userIdentityProvider = userIdentityProvider;
+    refresh();
+  }
 }
