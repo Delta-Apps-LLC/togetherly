@@ -64,6 +64,17 @@ typedef SimpleChangeNotifierProxyProviderUpdate4<T, T2, T3, T4, R> = void
   R previous,
 );
 
+/// From the documentation for [ChangeNotifierProxyProvider]:
+///
+/// "A [ChangeNotifierProvider] that builds and synchronizes a [ChangeNotifier]
+/// with external values."
+///
+/// This variant supplies the given [ChangeNotifier] with one other value of the
+/// specified type.
+///
+/// This serves as a simpler version of [ChangeNotifierProxyProvider], in that
+/// it assumes that the single [ChangeNotifier] instance created by the [create]
+/// function will be reused every time [update] is called.
 class SimpleChangeNotifierProxyProvider<T, R extends ChangeNotifier?>
     extends ListenableProxyProvider<T, R> {
   SimpleChangeNotifierProxyProvider({
@@ -93,6 +104,17 @@ class SimpleChangeNotifierProxyProvider<T, R extends ChangeNotifier?>
       notifier?.dispose();
 }
 
+/// From the documentation for [ChangeNotifierProxyProvider2]:
+///
+/// "A [ChangeNotifierProvider] that builds and synchronizes a [ChangeNotifier]
+/// with external values."
+///
+/// This variant supplies the given [ChangeNotifier] with two other values of
+/// the specified types.
+///
+/// This serves as a simpler version of [ChangeNotifierProxyProvider2], in that
+/// it assumes that the single [ChangeNotifier] instance created by the [create]
+/// function will be reused every time [update] is called.
 class SimpleChangeNotifierProxyProvider2<T, T2, R extends ChangeNotifier?>
     extends ListenableProxyProvider2<T, T2, R> {
   SimpleChangeNotifierProxyProvider2({
@@ -119,6 +141,17 @@ class SimpleChangeNotifierProxyProvider2<T, T2, R extends ChangeNotifier?>
         );
 }
 
+/// From the documentation for [ChangeNotifierProxyProvider3]:
+///
+/// "A [ChangeNotifierProvider] that builds and synchronizes a [ChangeNotifier]
+/// with external values."
+///
+/// This variant supplies the given [ChangeNotifier] with three other values of
+/// the specified types.
+///
+/// This serves as a simpler version of [ChangeNotifierProxyProvider3], in that
+/// it assumes that the single [ChangeNotifier] instance created by the [create]
+/// function will be reused every time [update] is called.
 class SimpleChangeNotifierProxyProvider3<T, T2, T3, R extends ChangeNotifier?>
     extends ListenableProxyProvider3<T, T2, T3, R> {
   SimpleChangeNotifierProxyProvider3({
@@ -145,6 +178,17 @@ class SimpleChangeNotifierProxyProvider3<T, T2, T3, R extends ChangeNotifier?>
         );
 }
 
+/// From the documentation for [ChangeNotifierProxyProvider4]:
+///
+/// "A [ChangeNotifierProvider] that builds and synchronizes a [ChangeNotifier]
+/// with external values."
+///
+/// This variant supplies the given [ChangeNotifier] with four other values of
+/// the specified types.
+///
+/// This serves as a simpler version of [ChangeNotifierProxyProvider4], in that
+/// it assumes that the single [ChangeNotifier] instance created by the [create]
+/// function will be reused every time [update] is called.
 class SimpleChangeNotifierProxyProvider4<T, T2, T3, T4,
         R extends ChangeNotifier?>
     extends ListenableProxyProvider4<T, T2, T3, T4, R> {
