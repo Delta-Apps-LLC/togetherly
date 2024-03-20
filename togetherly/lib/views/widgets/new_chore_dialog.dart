@@ -70,7 +70,6 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
         points: _points,
         dueDate: _dueDate,
         isShared: _isShared,
-        // assignedChildId: 1,
       );
       setState(() => _loading = true);
       await provider.addChore(newChore);

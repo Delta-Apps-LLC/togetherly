@@ -10,7 +10,7 @@ class ChoreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ChoreProvider>(
-      builder: (context, provider, child) => Column(
+      builder: (context, choreProvider, child) => Column(
         mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
         children: <Widget>[
@@ -19,11 +19,10 @@ class ChoreList extends StatelessWidget {
             style: AppTextStyles.brandAccentLarge,
           ),
           Column(
-            children: provider.choreList.map((chore) {
-              return ChoreItem(
-                chore: chore,
-              );
-            }).toList(),
+            children: choreProvider
+                .allChores
+                // .choresAssignedToCurrentUser
+                .map((chore) => ChoreItem(chore: chore)).toList(),
           ),
         ],
       ),

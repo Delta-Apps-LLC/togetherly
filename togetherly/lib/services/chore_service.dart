@@ -4,7 +4,7 @@ import 'package:togetherly/models/chore.dart';
 class ChoreService {
   static const String _choreTable = "chore";
 
-  Future<List<Chore>> getChores() async {
+  Future<List<Chore>> getChores(int familyId) async {
     var result = await Supabase.instance.client.from(_choreTable).select(
         'id, title, description, date_due, points, status, shared');
     return result.map(_mapToChore).toList();

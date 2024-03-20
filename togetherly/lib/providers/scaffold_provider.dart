@@ -1,10 +1,9 @@
 import 'dart:developer';
-import 'package:togetherly/providers/base_provider.dart';
+import 'package:flutter/foundation.dart';
 
-class ScaffoldProvider extends BaseProvider {
+class ScaffoldProvider with ChangeNotifier {
   ScaffoldProvider() {
-    log("ScaffoldProvider created!");
-    refresh();
+    log("ScaffoldProvider created");
   }
 
   int? _index = 2;
@@ -21,11 +20,5 @@ class ScaffoldProvider extends BaseProvider {
   void setAppBarTitle(String title) {
     _title = title;
     notifyListeners();
-  }
-
-  @override
-  Future<void> refresh() async {
-    notifyListeners();
-    log("ScaffoldProvider refreshed!");
   }
 }
