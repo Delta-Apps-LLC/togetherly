@@ -50,7 +50,7 @@ class ChoreProvider with ChangeNotifier {
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      _allChores = await _service.getFamilyChores(familyId);
+      _allChores = await _service.getChoresByFamily(familyId);
     } else {
       _allChores = [];
     }
