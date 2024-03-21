@@ -63,12 +63,12 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   @override
   void initState() {
     super.initState();
-    _title = widget.chore!.title;
-    _description = widget.chore!.description;
-    _points = widget.chore!.points;
+    _title = widget.chore?.title ?? '';
+    _description = widget.chore?.description ?? '';
+    _points = widget.chore?.points ?? 0;
     _isBonus = false;
-    _isShared = widget.chore!.isShared;
-    _dueDate = widget.chore!.dueDate;
+    _isShared = widget.chore?.isShared ?? false;
+    _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
     _assignedValueItems =
         _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
     selectController.setOptions(peopleList
