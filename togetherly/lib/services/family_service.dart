@@ -2,10 +2,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FamilyService {
   Future<String> getFamilyName(int familyId) async {
-    var result = await Supabase.instance.client.from('Person')
+    var result = await Supabase.instance.client.from('family')
         .select('name')
         .match({ 'id': familyId });
-    // result might give a list of database rows
     var name;
     result.forEach((map) {
       name =  map['name'];
@@ -17,16 +16,14 @@ class FamilyService {
   Future<void> insertFamily(String name) async {
     //Service function call and pass chore
     await Supabase.instance.client
-        .from('Family')
-        .insert({
-      'name': name
-    });
+        .from('family')
+        .insert({'name': name});
   }
 
   Future<void> deleteFamily(int familyId) async {
     //await
     await Supabase.instance.client
-        .from('Family')
+        .from('family')
         .delete()
         .match({ 'id': familyId });
   }
@@ -34,7 +31,7 @@ class FamilyService {
   Future<void> updateFamilyName(int familyId, String newName) async {
     //Query by choreID
     await Supabase.instance.client
-        .from('Family')
+        .from('family')
         .update({ 'name': newName })
         .match({ 'id': familyId });
   }
