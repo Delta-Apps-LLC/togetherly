@@ -4,6 +4,7 @@ import 'package:togetherly/providers/app_providers.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/screens/home.dart';
+import 'package:togetherly/views/screens/login.dart';
 import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/screens/approval.dart';
 import 'package:togetherly/views/screens/settings.dart';
@@ -21,12 +22,14 @@ class CustomMaterialApp extends StatelessWidget {
     SettingsPage(),
   ];
 
+  final bool loggedIn = false;
+
   @override
   Widget build(BuildContext context) {
     return AppProviders(
       child: MaterialApp(
         title: 'Togetherly',
-        home: Consumer<ScaffoldProvider>(
+        home: !loggedIn ? const LoginPage() : Consumer<ScaffoldProvider>(
           builder: (context, provider, child) => Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,

@@ -7,8 +7,8 @@ class AppColors {
   static const Color brandGold = Color(0xFFFFD166);
   static const Color brandPurple = Color(0xFFD7C3E2);
   static const Color brandRose = Color(0xFFF9B5AC);
-  static const Color brandGray = Color(0xFFF9B5AC);
-  static const Color brandLightGray = Color(0xFFD9D9D9);
+  static const Color brandGray = Color(0xFFA0A0A0);
+  static const Color brandLightGray = Color(0xFFE7E7E7);
   static const Color brandBlack = Color(0xFF333333);
   static const Color brandWhite = Color(0xFFFBFBFB);
   static const Color errorRed = Color(0xFFFF676C);
