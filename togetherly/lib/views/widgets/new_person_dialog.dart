@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:togetherly/models/child.dart';
 import 'package:togetherly/themes.dart';
 
 class NewPersonDialog extends StatefulWidget {
