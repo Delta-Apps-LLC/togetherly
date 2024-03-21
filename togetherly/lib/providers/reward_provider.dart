@@ -36,7 +36,7 @@ class RewardProvider with ChangeNotifier {
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      _rewards = await _service.getRewards(familyId);
+      _rewards = await _service.getRewardsByFamily(familyId);
     } else {
       _rewards = [];
     }

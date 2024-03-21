@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/reward.dart';
 
 class RewardService {
-  Future<List<Reward>> getRewards(int familyId) async {
+  Future<List<Reward>> getRewardsByFamily(int familyId) async {
     throw UnimplementedError();
   }
 
