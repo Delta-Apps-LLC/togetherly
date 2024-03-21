@@ -5,7 +5,7 @@ class AssignmentService {
   static const String _assignmentTable = "assignment";
   static const String _familyAssignmentView = "family_assignment";
 
-  Future<List<Assignment>> getFamilyAssignments(int familyId) async {
+  Future<List<Assignment>> getAssignmentsByFamily(int familyId) async {
     var result = await Supabase.instance.client
         .from(_familyAssignmentView)
         .select('person_id, chore_id, status')
