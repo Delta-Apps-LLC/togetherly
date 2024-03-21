@@ -41,7 +41,7 @@ class _ChildLoginDialogState extends State<ChildLoginDialog> {
           child: _loading
               ? const CircularProgressIndicator()
               : const Text(
-                  'Save',
+                  'Login',
                   style: AppTextStyles.brandAccent,
                 ),
         ),

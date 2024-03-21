@@ -41,7 +41,7 @@ class _SignupDialogState extends State<SignupDialog> {
           child: _loading
               ? const CircularProgressIndicator()
               : const Text(
-                  'Save',
+                  'Signup',
                   style: AppTextStyles.brandAccent,
                 ),
         ),
