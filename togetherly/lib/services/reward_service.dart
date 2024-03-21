@@ -4,7 +4,7 @@ import 'package:togetherly/models/reward.dart';
 class RewardService {
   static const String _rewardTable = "reward";
 
-  Future<List<Reward>> getChoresByFamily(int familyId) async {
+  Future<List<Reward>> getRewardsByFamily(int familyId) async {
     var result = await Supabase.instance.client
         .from(_rewardTable)
         .select("id, title, description, points, quantity, family_id")
@@ -12,13 +12,12 @@ class RewardService {
     return result.map(_mapToReward).toList();
   }
 
-  Future<void> insertChore(Reward reward) async {
-    //Service function call and pass chore
+  Future<void> insertReward(Reward reward) async {
     await Supabase.instance.client.from(_rewardTable)
         .insert(_rewardToMap(reward));
   }
 
-  Future<void> deleteChore(Reward reward) async {
+  Future<void> deleteReward(Reward reward) async {
     //await
     await Supabase.instance.client
         .from(_rewardTable)
@@ -26,8 +25,7 @@ class RewardService {
         .match({'id': reward.id});
   }
 
-  Future<void> updateChore(Reward reward) async {
-    //Query by choreID
+  Future<void> updateReward(Reward reward) async {
     await Supabase.instance.client
         .from(_rewardTable)
         .update(_rewardToMap(reward))

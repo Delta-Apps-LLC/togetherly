@@ -7,7 +7,7 @@ class ChoreService {
 
   Future<List<Chore>> getChoresByFamily(int familyId) async {
     var result = await Supabase.instance.client
-        .from(_familyChoreView)
+        .from(_choreTable)
         .select("chore_id, title, description, points, shared, date_due, status")
         .eq("family_id", familyId);
     return result.map(_mapToChore).toList();
