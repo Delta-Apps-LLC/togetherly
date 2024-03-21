@@ -23,7 +23,7 @@ class _ParentHomePageState extends State<ParentHomePage> {
           });
     }
 
-    Future<void> buildDialog(BuildContext context) {
+    Future<void> buildChoreDialog(BuildContext context) {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -74,7 +74,7 @@ class _ParentHomePageState extends State<ParentHomePage> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () => buildDialog(context),
+                      onPressed: () => buildChoreDialog(context),
                       icon: const Icon(
                         Icons.add,
                         size: 32,

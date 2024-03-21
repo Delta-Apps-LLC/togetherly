@@ -44,7 +44,7 @@ class _ChildHomePageState extends State<ChildHomePage> {
               children: [
                 const Icon(Icons.add, size: 35, color: Colors.transparent),
                 const Points(),
-                InkWell(
+                InkWell( // TODO: isParent ? here: not here
                   onTap: () => buildDialog(context),
                   child: const Icon(
                     Icons.add,

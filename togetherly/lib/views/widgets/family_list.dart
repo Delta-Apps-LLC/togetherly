@@ -3,6 +3,7 @@ import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/family_item.dart';
+import 'package:togetherly/views/widgets/new_person_dialog.dart';
 
 class FamilyList extends StatefulWidget {
   const FamilyList({super.key, required this.title});
@@ -42,6 +43,15 @@ class _FamilyListState extends State<FamilyList> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> buildPersonDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const NewPersonDialog();
+        },
+      );
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
       crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
@@ -54,10 +64,7 @@ class _FamilyListState extends State<FamilyList> {
               style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
             ),
             InkWell(
-              onTap: () => {
-                // Extract into function above, Dialog for new child
-                print('hello there')
-              },
+              onTap: () => buildPersonDialog(context),
               child: const Icon(
                 Icons.add,
                 size: 30,
