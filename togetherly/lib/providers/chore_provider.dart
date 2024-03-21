@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/base_provider.dart';
 import 'package:togetherly/services/chore_service.dart';
+import 'package:togetherly/utilities/date.dart';
 
 class ChoreProvider extends BaseProvider {
   final ChoreService service;
@@ -15,6 +16,27 @@ class ChoreProvider extends BaseProvider {
 
   List<Chore> _choreList = [];
   List<Chore> get choreList => _choreList;
+  List<Chore> get choreListDueToday => _choreList
+      .where((chore) => chore.dueDate == DateHelpers.getDateToday())
+      .toList();
+  List<Chore> get choreListComingSoon =>
+      _choreList.where((chore) => _isChoreDueTomorrow(chore.dueDate)).toList();
+  List<Chore> get choreListOverdue =>
+      _choreList.where((chore) => _isChoreOverdue(chore.dueDate)).toList();
+
+  bool _isChoreDueTomorrow(DateTime dueDate) {
+    final dateToday = DateHelpers.getDateToday();
+    return dueDate.year == dateToday.year &&
+        dueDate.month == dateToday.month &&
+        dueDate.day == dateToday.day + 1;
+  }
+
+  bool _isChoreOverdue(DateTime dueDate) {
+    final dateToday = DateHelpers.getDateToday();
+    return dueDate.year <= dateToday.year &&
+        dueDate.month <= dateToday.month &&
+        dueDate.day < dateToday.day;
+  }
 
   Future<void> addChore(Chore chore) async {
     await service.insertChore(chore);
