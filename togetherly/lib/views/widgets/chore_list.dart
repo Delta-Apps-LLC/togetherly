@@ -6,8 +6,9 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.home});
+  const ChoreList({super.key, required this.home, required this.title});
   final String home;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +28,32 @@ class ChoreList extends StatelessWidget {
       ),
     ];
 
+    List<Chore> getProperList(ChoreProvider provider) {
+      return switch (title) {
+        'Today' => provider.choreListDueToday,
+        'Coming Soon' => provider.choreListComingSoon,
+        'Overdue' => provider.choreListOverdue,
+        String() => [],
+      };
+    }
+
     return Consumer<ChoreProvider>(
       builder: (context, provider, child) => Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
         children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              'All Chores',
-              style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
-            ),
-          ),
-          const Text(
-            'Today',
+          Text(
+            title,
             style: AppTextStyles.brandAccentLarge,
           ),
           Column(
-            children: choreList.map((chore) {
-              // TODO: provider.choreList
-              return ChoreItem(
-                chore: chore,
-                home: home,
-              );
-            }).toList(),
+            children: getProperList(provider)
+                .map((chore) => ChoreItem(
+                      chore: chore,
+                      home: home,
+                    ))
+                .toList(),
           ),
         ],
       ),

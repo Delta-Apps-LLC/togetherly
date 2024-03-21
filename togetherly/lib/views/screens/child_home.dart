@@ -34,31 +34,44 @@ class _ChildHomePageState extends State<ChildHomePage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: AppWidgetStyles.appPadding,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.add, size: 30, color: Colors.transparent),
-                  const Points(),
-                  InkWell(
-                    onTap: () => buildDialog(context),
-                    child: const Icon(
-                      Icons.add,
-                      size: 30,
-                      color: AppColors.brandBlack,
-                    ),
+      padding: AppWidgetStyles.appPadding,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Icon(Icons.add, size: 35, color: Colors.transparent),
+                const Points(),
+                InkWell(
+                  onTap: () => buildDialog(context),
+                  child: const Icon(
+                    Icons.add,
+                    size: 35,
+                    color: AppColors.brandBlack,
                   ),
-                ],
-              ),
-              const ChoreList(home: 'child',),
-              const SizedBox(height: 20.0),
-            ],
-          ),
+                ),
+              ],
+            ),
+            const ChoreList(
+              home: 'child',
+              title: 'Today',
+            ),
+            const SizedBox(height: 20.0),
+            const ChoreList(
+              home: 'child',
+              title: 'Coming Soon',
+            ),
+            const SizedBox(height: 20.0),
+            const ChoreList(
+              home: 'child',
+              title: 'Overdue',
+            ),
+            const SizedBox(height: 20.0),
+          ],
         ),
+      ),
     );
   }
 }
