@@ -7,7 +7,7 @@ class ChoreService {
   Future<List<Chore>> getChores() async {
     var result = await Supabase.instance.client
         .from(_choreTable)
-        .select('id, title, description, date_due, points, status, shared');
+        .select('id, title, description, date_due, points, shared');
     return result.map(_mapToChore).toList();
   }
 
@@ -38,7 +38,7 @@ class ChoreService {
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
         points: map['points'],
-        status: _parseChoreStatus(map['status']),
+        // status: _parseChoreStatus(map['status']),
         isShared: map['shared'],
       );
 
@@ -47,7 +47,7 @@ class ChoreService {
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        'status': _choreStatusToString(chore.status),
+        // 'status': _choreStatusToString(chore.status),
         'shared': chore.isShared,
       };
 
