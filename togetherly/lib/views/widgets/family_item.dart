@@ -38,6 +38,9 @@ class FamilyItem extends StatelessWidget {
       onTap: () {
         provider.setScaffoldValues(
             index: null, title: member.name, type: HomePageType.child);
+        // TODO: setCurrentChildBeingViewed so that when parents click
+        // a child, then navigate away and back, it remains on child view.
+        // TODO: would that go in person provider or chore provider?
       },
       child: Container(
         height: 80,
