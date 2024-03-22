@@ -18,7 +18,7 @@ class ChildHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isParent = false; // TODO: replace with provider.isParent
+    bool isParent = true; // TODO: replace with provider.isParent
 
     return Padding(
       padding: AppWidgetStyles.appPadding,

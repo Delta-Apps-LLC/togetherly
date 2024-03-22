@@ -54,6 +54,12 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
       icon: ProfileIcon.dog,
       totalPoints: 80,
     ),
+    const Child(
+      familyId: 0,
+      name: 'Natalie',
+      icon: ProfileIcon.cat,
+      totalPoints: 65,
+    ),
   ];
 
   // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
@@ -178,7 +184,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
             color: AppColors.brandBlack,
           ),
           onOptionSelected: (options) {},
-          selectedOptions: selectController.selectedOptions,
+          // selectedOptions: selectController.selectedOptions,
           options: selectController.options,
           selectedOptionTextColor: AppColors.brandBlack,
           selectedOptionIcon: const Icon(
