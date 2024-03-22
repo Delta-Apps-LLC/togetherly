@@ -5,8 +5,7 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.home});
-  final String home;
+  const ChoreList({super.key});
 
   @override
   Widget build(BuildContext context) {

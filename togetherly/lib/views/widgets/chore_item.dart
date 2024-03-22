@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togetherly/models/chore.dart';
+import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
-class ChoreItem extends StatelessWidget {
+class ChoreItem extends StatefulWidget {
   const ChoreItem({super.key, required this.chore});
   final Chore chore;
 
-  final bool isParent = false;
+  @override
+  State<ChoreItem> createState() => _ChoreItemState();
+}
+
+class _ChoreItemState extends State<ChoreItem> {
+  final bool isParent = false; // TODO: replace with provider.isParent
+  bool complete = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +63,18 @@ class ChoreItem extends StatelessWidget {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return ChoreDetailsDialog(chore: chore);
+          return ChoreDetailsDialog(chore: widget.chore);
         },
       );
+    }
+
+    void toggleChoreCompleted(BuildContext context) {
+      // final provider = Provider.of<ChoreProvider>(context, listen: false);
+      // provider.updateChore(chore);
+    }
+
+    bool parseChoreStatus(ChoreStatus status) {
+      return status == ChoreStatus.completed;
     }
 
     Widget assignedAvatars() {
@@ -85,6 +102,38 @@ class ChoreItem extends StatelessWidget {
               .toList(),
         );
       }
+    }
+
+    Widget pointsAndCheckBox() {
+      return Row(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Icon(
+                Icons.bolt,
+                color: AppColors.brandGold,
+                size: 32,
+              ),
+              Text(
+                widget.chore.points.toString(),
+                style: AppTextStyles.brandAccent,
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Transform.scale(
+            scale: 1.3,
+            child: Checkbox(
+              value: complete, // TODO: parseChoreStatus(chore.status)
+              activeColor: AppColors.brandGreen,
+              onChanged: (value) => setState(() =>
+                  complete = value!), // TODO: toggleChoreCompleted(context)
+            ),
+          ),
+        ],
+      );
     }
 
     return InkWell(
@@ -118,22 +167,24 @@ class ChoreItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          chore.title,
-                          style: chore.status == ChoreStatus.pending ||
-                                  chore.status == ChoreStatus.completed
+                          widget.chore.title,
+                          style: widget.chore.status == ChoreStatus.pending ||
+                                  widget.chore.status ==
+                                      ChoreStatus.completed ||
+                                  complete // TODO: remove complete
                               ? AppTextStyles.brandBodyStrike
                               : AppTextStyles.brandBody,
                         ),
-                        if (!chore.dueDate.isToday())
+                        if (!widget.chore.dueDate.isToday())
                           Text(
-                            chore.dueDate.prettyDate(),
+                            widget.chore.dueDate.prettyDate(),
                             style: AppTextStyles.brandAccentSub,
                           ),
                       ],
                     ),
                   ],
                 ),
-                assignedAvatars(),
+                isParent ? assignedAvatars() : pointsAndCheckBox(),
               ],
             ),
           ),

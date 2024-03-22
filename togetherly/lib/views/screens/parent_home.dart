@@ -16,9 +16,7 @@ class ParentHomePage extends StatelessWidget {
           children: <Widget>[
             FamilyList(title: 'Members'),
             SizedBox(height: 20.0),
-            ChoreList(
-              home: 'parent',
-            ),
+            ChoreList(),
             SizedBox(height: 20.0),
           ],
         ),
