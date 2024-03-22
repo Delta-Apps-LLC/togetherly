@@ -97,7 +97,6 @@ class _ParentHomePageState extends State<ParentHomePage> {
               ],
             ),
             const ChoreList(
-              home: 'parent',
               title: 'Today',
             ),
             const SizedBox(height: 20.0),
