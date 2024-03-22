@@ -55,7 +55,6 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
       totalPoints: 80,
     ),
   ];
-  late List<ValueItem<Child>> _assignedValueItems;
 
   // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
   final List<bool> _repeatingWeekdays = List.filled(7, false);
@@ -63,18 +62,18 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   @override
   void initState() {
     super.initState();
-    _title = widget.chore!.title;
-    _description = widget.chore!.description;
-    _points = widget.chore!.points;
+    _title = widget.chore?.title ?? '';
+    _description = widget.chore?.description ?? '';
+    _points = widget.chore?.points ?? 0;
     _isBonus = false;
-    _isShared = widget.chore!.isShared;
-    _dueDate = widget.chore!.dueDate;
-    _assignedValueItems =
+    _isShared = widget.chore?.isShared ?? false;
+    _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
+    final List<ValueItem<Child>> assignedValueItems =
         _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
     selectController.setOptions(peopleList
         .map((child) => ValueItem(label: child.name, value: child))
         .toList());
-    _assignedValueItems
+    assignedValueItems
         .forEach((child) => selectController.addSelectedOption(child));
   }
 
