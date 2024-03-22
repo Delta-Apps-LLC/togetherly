@@ -6,6 +6,7 @@ class Reward {
   final String description;
   final int points;
   final int quantity;
+  final int familyId;
 
   const Reward({
     this.id,
@@ -13,6 +14,7 @@ class Reward {
     this.description = '',
     required this.points,
     required this.quantity,
+    required this.familyId,
   });
 
   Reward copyWith({
@@ -21,6 +23,7 @@ class Reward {
     String? description,
     int? points,
     int? quantity,
+    int? familyId,
   }) =>
       Reward(
         id: (id ?? Value(this.id)).value,
@@ -28,5 +31,6 @@ class Reward {
         description: description ?? this.description,
         points: points ?? this.points,
         quantity: quantity ?? this.quantity,
+        familyId: familyId ?? this.familyId,
       );
 }

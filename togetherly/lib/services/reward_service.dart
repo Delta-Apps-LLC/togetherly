@@ -34,11 +34,11 @@ class RewardService {
 
   Reward _mapToReward(Map<String, dynamic> map) => Reward(
     id: map['id'],
-    family_id: map['family_id'],
     title: map['title'],
     description: map['description'],
     points: map['points'],
     quantity: map['quantity'],
+    familyId: map['family_id'],
   );
 
   Map<String, dynamic> _rewardToMap(Reward reward) => {
@@ -46,6 +46,6 @@ class RewardService {
     'description': reward.description,
     'date_due': reward.points,
     'points': reward.quantity,
-    'shared': reward.family_id,
+    'shared': reward.familyId,
   };
 }

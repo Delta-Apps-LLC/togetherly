@@ -11,6 +11,7 @@ enum ChoreStatus {
 
 class Chore {
   final int? id;
+  final int familyId;
   final String title;
   final String description;
   final DateTime dueDate;
@@ -20,6 +21,7 @@ class Chore {
 
   const Chore({
     this.id,
+    required this.familyId,
     required this.title,
     this.description = '',
     required this.dueDate,
@@ -30,6 +32,7 @@ class Chore {
 
   Chore copyWith({
     Value<int?>? id,
+    int? familyId,
     String? title,
     String? description,
     DateTime? dueDate,
@@ -39,6 +42,7 @@ class Chore {
   }) =>
       Chore(
         id: (id ?? Value(this.id)).value,
+        familyId: familyId ?? this.familyId,
         title: title ?? this.title,
         description: description ?? this.description,
         dueDate: dueDate ?? this.dueDate,
