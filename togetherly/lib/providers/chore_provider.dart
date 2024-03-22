@@ -1,17 +1,20 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
+import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 
 class ChoreProvider with ChangeNotifier {
-  ChoreProvider(this._service, this._userIdentityProvider) {
+  ChoreProvider(this.choreService, this._userIdentityProvider) {
     log("ChoreProvider created");
     refresh();
   }
 
-  final ChoreService _service;
+  final ChoreService choreService;
+  final AssignmentService assignmentService;
 
   UserIdentityProvider _userIdentityProvider;
 
@@ -26,18 +29,26 @@ class ChoreProvider with ChangeNotifier {
   //   return personId == null ? null : choresAssignedToPerson(personId);
   // }
 
-  Future<void> addChore(Chore chore) async {
-    await _service.insertChore(chore);
+  Future<void> addChore(Chore chore, children) async {
+    chore = await choreService.insertChore(chore);
+    for (final c in children) {
+      Assignment assignment = Assignment(personId: c, choreId: chore.id!);
+      await assignmentService.insertAssignment(assignment);
+    }
     await refresh();
   }
 
-  Future<void> deleteChore(Chore chore) async {
-    await _service.deleteChore(chore);
+  Future<void> deleteChore(Chore chore, children) async {
+    await choreService.deleteChore(chore);
+    for (final c in children) {
+      Assignment assignment = Assignment(personId: c, choreId: chore.id!);
+      await assignmentService.deleteAssignment(assignment);
+    }
     await refresh();
   }
 
   Future<void> updateChore(Chore chore) async {
-    await _service.updateChore(chore);
+    await choreService.updateChore(chore);
     await refresh();
   }
 
@@ -50,7 +61,7 @@ class ChoreProvider with ChangeNotifier {
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      _allChores = await _service.getChoresByFamily(familyId);
+      _allChores = await choreService.getChoresByFamily(familyId);
     } else {
       _allChores = [];
     }
