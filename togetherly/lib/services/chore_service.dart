@@ -35,7 +35,7 @@ class ChoreService {
   }
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
-        id: map['id'],
+        id: map['chore_id'], // comes from alias in the SQL view person_chore
         title: map['title'],
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
@@ -49,7 +49,7 @@ class ChoreService {
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        'status': _choreStatusToString(chore.status),
+        // 'status': _choreStatusToString(chore.status), // removed from chore table
         'shared': chore.isShared,
       };
 

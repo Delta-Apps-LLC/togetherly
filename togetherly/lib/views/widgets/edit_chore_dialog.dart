@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
@@ -8,32 +9,79 @@ import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 
-class NewChoreDialog extends StatefulWidget {
-  const NewChoreDialog({super.key, this.assignedChildId});
-  final int? assignedChildId;
+class EditChoreDialog extends StatefulWidget {
+  const EditChoreDialog({super.key, this.assignedChildId, this.chore});
+  final int?
+      assignedChildId; // left as optional depending on if the chore is created on the child page or the parent page
+  final Chore?
+      chore; // left as optional depending on if the parent is creating a new chore or editing an existing one
 
   @override
-  State<NewChoreDialog> createState() => _NewChoreDialogState();
+  State<EditChoreDialog> createState() => _EditChoreDialogState();
 }
 
-class _NewChoreDialogState extends State<NewChoreDialog> {
-  static const List<String> _weekdayAbbreviations = ['S', 'M', 'T', 'W', 'Th', 'F', 'Sa'];
+class _EditChoreDialogState extends State<EditChoreDialog> {
+  static const List<String> _weekdayAbbreviations = [
+    'S',
+    'M',
+    'T',
+    'W',
+    'Th',
+    'F',
+    'Sa'
+  ];
 
   final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _pointsController = TextEditingController();
+  final MultiSelectController<Child> selectController = MultiSelectController();
 
   DateTime _dueDate = DateTime.now();
-  String _title = '';
-  String _description = '';
-  int _points = 0;
-  bool _isBonus = false;
-  bool _isShared = false;
+  late String _title;
+  late String _description;
+  late int _points = 0;
+  late bool _isBonus;
+  late bool _isShared;
   bool _loading = false;
+  List<Child> _assignedPeople = [
+    const Child(
+      familyId: 0,
+      name: 'Emma',
+      icon: ProfileIcon.bear,
+      totalPoints: 45,
+    ),
+    const Child(
+      familyId: 0,
+      name: 'Jacob',
+      icon: ProfileIcon.dog,
+      totalPoints: 80,
+    ),
+    const Child(
+      familyId: 0,
+      name: 'Natalie',
+      icon: ProfileIcon.cat,
+      totalPoints: 65,
+    ),
+  ];
 
+  // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
   final List<bool> _repeatingWeekdays = List.filled(7, false);
-  final List<Child> _assignedPeople = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _title = widget.chore?.title ?? '';
+    _description = widget.chore?.description ?? '';
+    _points = widget.chore?.points ?? 0;
+    _isBonus = false;
+    _isShared = widget.chore?.isShared ?? false;
+    _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
+    final List<ValueItem<Child>> assignedValueItems =
+        _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
+    selectController.setOptions(peopleList
+        .map((child) => ValueItem(label: child.name, value: child))
+        .toList());
+    assignedValueItems
+        .forEach((child) => selectController.addSelectedOption(child));
+  }
 
   List<Child> peopleList = const [
     Child(
@@ -78,6 +126,23 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     }
   }
 
+  void updateChore(BuildContext context, ChoreProvider provider) async {
+    if (_formKey.currentState!.validate()) {
+      final updatedChore = Chore(
+        id: widget.chore!.id,
+        title: _title,
+        description: _description,
+        points: _points,
+        dueDate: _dueDate,
+        isShared: _isShared,
+      );
+      setState(() => _loading = true);
+      await provider.updateChore(updatedChore);
+      setState(() => _loading = false);
+      Navigator.of(context).pop();
+    }
+  }
+
   void updatePoints(String value) {
     int? intValue = int.tryParse(value);
     if (intValue != null) {
@@ -100,6 +165,37 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
   void toggleWeekday(int i) =>
       setState(() => _repeatingWeekdays[i] = !_repeatingWeekdays[i]);
 
+  Widget buildDropdown() {
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.45,
+        child: MultiSelectDropDown<Child>(
+          controller: selectController,
+          selectionType: SelectionType.multi,
+          dropdownHeight: 200,
+          chipConfig: const ChipConfig(
+            wrapType: WrapType.scroll,
+            backgroundColor: AppColors.brandLightGray,
+            labelColor: AppColors.brandWhite,
+            labelStyle: AppTextStyles.brandBodySmall,
+          ),
+          clearIcon: const Icon(
+            Icons.clear,
+            color: AppColors.brandBlack,
+          ),
+          onOptionSelected: (options) {},
+          // selectedOptions: selectController.selectedOptions,
+          options: selectController.options,
+          selectedOptionTextColor: AppColors.brandBlack,
+          selectedOptionIcon: const Icon(
+            Icons.check,
+            color: AppColors.brandGreen,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildForm(BuildContext context) {
     return Form(
       key: _formKey,
@@ -107,7 +203,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
-            controller: _titleController,
+            initialValue: _title,
             decoration: const InputDecoration(
               labelText: 'Chore title',
             ),
@@ -120,7 +216,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             },
           ),
           TextFormField(
-            controller: _descriptionController,
+            initialValue: _description,
             decoration: const InputDecoration(
               labelText: 'Chore details',
             ),
@@ -144,7 +240,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
                 height: 25,
                 child: TextFormField(
                   style: AppTextStyles.brandBody,
-                  controller: _pointsController,
+                  initialValue: _points.toString(),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: updatePoints,
@@ -224,7 +320,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [0,1,2,3,4,5,6].map((i) {
+                children: [0, 1, 2, 3, 4, 5, 6].map((i) {
                   return InkWell(
                     child: Container(
                       alignment: Alignment.center,
@@ -258,61 +354,10 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               const Text(
-                'Assign to:',
+                'Assigned:',
                 style: AppTextStyles.brandBody,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: DropdownButton<Child>(
-                  hint: const Text(
-                    'Add Person',
-                    style: AppTextStyles.brandBody,
-                  ),
-                  items: peopleList
-                      // TODO: the UI isn't updating while the dropdown is open
-                      .map((person) => DropdownMenuItem<Child>(
-                            onTap: () {
-                              if (!_assignedPeople.contains(person)) {
-                                setState(() => _assignedPeople.remove(person));
-                              } else {
-                                setState(() => _assignedPeople.add(person));
-                              }
-                            },
-                            value: person,
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  activeColor: AppColors.brandGreen,
-                                  value: _assignedPeople.contains(person),
-                                  onChanged: (value) {
-                                    if (!_assignedPeople.contains(person)) {
-                                      setState(
-                                          () => _assignedPeople.add(person));
-                                    } else {
-                                      setState(
-                                          () => _assignedPeople.remove(person));
-                                    }
-                                  },
-                                ),
-                                Text(
-                                  person.name,
-                                  style: AppTextStyles.brandBody,
-                                ),
-                              ],
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      if (!_assignedPeople.contains(value)) {
-                        _assignedPeople.add(value!);
-                      } else {
-                        _assignedPeople.remove(value);
-                      }
-                    });
-                  },
-                ),
-              ),
+              buildDropdown(),
             ],
           ),
         ],
@@ -347,7 +392,9 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
           ),
           ElevatedButton(
             style: AppWidgetStyles.submitButton,
-            onPressed: () => submitChore(context, provider),
+            onPressed: () => widget.chore != null
+                ? updateChore(context, provider)
+                : submitChore(context, provider),
             child: _loading
                 ? const CircularProgressIndicator()
                 : const Text(
