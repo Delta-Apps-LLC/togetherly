@@ -50,7 +50,7 @@ class ChoreService {
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        'status': _choreStatusToString(chore.status),
+        // 'status': _choreStatusToString(chore.status), // removed from chore table
         'shared': chore.isShared,
         'family_id': chore.familyId,
       };
