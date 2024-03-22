@@ -7,18 +7,18 @@ class RewardService {
   Future<List<Reward>> getRewardsByFamily(int familyId) async {
     var result = await Supabase.instance.client
         .from(_rewardTable)
-        .select("id, title, description, points, quantity, family_id")
+        .select("id, family_id, title, description, points, quantity")
         .eq("family_id", familyId);
     return result.map(_mapToReward).toList();
   }
 
   Future<void> insertReward(Reward reward) async {
-    await Supabase.instance.client.from(_rewardTable)
+    await Supabase.instance.client
+        .from(_rewardTable)
         .insert(_rewardToMap(reward));
   }
 
   Future<void> deleteReward(Reward reward) async {
-    //await
     await Supabase.instance.client
         .from(_rewardTable)
         .delete()
@@ -33,19 +33,19 @@ class RewardService {
   }
 
   Reward _mapToReward(Map<String, dynamic> map) => Reward(
-    id: map['id'],
-    title: map['title'],
-    description: map['description'],
-    points: map['points'],
-    quantity: map['quantity'],
-    familyId: map['family_id'],
-  );
+        id: map['id'],
+        familyId: map['family_id'],
+        title: map['title'],
+        description: map['description'],
+        points: map['points'],
+        quantity: map['quantity'],
+      );
 
   Map<String, dynamic> _rewardToMap(Reward reward) => {
-    'title': reward.title,
-    'description': reward.description,
-    'date_due': reward.points,
-    'points': reward.quantity,
-    'shared': reward.familyId,
-  };
+        'family_id': reward.familyId,
+        'title': reward.title,
+        'description': reward.description,
+        'points': reward.points,
+        'quantity': reward.quantity,
+      };
 }
