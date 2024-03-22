@@ -5,9 +5,10 @@ import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatelessWidget {
-  const ChoreItem({super.key, required this.chore, required this.home});
+  const ChoreItem({super.key, required this.chore});
   final Chore chore;
-  final String home;
+
+  final bool isParent = false;
 
   @override
   Widget build(BuildContext context) {
