@@ -23,13 +23,6 @@ class CustomMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isParentViewingChild(ScaffoldProvider provider) {
-      bool isParent = true; // TODO: replace with person provider isParent
-      return provider.index == 0 &&
-          isParent &&
-          provider.homePageType == HomePageType.child;
-    }
-
     return AppProviders(
       child: MaterialApp(
         title: 'Togetherly',
@@ -37,12 +30,14 @@ class CustomMaterialApp extends StatelessWidget {
           builder: (context, provider, child) => Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,
-              leading: isParentViewingChild(provider)
+              leading: provider.isParentViewingChild()
                   ? IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        provider.setAppBarTitle('Family'); // TODO: replace with family name
-                        provider.setHomePageType(HomePageType.parent);
+                        provider.setScaffoldValues(
+                            index: null,
+                            title: 'Family', // TODO: replace with family name
+                            type: HomePageType.parent);
                       },
                     )
                   : null,

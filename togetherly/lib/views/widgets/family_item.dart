@@ -36,8 +36,8 @@ class FamilyItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        provider.setAppBarTitle(member.name);
-        provider.setHomePageType(HomePageType.child);
+        provider.setScaffoldValues(
+            index: null, title: member.name, type: HomePageType.child);
       },
       child: Container(
         height: 80,

@@ -11,7 +11,8 @@ class ScaffoldProvider with ChangeNotifier {
   int? _index = 0;
   int? get index => _index;
 
-  String? _title = 'Family'; // TODO: change default title depending on isParent ? (family name) : (child name)
+  String? _title =
+      'Family'; // TODO: change default title depending on isParent ? (family name) : (child name)
   String? get title => _title;
 
   HomePageType _homePageType = HomePageType.parent;
@@ -32,9 +33,15 @@ class ScaffoldProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  Future<void> refresh() async {
+  void setScaffoldValues({int? index, String? title, HomePageType? type}) {
+    _index = index ?? _index;
+    _title = title ?? _title;
+    _homePageType = type ?? _homePageType;
     notifyListeners();
-    log("ScaffoldProvider refreshed!");
+  }
+
+  bool isParentViewingChild() {
+    bool isParent = true; // TODO: replace with person provider isParent
+    return index == 0 && isParent && homePageType == HomePageType.child;
   }
 }
