@@ -10,22 +10,6 @@ class ChoreList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final List<Chore> choreList = [
-    //   Chore(
-    //     title: 'Test Chore',
-    //     description: 'These are some details about the chore we are testing.',
-    //     dueDate: DateTime(2024, 3, 10),
-    //     points: 10,
-    //     isShared: false,
-    //   ),
-    //   Chore(
-    //     title: 'Test Chore',
-    //     dueDate: DateTime(2024, 3, 10),
-    //     points: 10,
-    //     isShared: false,
-    //   ),
-    // ];
-
     return Consumer<ChoreProvider>(
       builder: (context, choreProvider, child) => Column(
         mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
