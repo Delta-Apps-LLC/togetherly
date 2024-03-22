@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
-import 'package:togetherly/views/widgets/new_chore_dialog.dart';
+import 'package:togetherly/views/widgets/edit_chore_dialog.dart';
 
 class ChoreDetailsDialog extends StatelessWidget {
   const ChoreDetailsDialog({super.key, required this.chore});
@@ -57,7 +57,7 @@ class ChoreDetailsDialog extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return NewChoreDialog(chore: chore);
+        return EditChoreDialog(chore: chore);
       },
     );
   }

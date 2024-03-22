@@ -9,18 +9,18 @@ import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 
-class NewChoreDialog extends StatefulWidget {
-  const NewChoreDialog({super.key, this.assignedChildId, this.chore});
+class EditChoreDialog extends StatefulWidget {
+  const EditChoreDialog({super.key, this.assignedChildId, this.chore});
   final int?
       assignedChildId; // left as optional depending on if the chore is created on the child page or the parent page
   final Chore?
       chore; // left as optional depending on if the parent is creating a new chore or editing an existing one
 
   @override
-  State<NewChoreDialog> createState() => _NewChoreDialogState();
+  State<EditChoreDialog> createState() => _EditChoreDialogState();
 }
 
-class _NewChoreDialogState extends State<NewChoreDialog> {
+class _EditChoreDialogState extends State<EditChoreDialog> {
   static const List<String> _weekdayAbbreviations = [
     'S',
     'M',
