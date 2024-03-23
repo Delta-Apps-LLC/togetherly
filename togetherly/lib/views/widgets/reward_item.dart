@@ -9,14 +9,6 @@ class RewardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String parseTitle(String title) {
-      if (title.length > 10) {
-        return '${title.substring(0, 9)}...';
-      } else {
-        return title;
-      }
-    }
-
     Future<void> buildDialog(BuildContext context) {
       return showDialog(
         context: context,
@@ -41,8 +33,9 @@ class RewardItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              parseTitle(reward.title),
+              reward.title,
               style: AppTextStyles.brandAccentLarge,
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
               height: 50,
