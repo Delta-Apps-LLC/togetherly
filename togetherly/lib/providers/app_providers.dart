@@ -48,10 +48,7 @@ class _AppProvidersState extends State<AppProviders> {
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
-          create: (
-            _,
-            userIdentityProvider,
-          ) =>
+          create: (_, userIdentityProvider) =>
               RewardProvider(_rewardService, userIdentityProvider),
           update: (_, userIdentityProvider, previous) =>
               previous.updateDependencies(userIdentityProvider),

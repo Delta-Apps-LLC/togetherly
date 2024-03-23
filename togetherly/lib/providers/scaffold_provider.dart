@@ -8,7 +8,7 @@ class ScaffoldProvider with ChangeNotifier {
     log("ScaffoldProvider created");
   }
 
-  int? _index = 2;
+  int? _index = 0;
   int? get index => _index;
 
   String? _title =

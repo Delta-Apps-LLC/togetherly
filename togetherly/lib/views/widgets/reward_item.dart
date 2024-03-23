@@ -18,13 +18,13 @@ class RewardItem extends StatelessWidget {
     }
 
     Future<void> buildDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return RewardDialog(reward: reward);
-      },
-    );
-  }
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return RewardDialog(reward: reward);
+        },
+      );
+    }
 
     return InkWell(
       onTap: () => buildDialog(context),
