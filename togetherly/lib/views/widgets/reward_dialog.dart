@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/reward.dart';
 import 'package:togetherly/themes.dart';
 
 class RewardDialog extends StatefulWidget {
   const RewardDialog({super.key, required this.reward});
-  final Map<String, dynamic> reward;
+  final Reward reward;
 
   @override
   State<RewardDialog> createState() => _RewardDialogState();
@@ -24,11 +25,11 @@ class _RewardDialogState extends State<RewardDialog> {
 
     return AlertDialog(
       title: Text(
-        widget.reward['title'],
+        widget.reward.title,
         style: AppTextStyles.brandHeading,
       ),
       content: Text(
-        'Do you want to redeem this reward for ${widget.reward['points'].toString()} points?',
+        'Do you want to redeem this reward for ${widget.reward.points.toString()} points?',
         style: AppTextStyles.brandBody,
       ),
       actions: <Widget>[

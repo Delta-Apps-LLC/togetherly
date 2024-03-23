@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/models/reward.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/reward_dialog.dart';
 
 class RewardItem extends StatelessWidget {
   const RewardItem({super.key, required this.reward});
-  final Map<String, dynamic> reward;
+  final Reward reward;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class RewardItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              parseTitle(reward['title']),
+              parseTitle(reward.title),
               style: AppTextStyles.brandAccentLarge,
             ),
             SizedBox(
@@ -48,7 +49,7 @@ class RewardItem extends StatelessWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  reward['description'],
+                  reward.description,
                   style: const TextStyle(fontSize: 30),
                 ),
               ),
@@ -62,7 +63,7 @@ class RewardItem extends StatelessWidget {
                   color: AppColors.brandGold,
                 ),
                 Text(
-                  reward['points'].toString(),
+                  reward.points.toString(),
                   style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                 ),
               ],
