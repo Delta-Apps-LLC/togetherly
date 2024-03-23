@@ -19,8 +19,13 @@ class RewardProvider with ChangeNotifier {
   List<Reward> get rewards => _rewards;
 
   Future<void> addReward(Reward reward) async {
-    await _service.insertReward(reward);
-    await refresh();
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      await _service.insertReward(familyId, reward);
+      await refresh();
+    } else {
+      // TODO: Report some kind of error, possibly.
+    }
   }
 
   Future<void> deleteReward(Reward reward) async {
