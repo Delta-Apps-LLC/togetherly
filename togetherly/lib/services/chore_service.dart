@@ -7,15 +7,16 @@ class ChoreService {
   Future<List<Chore>> getChoresByFamily(int familyId) async {
     var result = await Supabase.instance.client
         .from(_choreTable)
-        .select(
-            "id, family_id, title, description, points, shared, date_due, status")
+        .select("id, title, description, points, shared, date_due, status")
         .eq("family_id", familyId);
     return result.map(_mapToChore).toList();
   }
 
-  Future<void> insertChore(Chore chore) async {
+  Future<void> insertChore(int familyId, Chore chore) async {
     //Service function call and pass chore
-    await Supabase.instance.client.from(_choreTable).insert(_choreToMap(chore));
+    await Supabase.instance.client
+        .from(_choreTable)
+        .insert(_choreToMap(chore, familyId));
   }
 
   Future<void> deleteChore(Chore chore) async {
@@ -36,7 +37,6 @@ class ChoreService {
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
         id: map['id'],
-        familyId: map['family_id'],
         title: map['title'],
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
@@ -45,8 +45,8 @@ class ChoreService {
         isShared: map['shared'],
       );
 
-  Map<String, dynamic> _choreToMap(Chore chore) => {
-        'family_id': chore.familyId,
+  Map<String, dynamic> _choreToMap(Chore chore, [int? familyId]) => {
+        if (familyId != null) 'family_id': familyId,
         'title': chore.title,
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
