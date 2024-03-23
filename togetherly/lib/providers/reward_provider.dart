@@ -43,29 +43,7 @@ class RewardProvider with ChangeNotifier {
     if (familyId != null) {
       _rewards = await _service.getRewardsByFamily(familyId);
     } else {
-      // TODO: empty this array once service is complete
-      _rewards = [
-        const Reward(
-            title: 'Ice cream treat',
-            description: '\u{1F366}',
-            points: 20,
-            quantity: 10),
-        const Reward(
-            title: 'Trampoline Park',
-            description: '\u{1F9D1}',
-            points: 250,
-            quantity: 2),
-        const Reward(
-            title: 'Movie Night',
-            description: '\u{1F4FD}',
-            points: 50,
-            quantity: 5),
-        const Reward(
-            title: 'Party with friends',
-            description: '\u{1F389}',
-            points: 200,
-            quantity: 2),
-      ];
+      _rewards = [];
     }
     notifyListeners();
     log("RewardProvider refreshed!");

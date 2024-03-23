@@ -46,7 +46,7 @@ class _RewardDialogState extends State<RewardDialog> {
           child: loading
               ? const CircularProgressIndicator()
               : const Text(
-                  'Save',
+                  'Redeem',
                   style: AppTextStyles.brandAccent,
                 ),
         ),

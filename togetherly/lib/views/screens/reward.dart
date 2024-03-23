@@ -3,14 +3,9 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/points.dart';
 import 'package:togetherly/views/widgets/reward_grid.dart';
 
-class RewardPage extends StatefulWidget {
+class RewardPage extends StatelessWidget {
   const RewardPage({super.key});
 
-  @override
-  State<RewardPage> createState() => _RewardPageState();
-}
-
-class _RewardPageState extends State<RewardPage> {
   @override
   Widget build(BuildContext context) {
     return const Padding(
