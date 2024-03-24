@@ -35,7 +35,13 @@ class FamilyItem extends StatelessWidget {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
     return InkWell(
-      onTap: () => provider.setAppBarTitle('Chores'),
+      onTap: () {
+        provider.setScaffoldValues(
+            index: null, title: member.name, type: HomePageType.child);
+        // TODO: setCurrentChildBeingViewed so that when parents click
+        // a child, then navigate away and back, it remains on child view.
+        // TODO: would that go in person provider or chore provider?
+      },
       child: Container(
         height: 80,
         margin: const EdgeInsets.only(top: 8),
