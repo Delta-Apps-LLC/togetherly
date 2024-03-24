@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/filters_dialog.dart';
-import 'package:togetherly/views/widgets/new_chore_dialog.dart';
+import 'package:togetherly/views/widgets/edit_chore_dialog.dart';
 
 class FamilyChoresDialog extends StatelessWidget {
   const FamilyChoresDialog({super.key});
@@ -21,7 +21,7 @@ class FamilyChoresDialog extends StatelessWidget {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return const NewChoreDialog();
+            return const EditChoreDialog();
           });
     }
 
