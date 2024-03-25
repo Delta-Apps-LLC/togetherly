@@ -6,27 +6,12 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.title});
+  const ChoreList({super.key, required this.title, required this.isParent});
   final String title;
+  final bool isParent;
 
   @override
   Widget build(BuildContext context) {
-    final List<Chore> choreList = [
-      Chore(
-        title: 'Test Chore',
-        description: 'These are some details about the chore we are testing.',
-        dueDate: DateTime(2024, 3, 10),
-        points: 10,
-        isShared: false,
-      ),
-      Chore(
-        title: 'Test Chore',
-        dueDate: DateTime(2024, 3, 10),
-        points: 10,
-        isShared: false,
-      ),
-    ];
-
     List<Chore> getProperList(ChoreProvider provider) {
       return switch (title) {
         'Today' => provider.choreListDueToday,
@@ -47,9 +32,7 @@ class ChoreList extends StatelessWidget {
           ),
           Column(
             children: getProperList(choreProvider)
-                .map((chore) => ChoreItem(
-                      chore: chore,
-                    ))
+                .map((chore) => ChoreItem(chore: chore, isParent: isParent))
                 .toList(),
           ),
         ],

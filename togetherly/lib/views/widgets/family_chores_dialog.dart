@@ -80,14 +80,17 @@ class FamilyChoresDialog extends StatelessWidget {
                   children: [
                     ChoreList(
                       title: 'Today',
+                      isParent: true,
                     ),
                     SizedBox(height: 20.0),
                     ChoreList(
                       title: 'Coming Soon',
+                      isParent: true,
                     ),
                     SizedBox(height: 20.0),
                     ChoreList(
                       title: 'Overdue',
+                      isParent: true,
                     ),
                     SizedBox(height: 20.0),
                   ],

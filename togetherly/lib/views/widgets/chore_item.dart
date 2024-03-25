@@ -7,17 +7,15 @@ import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatefulWidget {
-  const ChoreItem({super.key, required this.chore});
+  const ChoreItem({super.key, required this.chore, required this.isParent});
   final Chore chore;
+  final bool isParent;
 
   @override
   State<ChoreItem> createState() => _ChoreItemState();
 }
 
 class _ChoreItemState extends State<ChoreItem> {
-  final bool isParent = false; // TODO: replace with provider.isParent
-  bool complete = false;
-
   @override
   Widget build(BuildContext context) {
     final List<String> avatars = [
@@ -34,6 +32,7 @@ class _ChoreItemState extends State<ChoreItem> {
       'rabbit',
       'tiger'
     ];
+
     Widget getStatusIcon(Chore chore) {
       switch (chore.status) {
         case ChoreStatus.assigned:
@@ -69,12 +68,14 @@ class _ChoreItemState extends State<ChoreItem> {
     }
 
     void toggleChoreCompleted(BuildContext context) {
-      // final provider = Provider.of<ChoreProvider>(context, listen: false);
-      // provider.updateChore(chore);
-    }
-
-    bool parseChoreStatus(ChoreStatus status) {
-      return status == ChoreStatus.completed;
+      final provider = Provider.of<ChoreProvider>(context, listen: false);
+      final updatedChore = {
+        'status': widget.chore.status == ChoreStatus.assigned
+            ? ChoreStatus.completed
+            : ChoreStatus.assigned,
+        'chore_id': widget.chore.id,
+      };
+      provider.updateChore(updatedChore);
     }
 
     Widget assignedAvatars() {
@@ -123,14 +124,9 @@ class _ChoreItemState extends State<ChoreItem> {
           const SizedBox(
             width: 10,
           ),
-          Transform.scale(
-            scale: 1.3,
-            child: Checkbox(
-              value: complete, // TODO: parseChoreStatus(chore.status)
-              activeColor: AppColors.brandGreen,
-              onChanged: (value) => setState(() =>
-                  complete = value!), // TODO: toggleChoreCompleted(context)
-            ),
+          IconButton(
+            icon: getStatusIcon(widget.chore),
+            onPressed: () => toggleChoreCompleted(context),
           ),
         ],
       );
@@ -169,9 +165,7 @@ class _ChoreItemState extends State<ChoreItem> {
                         Text(
                           widget.chore.title,
                           style: widget.chore.status == ChoreStatus.pending ||
-                                  widget.chore.status ==
-                                      ChoreStatus.completed ||
-                                  complete // TODO: remove complete
+                                  widget.chore.status == ChoreStatus.completed
                               ? AppTextStyles.brandBodyStrike
                               : AppTextStyles.brandBody,
                         ),
@@ -184,7 +178,7 @@ class _ChoreItemState extends State<ChoreItem> {
                     ),
                   ],
                 ),
-                isParent ? assignedAvatars() : pointsAndCheckBox(),
+                widget.isParent ? assignedAvatars() : pointsAndCheckBox(),
               ],
             ),
           ),

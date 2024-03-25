@@ -3,11 +3,12 @@ import 'package:togetherly/models/chore.dart';
 
 class ChoreService {
   static const String _choreTable = "chore";
+  static const String _assignmentTable = "assignment";
 
   Future<List<Chore>> getChoresByFamily(int familyId) async {
     var result = await Supabase.instance.client
-        .from(_choreTable)
-        .select("id, title, description, points, shared, date_due")
+        .from('person_chore')
+        .select()
         .eq("family_id", familyId);
     return result.map(_mapToChore).toList();
   }
@@ -27,21 +28,22 @@ class ChoreService {
         .match({'id': chore.id});
   }
 
-  Future<void> updateChore(Chore chore) async {
+  Future<void> updateChore(Map<String, dynamic> updatedChore) async {
     //Query by choreID
+    updatedChore['status'] = _choreStatusToString(updatedChore['status']);
     await Supabase.instance.client
-        .from(_choreTable)
-        .update(_choreToMap(chore))
-        .match({'id': chore.id});
+        .from(_assignmentTable)
+        .update(updatedChore)
+        .match({'chore_id': updatedChore['chore_id']});
   }
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
-        id: map['id'],
+        id: map['chore_id'],
         title: map['title'],
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
         points: map['points'],
-        // status: _parseChoreStatus(map['status']),
+        status: _parseChoreStatus(map['status']),
         isShared: map['shared'],
       );
 

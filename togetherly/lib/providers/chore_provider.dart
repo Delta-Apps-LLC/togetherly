@@ -64,8 +64,12 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> updateChore(Chore chore) async {
-    await _service.updateChore(chore);
+  Future<void> updateChore(Map<String, dynamic> updatedChore) async {
+    final newAssignment = {
+      ...updatedChore,
+      'person_id': _userIdentityProvider.personId
+    };
+    await _service.updateChore(newAssignment);
     await refresh();
   }
 

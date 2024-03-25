@@ -137,7 +137,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
         isShared: _isShared,
       );
       setState(() => _loading = true);
-      await provider.updateChore(updatedChore);
+      // await provider.updateChore(updatedChore); // TODO: fix
       setState(() => _loading = false);
       Navigator.of(context).pop();
     }
