@@ -5,6 +5,12 @@ import 'package:flutter/foundation.dart';
 class UserIdentityProvider with ChangeNotifier {
   UserIdentityProvider() {
     log("UserProvider created");
+    // TODO: Remove temporary hard-coded IDs once authentication is done.
+    _familyId = 1;
+    // Child:
+    // _personId = 3;
+    // Parent:
+    _personId = 4;
   }
 
   int? _familyId;

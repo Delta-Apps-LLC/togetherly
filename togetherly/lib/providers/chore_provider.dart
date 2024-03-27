@@ -27,8 +27,13 @@ class ChoreProvider with ChangeNotifier {
   // }
 
   Future<void> addChore(Chore chore) async {
-    await _service.insertChore(chore);
-    await refresh();
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      await _service.insertChore(familyId, chore);
+      await refresh();
+    } else {
+      // TODO: Report some kind of error, possibly.
+    }
   }
 
   Future<void> deleteChore(Chore chore) async {
@@ -50,7 +55,7 @@ class ChoreProvider with ChangeNotifier {
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      _allChores = await _service.getChores(familyId);
+      _allChores = await _service.getChoresByFamily(familyId);
     } else {
       _allChores = [];
     }
