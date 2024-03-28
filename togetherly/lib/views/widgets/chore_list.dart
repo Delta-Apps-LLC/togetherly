@@ -14,6 +14,13 @@ class ChoreList extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
         children: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'All Chores',
+              style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
+            ),
+          ),
           const Text(
             'Today',
             style: AppTextStyles.brandAccentLarge,

@@ -464,22 +464,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  mockito:
-    dependency: "direct dev"
+  multi_dropdown:
+    dependency: "direct main"
     description:
-      name: mockito
-      sha256: "6841eed20a7befac0ce07df8116c8b8233ed1f4486a7647c7fc5a02ae6163917"
+      name: multi_dropdown
+      sha256: b63ff339fcc875d667f8688c8ef62853545b580dd2b6fe78b73339783268afd8
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.4"
-  mocktail:
-    dependency: transitive
-    description:
-      name: mocktail
-      sha256: c4b5007d91ca4f67256e720cb1b6d704e79a510183a12fa551021f652577dce6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
+    version: "2.1.4"
   nested:
     dependency: transitive
     description:

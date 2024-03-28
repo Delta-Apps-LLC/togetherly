@@ -39,7 +39,7 @@ void main() {
 
       //verify(choreService.updateChore(testChore)).called(1);
     });
-    test('Chore is added', () {
+    test('Chore to map function', () {
       //provider.addChore(testChore);
 
       //verify(choreService.insertChore(testChore)).called(1);
