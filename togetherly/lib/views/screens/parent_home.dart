@@ -3,16 +3,11 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/family_chores_dialog.dart';
 import 'package:togetherly/views/widgets/family_list.dart';
-import 'package:togetherly/views/widgets/new_chore_dialog.dart';
+import 'package:togetherly/views/widgets/edit_chore_dialog.dart';
 
-class ParentHomePage extends StatefulWidget {
+class ParentHomePage extends StatelessWidget {
   const ParentHomePage({super.key});
 
-  @override
-  State<ParentHomePage> createState() => _ParentHomePageState();
-}
-
-class _ParentHomePageState extends State<ParentHomePage> {
   @override
   Widget build(BuildContext context) {
     Future<void> openChoreOverview(BuildContext context) {
@@ -27,7 +22,7 @@ class _ParentHomePageState extends State<ParentHomePage> {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return const NewChoreDialog();
+          return const EditChoreDialog();
         },
       );
     }

@@ -8,7 +8,7 @@ import 'package:togetherly/views/screens/login.dart';
 import 'package:togetherly/views/widgets/scaffold_widgets.dart';
 import 'package:togetherly/views/screens/approval.dart';
 import 'package:togetherly/views/screens/settings.dart';
-import 'package:togetherly/views/screens/store.dart';
+import 'package:togetherly/views/screens/reward.dart';
 
 class CustomMaterialApp extends StatelessWidget {
   const CustomMaterialApp({super.key, this.page});
@@ -18,7 +18,7 @@ class CustomMaterialApp extends StatelessWidget {
   final List<Widget> screens = const [
     HomePage(),
     ApprovalPage(),
-    StorePage(),
+    RewardPage(),
     SettingsPage(),
   ];
 
@@ -33,11 +33,17 @@ class CustomMaterialApp extends StatelessWidget {
           builder: (context, provider, child) => Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,
-              // Leading will be conditional on Person model isChild/isParent
-              // leading: IconButton(
-              //   icon: const Icon(Icons.arrow_back),
-              //   onPressed: () => {provider.setAppBarTitle('Family')},
-              // ),
+              leading: provider.isParentViewingChild()
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        provider.setScaffoldValues(
+                            index: null,
+                            title: 'Family', // TODO: replace with family name
+                            type: HomePageType.parent);
+                      },
+                    )
+                  : null,
               title: CustomAppBarTitle(title: provider.title ?? ''),
             ),
             body: page ?? screens.elementAt(provider.index ?? 0),

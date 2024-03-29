@@ -9,18 +9,18 @@ import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 
-class NewChoreDialog extends StatefulWidget {
-  const NewChoreDialog({super.key, this.assignedChildId, this.chore});
+class EditChoreDialog extends StatefulWidget {
+  const EditChoreDialog({super.key, this.assignedChildId, this.chore});
   final int?
       assignedChildId; // left as optional depending on if the chore is created on the child page or the parent page
   final Chore?
       chore; // left as optional depending on if the parent is creating a new chore or editing an existing one
 
   @override
-  State<NewChoreDialog> createState() => _NewChoreDialogState();
+  State<EditChoreDialog> createState() => _EditChoreDialogState();
 }
 
-class _NewChoreDialogState extends State<NewChoreDialog> {
+class _EditChoreDialogState extends State<EditChoreDialog> {
   static const List<String> _weekdayAbbreviations = [
     'S',
     'M',
@@ -54,8 +54,13 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
       icon: ProfileIcon.dog,
       totalPoints: 80,
     ),
+    const Child(
+      familyId: 0,
+      name: 'Natalie',
+      icon: ProfileIcon.cat,
+      totalPoints: 65,
+    ),
   ];
-  late List<ValueItem<Child>> _assignedValueItems;
 
   // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
   final List<bool> _repeatingWeekdays = List.filled(7, false);
@@ -69,12 +74,12 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
     _isBonus = false;
     _isShared = widget.chore?.isShared ?? false;
     _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
-    _assignedValueItems =
+    final List<ValueItem<Child>> assignedValueItems =
         _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
     selectController.setOptions(peopleList
         .map((child) => ValueItem(label: child.name, value: child))
         .toList());
-    _assignedValueItems
+    assignedValueItems
         .forEach((child) => selectController.addSelectedOption(child));
   }
 
@@ -179,7 +184,7 @@ class _NewChoreDialogState extends State<NewChoreDialog> {
             color: AppColors.brandBlack,
           ),
           onOptionSelected: (options) {},
-          selectedOptions: selectController.selectedOptions,
+          // selectedOptions: selectController.selectedOptions,
           options: selectController.options,
           selectedOptionTextColor: AppColors.brandBlack,
           selectedOptionIcon: const Icon(

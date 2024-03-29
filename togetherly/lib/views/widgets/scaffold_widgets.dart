@@ -41,21 +41,14 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   void _updateIndex(int index, ScaffoldProvider provider) {
     if (index == provider.index) return;
-    provider.setNavIndex(index);
-    switch (index) {
-      case 0:
-        provider.setAppBarTitle('Family');
-        break;
-      case 1:
-        provider.setAppBarTitle('Approval');
-        break;
-      case 2:
-        provider.setAppBarTitle('Store');
-        break;
-      case 3:
-        provider.setAppBarTitle('Settings');
-        break;
-    }
+    String title = switch (index) {
+      0 => 'Family',
+      1 => 'Approval',
+      2 => 'Store',
+      3 => 'Settings',
+      int() => '',
+    };
+    provider.setScaffoldValues(index: index, title: title, type: null);
   }
 
   @override
