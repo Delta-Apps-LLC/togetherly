@@ -49,13 +49,22 @@ class PersonService {
         .update(_childToMap(child))
         .match({'id': child.id});
   }
+  
+  Future<void> updateParent(Parent parent) async {
+    await Supabase.instance.client
+        .from(_personTable)
+        .update(_parentToMap(parent))
+        .match({'id': parent.id});
+  }
 
   Child _mapToChild(Map<String, dynamic> map) => Child(
       id: map['id'],
       familyId: map['family_id'],
       name: map['name'],
       icon: map['profile_pic'],
-      totalPoints: map['total_points']);
+      totalPoints: map['total_points'],
+      isParent: map['is_parent']
+  );
 
   Map<String, dynamic> _childToMap(Child child) => {
         'id': child.id,
@@ -70,7 +79,9 @@ class PersonService {
       id: map['id'],
       familyId: map['family_id'],
       name: map['name'],
-      icon: map['profile_pic']);
+      icon: map['profile_pic'],
+      isParent: map['is_parent']
+  );
 
   Map<String, dynamic> _parentToMap(Parent parent) => {
         'id': parent.id,
