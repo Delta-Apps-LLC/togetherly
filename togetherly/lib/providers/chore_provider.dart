@@ -8,8 +8,6 @@ import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 
-import '../models/child.dart';
-
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
     this._choreService,
