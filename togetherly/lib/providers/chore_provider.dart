@@ -29,12 +29,16 @@ class ChoreProvider with ChangeNotifier {
   List<Assignment> _allAssignments = [];
   List<Assignment> get allAssignments => _allAssignments;
 
+  /// Cached copy of [_choreIdToPersonIds].
   Map<int, Set<int>>? _choreIdToPersonIdsCache;
+  /// Helper map for getting the set of person IDs assigned to a chore.
   Map<int, Set<int>> get _choreIdToPersonIds =>
       _choreIdToPersonIdsCache ??= _allAssignments.groupFoldBy(
           (a) => a.choreId, (prev, a) => (prev ?? <int>{})..add(a.personId));
 
+  /// Cached copy of [_personIdToChoreIds].
   Map<int, Set<int>>? _personIdToChoreIdsCache;
+  /// Helper map for getting the set of chore IDs assigned to a person.
   Map<int, Set<int>> get _personIdToChoreIds =>
       _personIdToChoreIdsCache ??= _allAssignments.groupFoldBy(
           (a) => a.personId, (prev, a) => (prev ?? <int>{})..add(a.choreId));
