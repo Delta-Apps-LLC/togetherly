@@ -45,35 +45,63 @@ class ChoreProvider with ChangeNotifier {
       allChores.where((chore) =>
           (_personIdToChoreIds[personId] ?? const <int>{}).contains(chore.id));
 
-  Iterable<int> personIdsAssignedToChoreId(int choreId) =>
-      _choreIdToPersonIds[choreId] ?? const <int>{};
+  Iterable<int> personIdsAssignedToChore(Chore chore) =>
+      _choreIdToPersonIds[chore.id] ?? const <int>{};
 
   Iterable<Chore> get choresAssignedToCurrentUser {
     int? personId = _userIdentityProvider.personId;
     return personId == null ? const [] : choresAssignedToPersonId(personId);
   }
 
-  Future<void> addChore(Chore chore, List<Child> children) async {
-    //Will update to capture the chore when chore service is updated.
-    await _choreService.insertChore(chore);
-    for (final c in children) {
-      Assignment assignment = Assignment(personId: c.id!, choreId: chore.id!);
-      await _assignmentService.insertAssignment(assignment);
+  Future<void> addChore(Chore chore, List<int> assignedChildIds) async {
+    final newChoreId = (await _choreService.insertChore(chore)).id;
+    if (newChoreId == null) {
+      throw Exception("Database did not return ID for new chore");
+    }
+    for (final childId in assignedChildIds) {
+      await _assignmentService.insertAssignment(Assignment(
+        personId: childId,
+        choreId: newChoreId,
+      ));
     }
     await refresh();
   }
 
   Future<void> deleteChore(Chore chore) async {
     await _choreService.deleteChore(chore);
-    // for (final c in children) {
-    //   Assignment assignment = Assignment(personId: c.id, choreId: chore.id!);
-    //   await _assignmentService.deleteAssignment(assignment);
-    // }
     await refresh();
   }
 
-  Future<void> updateChore(Chore chore) async {
+  Future<void> updateChore(Chore chore, List<int>? assignedChildIds) async {
     await _choreService.updateChore(chore);
+    if (assignedChildIds != null) {
+      await updateChildrenAssignedToChore(chore, assignedChildIds);
+    } else {
+      await refresh();
+    }
+  }
+
+  Future<void> updateChildrenAssignedToChore(Chore chore, List<int> assignedChildIds) async {
+    final choreId = chore.id!;
+    Set<int> previous = personIdsAssignedToChore(chore).toSet();
+    Set<int> updated = assignedChildIds.toSet();
+
+    Set<int> removed = previous.difference(updated);
+    for (final childId in removed) {
+      await _assignmentService.deleteAssignment(Assignment(
+        personId: childId,
+        choreId: choreId,
+      ));
+    }
+
+    Set<int> added = updated.difference(previous);
+    for (final childId in added) {
+      await _assignmentService.insertAssignment(Assignment(
+        personId: childId,
+        choreId: choreId,
+      ));
+    }
+
     await refresh();
   }
 
