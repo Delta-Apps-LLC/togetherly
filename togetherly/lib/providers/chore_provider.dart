@@ -23,6 +23,9 @@ class ChoreProvider with ChangeNotifier {
   List<Chore> _allChores = [];
   List<Chore> get allChores => _allChores;
 
+  List<Assignment> _allAssignments = [];
+  List<Assignment> get allAssignments => _allAssignments;
+
   // Iterable<Chore> choresAssignedToPerson(int personId)
   //   => allChores.where((chore) => chore.assignedChildId == personId);
 
@@ -68,8 +71,10 @@ class ChoreProvider with ChangeNotifier {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       _allChores = await _choreService.getChoresByFamily(familyId);
+      _allAssignments = await _assignmentService.getAssignmentsByFamily(familyId);
     } else {
       _allChores = [];
+      _allAssignments = [];
     }
     notifyListeners();
     log("ChoreProvider refreshed!");
