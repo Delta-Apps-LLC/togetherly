@@ -108,12 +108,6 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  //Demo 2
-  // Note: This should be implemented as a getter.
-  // void sortChoresByDueDate() {
-  //
-  // }
-
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
