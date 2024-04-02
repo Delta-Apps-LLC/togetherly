@@ -5,6 +5,7 @@ import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
+import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 
 class AppProviders extends StatefulWidget {
@@ -19,6 +20,7 @@ class AppProviders extends StatefulWidget {
 class _AppProvidersState extends State<AppProviders> {
   // final ExampleService _exampleService = ExampleServiceImpl();
   final ChoreService _choreService = ChoreService();
+  final AssignmentService _assignmentService = AssignmentService();
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +42,8 @@ class _AppProvidersState extends State<AppProviders> {
         //     update: (_, otherProvider, previous) =>
         //         previous.updateDependencies(otherProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
-            create: (_, userIdentityProvider) =>
-                ChoreProvider(_choreService, userIdentityProvider),
+            create: (_, userIdentityProvider) => ChoreProvider(
+                _choreService, _assignmentService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
 
