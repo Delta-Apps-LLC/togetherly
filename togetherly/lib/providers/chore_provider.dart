@@ -11,7 +11,11 @@ import 'package:togetherly/services/chore_service.dart';
 import '../models/child.dart';
 
 class ChoreProvider with ChangeNotifier {
-  ChoreProvider(this._choreService, this._assignmentService, this._userIdentityProvider) {
+  ChoreProvider(
+    this._choreService,
+    this._assignmentService,
+    this._userIdentityProvider,
+  ) {
     log("ChoreProvider created");
     refresh();
   }
