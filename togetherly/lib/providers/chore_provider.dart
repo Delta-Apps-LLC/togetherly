@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
@@ -26,17 +27,28 @@ class ChoreProvider with ChangeNotifier {
   List<Assignment> _allAssignments = [];
   List<Assignment> get allAssignments => _allAssignments;
 
-  // Iterable<Chore> choresAssignedToPerson(int personId)
-  //   => allChores.where((chore) => chore.assignedChildId == personId);
+  Map<int, Set<int>>? _choreIdToPersonIdsCache;
+  Map<int, Set<int>> get _choreIdToPersonIds =>
+      _choreIdToPersonIdsCache ??= _allAssignments.groupFoldBy(
+          (a) => a.choreId, (prev, a) => (prev ?? <int>{})..add(a.personId));
 
-  // Iterable<Chore>? get choresAssignedToCurrentUser {
-  //   int? personId = _userIdentityProvider.personId;
-  //   return personId == null ? null : choresAssignedToPerson(personId);
-  // }
+  Map<int, Set<int>>? _personIdToChoreIdsCache;
+  Map<int, Set<int>> get _personIdToChoreIds =>
+      _personIdToChoreIdsCache ??= _allAssignments.groupFoldBy(
+          (a) => a.personId, (prev, a) => (prev ?? <int>{})..add(a.choreId));
 
- /* List<Chore> getChoreByChild(int childId) {
+  Iterable<Chore> choresAssignedToPersonId(int personId) =>
+      allChores.where((chore) =>
+          (_personIdToChoreIds[personId] ?? const <int>{}).contains(chore.id));
 
-  }*/
+  Iterable<int> personIdsAssignedToChoreId(int choreId) =>
+      _choreIdToPersonIds[choreId] ?? const <int>{};
+
+  Iterable<Chore> get choresAssignedToCurrentUser {
+    int? personId = _userIdentityProvider.personId;
+    return personId == null ? const [] : choresAssignedToPersonId(personId);
+  }
+
   Future<void> addChore(Chore chore, List<Child> children) async {
     //Will update to capture the chore when chore service is updated.
     await _choreService.insertChore(chore);
@@ -76,6 +88,8 @@ class ChoreProvider with ChangeNotifier {
       _allChores = [];
       _allAssignments = [];
     }
+    _choreIdToPersonIdsCache = null;
+    _personIdToChoreIdsCache = null;
     notifyListeners();
     log("ChoreProvider refreshed!");
   }
