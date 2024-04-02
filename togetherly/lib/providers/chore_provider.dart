@@ -55,6 +55,14 @@ class ChoreProvider with ChangeNotifier {
     return personId == null ? const [] : choresAssignedToPersonId(personId);
   }
 
+  /// Gets the status of the assignment of the given chore to the given person
+  /// ID. Returns null if the chore is not assigned to the person ID.
+  AssignmentStatus? getAssignmentStatus(Chore chore, int personId) =>
+      _allAssignments
+          .firstWhereOrNull(
+              (a) => a.choreId == chore.id && a.personId == personId)
+          ?.status;
+
   Future<void> addChore(Chore chore, [List<int>? assignedChildIds]) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
@@ -112,6 +120,11 @@ class ChoreProvider with ChangeNotifier {
       ));
     }
 
+    await refresh();
+  }
+
+  Future<void> updateAssignment(Assignment assignment) async {
+    await _assignmentService.updateAssignment(assignment);
     await refresh();
   }
 
