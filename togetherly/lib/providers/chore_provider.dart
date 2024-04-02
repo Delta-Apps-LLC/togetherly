@@ -81,7 +81,8 @@ class ChoreProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateChildrenAssignedToChore(Chore chore, List<int> assignedChildIds) async {
+  Future<void> updateChildrenAssignedToChore(
+      Chore chore, List<int> assignedChildIds) async {
     final choreId = chore.id!;
     Set<int> previous = personIdsAssignedToChore(chore).toSet();
     Set<int> updated = assignedChildIds.toSet();
@@ -115,7 +116,8 @@ class ChoreProvider with ChangeNotifier {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       _allChores = await _choreService.getChoresByFamily(familyId);
-      _allAssignments = await _assignmentService.getAssignmentsByFamily(familyId);
+      _allAssignments =
+          await _assignmentService.getAssignmentsByFamily(familyId);
     } else {
       _allChores = [];
       _allAssignments = [];
