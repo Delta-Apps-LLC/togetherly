@@ -58,7 +58,7 @@ class ChoreProvider with ChangeNotifier {
   Future<void> addChore(Chore chore, [List<int>? assignedChildIds]) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      final newChoreId = (await _choreService.insertChore(chore)).id;
+      final newChoreId = (await _choreService.insertChore(familyId, chore)).id;
       if (newChoreId == null) {
         throw Exception("Database did not return ID for new chore");
       }
