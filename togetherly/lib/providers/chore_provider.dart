@@ -57,6 +57,7 @@ class ChoreProvider with ChangeNotifier {
 
   /// Gets the status of the assignment of the given chore to the given person
   /// ID. Returns null if the chore is not assigned to the person ID.
+  // TODO: Remove/update this once ChoreCompletion code is done.
   AssignmentStatus? getAssignmentStatus(Chore chore, int personId) =>
       _allAssignments
           .firstWhereOrNull(
@@ -98,6 +99,23 @@ class ChoreProvider with ChangeNotifier {
     }
   }
 
+  Future<void> addAssignment(Assignment assignment) async {
+    await _assignmentService.insertAssignment(assignment);
+    await refresh();
+  }
+
+  Future<void> deleteAssignment(Assignment assignment) async {
+    await _assignmentService.deleteAssignment(assignment);
+    await refresh();
+  }
+
+  // TODO: Remove/update this once ChoreCompletion code is done (as there
+  //       won't be anything left to update without the status field).
+  Future<void> updateAssignment(Assignment assignment) async {
+    await _assignmentService.updateAssignment(assignment);
+    await refresh();
+  }
+
   Future<void> updateChildrenAssignedToChore(
       Chore chore, List<int> assignedChildIds) async {
     final choreId = chore.id!;
@@ -120,11 +138,6 @@ class ChoreProvider with ChangeNotifier {
       ));
     }
 
-    await refresh();
-  }
-
-  Future<void> updateAssignment(Assignment assignment) async {
-    await _assignmentService.updateAssignment(assignment);
     await refresh();
   }
 
