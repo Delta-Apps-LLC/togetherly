@@ -13,9 +13,11 @@ class ChoreService {
     return result.map(_mapToChore).toList();
   }
 
-  Future<void> insertChore(Chore chore) async {
+  Future<Chore> insertChore(Chore chore) async {
     //Service function call and pass chore
     await Supabase.instance.client.from(_choreTable).insert(_choreToMap(chore));
+    // TODO: Return selected chore from database
+    return chore;
   }
 
   Future<void> deleteChore(Chore chore) async {
