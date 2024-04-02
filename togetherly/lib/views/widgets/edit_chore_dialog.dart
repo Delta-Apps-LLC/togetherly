@@ -47,7 +47,6 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
       familyId: 0,
       name: 'Emma',
       icon: ProfileIcon.bear,
-      isParent: false,
       totalPoints: 45,
     ),
     const Child(
@@ -55,14 +54,12 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
       name: 'Jacob',
       icon: ProfileIcon.dog,
       totalPoints: 80,
-      isParent: false,
     ),
     const Child(
       familyId: 0,
       name: 'Natalie',
       icon: ProfileIcon.cat,
       totalPoints: 65,
-      isParent: false,
     ),
   ];
 

@@ -63,7 +63,6 @@ class PersonService {
       name: map['name'],
       icon: map['profile_pic'],
       totalPoints: map['total_points'],
-      isParent: map['is_parent']
   );
 
   Map<String, dynamic> _childToMap(Child child) => {
@@ -80,7 +79,6 @@ class PersonService {
       familyId: map['family_id'],
       name: map['name'],
       icon: map['profile_pic'],
-      isParent: map['is_parent']
   );
 
   Map<String, dynamic> _parentToMap(Parent parent) => {

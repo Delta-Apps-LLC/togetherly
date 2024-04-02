@@ -24,24 +24,25 @@ class PersonProvider with ChangeNotifier {
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      person.isParent
+      person is Parent
           ? () async {
               final Parent parent = Parent(
-                  familyId: person.familyId,
-                  name: person.name,
-                  icon: person.icon,
-                  isParent: person.isParent);
+                familyId: person.familyId,
+                name: person.name,
+                icon: person.icon,
+              );
               await _service.insertParent(parent);
             }
-          : () async {
-              final Child child = Child(
-                  familyId: person.familyId,
-                  name: person.name,
-                  icon: person.icon,
-                  isParent: person.isParent,
-                  totalPoints: 0);
-              await _service.insertChild(child);
-            };
+          : person is Child
+              ? () async {
+                  final Child child = Child(
+                      familyId: person.familyId,
+                      name: person.name,
+                      icon: person.icon,
+                      totalPoints: 0);
+                  await _service.insertChild(child);
+                }
+              : throw Exception('Invalid object for person insertion');
       await refresh();
     } else {
       // TODO: Report some kind of error, possibly.
@@ -54,24 +55,23 @@ class PersonProvider with ChangeNotifier {
   }
 
   Future<void> updatePerson(Person person, int newPoints) async {
-    person.isParent
+    person is Parent
         ? () async {
             final Parent parent = Parent(
-                familyId: person.familyId,
-                name: person.name,
-                icon: person.icon,
-                isParent: person.isParent);
+              familyId: person.familyId,
+              name: person.name,
+              icon: person.icon,
+            );
             await _service.updateParent(parent);
           }
-        : () async {
+        : person is Child ? () async {
             final Child child = Child(
                 familyId: person.familyId,
                 name: person.name,
                 icon: person.icon,
-                isParent: person.isParent,
                 totalPoints: newPoints);
             await _service.updateChild(child);
-          };
+          } : throw Exception('Invalid object for person update');
     await refresh();
   }
 

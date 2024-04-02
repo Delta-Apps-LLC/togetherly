@@ -7,7 +7,6 @@ class Parent extends Person {
     required super.familyId,
     required super.name,
     required super.icon,
-    required super.isParent,
   });
 
   Parent copyWith({
@@ -15,13 +14,11 @@ class Parent extends Person {
     int? familyId,
     String? name,
     ProfileIcon? icon,
-    bool? isParent,
   }) =>
       Parent(
         id: (id ?? Value(this.id)).value,
         familyId: familyId ?? this.familyId,
         name: name ?? this.name,
         icon: icon ?? this.icon,
-        isParent: isParent ?? this.isParent,
       );
 }

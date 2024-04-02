@@ -10,7 +10,6 @@ class Child extends Person {
     required super.familyId,
     required super.name,
     required super.icon,
-    required super.isParent,
     this.totalPoints = 0,
   });
 
@@ -19,7 +18,6 @@ class Child extends Person {
     int? familyId,
     String? name,
     ProfileIcon? icon,
-    bool? isParent,
     int? totalPoints,
   }) =>
       Child(
@@ -27,7 +25,6 @@ class Child extends Person {
         familyId: familyId ?? this.familyId,
         name: name ?? this.name,
         icon: icon ?? this.icon,
-        isParent: isParent ?? this.isParent,
         totalPoints: totalPoints ?? this.totalPoints,
       );
 }

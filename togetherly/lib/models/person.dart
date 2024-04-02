@@ -18,13 +18,11 @@ abstract class Person {
   final int familyId;
   final String name;
   final ProfileIcon icon;
-  final bool isParent;
 
   const Person({
     this.id,
     required this.familyId,
     required this.name,
     required this.icon,
-    required this.isParent,
   });
 }
