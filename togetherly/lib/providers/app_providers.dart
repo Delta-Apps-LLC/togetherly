@@ -2,11 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'package:togetherly/providers/chore_provider.dart';
+import 'package:togetherly/providers/reward_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
+import 'package:togetherly/services/reward_service.dart';
 
 class AppProviders extends StatefulWidget {
   final Widget child;
@@ -21,6 +23,7 @@ class _AppProvidersState extends State<AppProviders> {
   // final ExampleService _exampleService = ExampleServiceImpl();
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
+  final RewardService _rewardService = RewardService();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,12 @@ class _AppProvidersState extends State<AppProviders> {
                 _choreService, _assignmentService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
+        SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
+          create: (_, userIdentityProvider) =>
+              RewardProvider(_rewardService, userIdentityProvider),
+          update: (_, userIdentityProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider),
+        ),
 
         // Add to this section any providers that only transform the state of
         // other providers.

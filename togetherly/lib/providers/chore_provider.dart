@@ -56,19 +56,24 @@ class ChoreProvider with ChangeNotifier {
   }
 
   Future<void> addChore(Chore chore, [List<int>? assignedChildIds]) async {
-    final newChoreId = (await _choreService.insertChore(chore)).id;
-    if (newChoreId == null) {
-      throw Exception("Database did not return ID for new chore");
-    }
-    if (assignedChildIds != null) {
-      for (final childId in assignedChildIds) {
-        await _assignmentService.insertAssignment(Assignment(
-          personId: childId,
-          choreId: newChoreId,
-        ));
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      final newChoreId = (await _choreService.insertChore(chore)).id;
+      if (newChoreId == null) {
+        throw Exception("Database did not return ID for new chore");
       }
+      if (assignedChildIds != null) {
+        for (final childId in assignedChildIds) {
+          await _assignmentService.insertAssignment(Assignment(
+            personId: childId,
+            choreId: newChoreId,
+          ));
+        }
+      }
+      await refresh();
+    } else {
+      // TODO: Report some kind of error, possibly.
     }
-    await refresh();
   }
 
   Future<void> deleteChore(Chore chore) async {

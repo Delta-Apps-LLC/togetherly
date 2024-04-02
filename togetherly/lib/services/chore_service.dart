@@ -3,19 +3,20 @@ import 'package:togetherly/models/chore.dart';
 
 class ChoreService {
   static const String _choreTable = "chore";
-  static const String _familyChoreView = "family_chore";
 
   Future<List<Chore>> getChoresByFamily(int familyId) async {
     var result = await Supabase.instance.client
-        .from(_familyChoreView)
-        .select("chore_id, title, description, points, shared, date_due, status")
+        .from(_choreTable)
+        .select("id, title, description, points, shared, date_due")
         .eq("family_id", familyId);
     return result.map(_mapToChore).toList();
   }
 
-  Future<Chore> insertChore(Chore chore) async {
+  Future<Chore> insertChore(int familyId, Chore chore) async {
     //Service function call and pass chore
-    await Supabase.instance.client.from(_choreTable).insert(_choreToMap(chore));
+    await Supabase.instance.client
+        .from(_choreTable)
+        .insert(_choreToMap(chore, familyId));
     // TODO: Return selected chore from database
     return chore;
   }
@@ -42,16 +43,17 @@ class ChoreService {
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
         points: map['points'],
-        status: _parseChoreStatus(map['status']),
+        // status: _parseChoreStatus(map['status']),
         isShared: map['shared'],
       );
 
-  Map<String, dynamic> _choreToMap(Chore chore) => {
+  Map<String, dynamic> _choreToMap(Chore chore, [int? familyId]) => {
+        if (familyId != null) 'family_id': familyId,
         'title': chore.title,
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        'status': _choreStatusToString(chore.status),
+        // 'status': _choreStatusToString(chore.status), // removed from chore table
         'shared': chore.isShared,
       };
 
