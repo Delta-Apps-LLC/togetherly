@@ -41,7 +41,7 @@ class _FamilyListState extends State<FamilyList> {
         ),
         Consumer<PersonProvider>(
           builder: (context, personProvider, child) => Column(
-            children: personProvider.childList
+            children: personProvider.children
                 .map((child) => FamilyItem(
                       member: child,
                     ))

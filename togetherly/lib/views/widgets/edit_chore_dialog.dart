@@ -59,7 +59,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
     _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
     final List<ValueItem<Child>> assignedValueItems =
         _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
-    selectController.setOptions(provider.childList
+    selectController.setOptions(provider.children
         .map((child) => ValueItem(label: child.name, value: child))
         .toList());
     assignedValueItems

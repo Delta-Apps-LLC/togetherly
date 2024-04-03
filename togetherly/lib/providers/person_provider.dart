@@ -16,10 +16,11 @@ class PersonProvider with ChangeNotifier {
   final PersonService _service;
   UserIdentityProvider _userIdentityProvider;
 
-  List<Parent> _parentList = [];
-  List<Parent> get parentList => _parentList;
-  List<Child> _childList = [];
-  List<Child> get childList => _childList;
+  List<Parent> _parents = [];
+  List<Parent> get parents => _parents;
+
+  List<Child> _children = [];
+  List<Child> get children => _children;
 
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
@@ -58,11 +59,11 @@ class PersonProvider with ChangeNotifier {
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      _parentList = await _service.getParents(familyId);
-      _childList = await _service.getChildren(familyId);
+      _parents = await _service.getParents(familyId);
+      _children = await _service.getChildren(familyId);
     } else {
-      _parentList = [];
-      _childList = [];
+      _parents = [];
+      _children = [];
     }
     notifyListeners();
     log("ChoreProvider refreshed!");
