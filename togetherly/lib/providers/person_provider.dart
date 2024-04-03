@@ -44,7 +44,7 @@ class PersonProvider with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> updatePerson(Person person, int newPoints) async {
+  Future<void> updatePerson(Person person) async {
     if (person is Parent) {
       await _service.updateParent(person);
     } else if (person is Child) {
