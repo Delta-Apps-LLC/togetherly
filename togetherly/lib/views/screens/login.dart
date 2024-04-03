@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/child_login_dialog.dart';
-import 'package:togetherly/views/widgets/parent_login.dialog.dart';
+import 'package:togetherly/views/widgets/login.dialog.dart';
 import 'package:togetherly/views/widgets/signup_dialog.dart';
 
 class LoginPage extends StatelessWidget {
@@ -11,16 +10,10 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> buttons = [
       {
-        'text': 'Parent Login',
+        'text': 'Login',
         'buttonColor': AppColors.brandBlue,
         'textColor': AppColors.brandGold,
-        'dialog': const ParentLoginDialog(),
-      },
-      {
-        'text': 'Child Login',
-        'buttonColor': AppColors.brandBlue,
-        'textColor': AppColors.brandGold,
-        'dialog': const ChildLoginDialog(),
+        'dialog': const LoginDialog(),
       },
       {
         'text': 'Signup',
@@ -31,6 +24,7 @@ class LoginPage extends StatelessWidget {
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: AppColors.brandBlue,
       ),
@@ -63,10 +57,10 @@ class LoginPage extends StatelessWidget {
                               backgroundColor: MaterialStatePropertyAll<Color>(
                                   button['buttonColor']),
                               fixedSize: const MaterialStatePropertyAll<Size>(
-                                  Size.fromWidth(250)),
+                                  Size.fromWidth(275)),
                               padding: const MaterialStatePropertyAll<
                                       EdgeInsetsGeometry>(
-                                  EdgeInsets.only(top: 20, bottom: 20)),
+                                  EdgeInsets.only(top: 10, bottom: 10)),
                             ),
                             child: Text(
                               button['text'],
@@ -92,8 +86,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
+                  SizedBox(
                     child: TextButton(
                       onPressed: () => print('Terms and Conditions'),
                       child: Text(

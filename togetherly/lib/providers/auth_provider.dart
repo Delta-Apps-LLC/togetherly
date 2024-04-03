@@ -7,26 +7,28 @@ import 'package:togetherly/services/auth_service.dart';
 import 'package:togetherly/services/person_service.dart';
 
 class AuthProvider with ChangeNotifier {
-  AuthProvider(this._authService, this._userIdentityProvider, this._personService) {
+  AuthProvider(this._authService, this._userIdentityProvider) {
     log("AuthProvider created");
     refresh();
   }
 
   final AuthService _authService;
-  final PersonService _personService;
+  // final PersonService _personService;
   UserIdentityProvider _userIdentityProvider;
 
   User? _user;
   User? get user => _user;
 
-  Future<void> signUp(String email, String password) async {
-    await _authService.signUp(email, password);
+  Future<AuthException?> signUp(String email, String password) async {
+    final res = await _authService.signUp(email, password);
     await refresh();
+    return res;
   }
 
-  Future<void> signIn(String email, String password) async {
-    await _authService.signIn(email, password);
+  Future<AuthException?> signIn(String email, String password) async {
+    final res = await _authService.signIn(email, password);
     await refresh();
+    return res;
   }
 
   Future<void> logout() async {

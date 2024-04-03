@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/providers/auth_provider.dart';
 import 'package:togetherly/themes.dart';
 
-class SignupDialog extends StatefulWidget {
-  const SignupDialog({super.key});
+class LoginDialog extends StatefulWidget {
+  const LoginDialog({super.key});
 
   @override
-  State<SignupDialog> createState() => _SignupDialogState();
+  State<LoginDialog> createState() => _LoginDialogState();
 }
 
-class _SignupDialogState extends State<SignupDialog> {
+class _LoginDialogState extends State<LoginDialog> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  String _confirmPassword = '';
   bool _loading = false;
 
-  void signup(BuildContext context) async {
+  void login(BuildContext context) async {
     final provider = Provider.of<AuthProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       setState(() => _loading = true);
-      final res = await provider.signUp(_email, _password);
+      final res = await provider.signIn(_email, _password);
       bool failed = res != null;
       if (failed) {
         print(res.message);
@@ -48,7 +48,7 @@ class _SignupDialogState extends State<SignupDialog> {
       title: const Align(
         alignment: Alignment.center,
         child: Text(
-          'Signup',
+          'Login',
           style: AppTextStyles.brandHeading,
         ),
       ),
@@ -86,26 +86,9 @@ class _SignupDialogState extends State<SignupDialog> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  obscureText: true,
-                  initialValue: _confirmPassword,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
-                  ),
-                  onChanged: (value) =>
-                      setState(() => _confirmPassword = value),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    } else if (value != _password) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
               ],
             ),
-          ),
+          )
         ],
       ),
       actions: <Widget>[
@@ -118,11 +101,11 @@ class _SignupDialogState extends State<SignupDialog> {
         ),
         ElevatedButton(
           style: AppWidgetStyles.submitButton,
-          onPressed: () => signup(context),
+          onPressed: () => login(context),
           child: _loading
               ? const CircularProgressIndicator()
               : const Text(
-                  'Signup',
+                  'Login',
                   style: AppTextStyles.brandAccent,
                 ),
         ),

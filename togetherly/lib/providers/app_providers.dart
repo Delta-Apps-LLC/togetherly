@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/providers/auth_provider.dart';
 
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/reward_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
+import 'package:togetherly/services/auth_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
@@ -22,6 +24,7 @@ class _AppProvidersState extends State<AppProviders> {
   // final ExampleService _exampleService = ExampleServiceImpl();
   final ChoreService _choreService = ChoreService();
   final RewardService _rewardService = RewardService();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,12 @@ class _AppProvidersState extends State<AppProviders> {
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
           create: (_, userIdentityProvider) =>
               RewardProvider(_rewardService, userIdentityProvider),
+          update: (_, userIdentityProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider),
+        ),
+        SimpleChangeNotifierProxyProvider<UserIdentityProvider, AuthProvider>(
+          create: (_, userIdentityProvider) =>
+              AuthProvider(_authService, userIdentityProvider),
           update: (_, userIdentityProvider, previous) =>
               previous.updateDependencies(userIdentityProvider),
         ),
