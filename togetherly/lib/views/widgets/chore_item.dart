@@ -75,7 +75,7 @@ class _ChoreItemState extends State<ChoreItem> {
             : ChoreStatus.assigned,
         'chore_id': widget.chore.id,
       };
-      provider.updateChore(updatedChore);
+      // provider.updateChore(updatedChore);
     }
 
     Widget assignedAvatars() {
