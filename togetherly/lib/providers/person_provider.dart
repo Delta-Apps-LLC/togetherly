@@ -24,25 +24,14 @@ class PersonProvider with ChangeNotifier {
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      person is Parent
-          ? () async {
-              final Parent parent = Parent(
-                familyId: person.familyId,
-                name: person.name,
-                icon: person.icon,
-              );
-              await _service.insertParent(parent);
-            }
-          : person is Child
-              ? () async {
-                  final Child child = Child(
-                      familyId: person.familyId,
-                      name: person.name,
-                      icon: person.icon,
-                      totalPoints: 0);
-                  await _service.insertChild(child);
-                }
-              : throw Exception('Invalid object for person insertion');
+      if (person is Parent) {
+        await _service.insertParent(person);
+      } else if (person is Child) {
+        await _service.insertChild(person);
+      } else {
+        throw Exception(
+            'Cannot add a person that is neither a parent nor a child');
+      }
       await refresh();
     } else {
       // TODO: Report some kind of error, possibly.
@@ -55,23 +44,14 @@ class PersonProvider with ChangeNotifier {
   }
 
   Future<void> updatePerson(Person person, int newPoints) async {
-    person is Parent
-        ? () async {
-            final Parent parent = Parent(
-              familyId: person.familyId,
-              name: person.name,
-              icon: person.icon,
-            );
-            await _service.updateParent(parent);
-          }
-        : person is Child ? () async {
-            final Child child = Child(
-                familyId: person.familyId,
-                name: person.name,
-                icon: person.icon,
-                totalPoints: newPoints);
-            await _service.updateChild(child);
-          } : throw Exception('Invalid object for person update');
+    if (person is Parent) {
+      await _service.updateParent(person);
+    } else if (person is Child) {
+      await _service.updateChild(person);
+    } else {
+      throw Exception(
+          'Cannot add a person that is neither a parent nor a child');
+    }
     await refresh();
   }
 
