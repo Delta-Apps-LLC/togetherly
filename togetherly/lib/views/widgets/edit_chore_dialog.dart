@@ -42,26 +42,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
   late bool _isBonus;
   late bool _isShared;
   bool _loading = false;
-  List<Child> _assignedPeople = [
-    const Child(
-      familyId: 0,
-      name: 'Emma',
-      icon: ProfileIcon.bear,
-      totalPoints: 45,
-    ),
-    const Child(
-      familyId: 0,
-      name: 'Jacob',
-      icon: ProfileIcon.dog,
-      totalPoints: 80,
-    ),
-    const Child(
-      familyId: 0,
-      name: 'Natalie',
-      icon: ProfileIcon.cat,
-      totalPoints: 65,
-    ),
-  ];
+  List<Child> _assignedPeople = [];
 
   // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
   final List<bool> _repeatingWeekdays = List.filled(7, false);
