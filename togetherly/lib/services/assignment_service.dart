@@ -39,12 +39,26 @@ class AssignmentService {
   Assignment _mapToAssignment(Map<String, dynamic> map) => Assignment(
         personId: map['person_id'],
         choreId: map['chore_id'],
-        status: map['status'],
+        status: _parseStatus(map['status']),
       );
 
   Map<String, dynamic> _assignmentToMap(Assignment assignment) => {
         'person_id': assignment.personId,
         'chore_id': assignment.choreId,
-        'status': assignment.status,
+        'status': _statusToString(assignment.status),
+      };
+
+  AssignmentStatus _parseStatus(String status) => switch (status) {
+        'assigned' => AssignmentStatus.assigned,
+        'pending' => AssignmentStatus.pending,
+        'completed' => AssignmentStatus.completed,
+        _ => throw FormatException(
+            'Unsupported assignment status from database "$status"'),
+      };
+
+  String _statusToString(AssignmentStatus status) => switch (status) {
+        AssignmentStatus.assigned => 'assigned',
+        AssignmentStatus.pending => 'pending',
+        AssignmentStatus.completed => 'completed',
       };
 }
