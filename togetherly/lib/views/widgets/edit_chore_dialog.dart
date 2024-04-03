@@ -6,6 +6,7 @@ import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/chore_provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 
@@ -41,26 +42,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
   late bool _isBonus;
   late bool _isShared;
   bool _loading = false;
-  List<Child> _assignedPeople = [
-    const Child(
-      familyId: 0,
-      name: 'Emma',
-      icon: ProfileIcon.bear,
-      totalPoints: 45,
-    ),
-    const Child(
-      familyId: 0,
-      name: 'Jacob',
-      icon: ProfileIcon.dog,
-      totalPoints: 80,
-    ),
-    const Child(
-      familyId: 0,
-      name: 'Natalie',
-      icon: ProfileIcon.cat,
-      totalPoints: 65,
-    ),
-  ];
+  List<Child> _assignedPeople = [];
 
   // TODO: add _repeatingWeekdays and _assignedPeople to initState from Chore parameter
   final List<bool> _repeatingWeekdays = List.filled(7, false);
@@ -68,6 +50,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
   @override
   void initState() {
     super.initState();
+    final provider = Provider.of<PersonProvider>(context, listen: false);
     _title = widget.chore?.title ?? '';
     _description = widget.chore?.description ?? '';
     _points = widget.chore?.points ?? 0;
@@ -76,39 +59,12 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
     _dueDate = widget.chore?.dueDate ?? DateHelpers.getDateToday();
     final List<ValueItem<Child>> assignedValueItems =
         _assignedPeople.map((e) => ValueItem(label: e.name, value: e)).toList();
-    selectController.setOptions(peopleList
+    selectController.setOptions(provider.children
         .map((child) => ValueItem(label: child.name, value: child))
         .toList());
     assignedValueItems
         .forEach((child) => selectController.addSelectedOption(child));
   }
-
-  List<Child> peopleList = const [
-    Child(
-      familyId: 0,
-      name: 'Emma',
-      icon: ProfileIcon.bear,
-      totalPoints: 45,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Jacob',
-      icon: ProfileIcon.dog,
-      totalPoints: 80,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Natalie',
-      icon: ProfileIcon.cat,
-      totalPoints: 65,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Robert',
-      icon: ProfileIcon.giraffe,
-      totalPoints: 30,
-    ),
-  ];
 
   void submitChore(BuildContext context, ChoreProvider provider) async {
     if (_formKey.currentState!.validate()) {
