@@ -60,6 +60,7 @@ class PersonService {
   Child _mapToChild(Map<String, dynamic> map) => Child(
         id: map['id'],
         familyId: map['family_id'],
+        pin: map['pin'],
         name: map['name'],
         icon: _parseProfilePic(map['profile_pic']),
         totalPoints: map['total_points'],
@@ -77,6 +78,7 @@ class PersonService {
   Parent _mapToParent(Map<String, dynamic> map) => Parent(
         id: map['id'],
         familyId: map['family_id'],
+        pin: map['pin'],
         name: map['name'],
         icon: _parseProfilePic(map['profile_pic']),
       );

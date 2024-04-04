@@ -16,11 +16,13 @@ enum ProfileIcon {
 abstract class Person {
   final int? id;
   final int familyId;
+  final int pin;
   final String name;
   final ProfileIcon icon;
 
   const Person({
     this.id,
+    required this.pin,
     required this.familyId,
     required this.name,
     required this.icon,
