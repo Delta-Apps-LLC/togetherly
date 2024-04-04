@@ -12,11 +12,15 @@ class ChoreService {
     return result.map(_mapToChore).toList();
   }
 
-  Future<void> insertChore(int familyId, Chore chore) async {
+  Future<Chore> insertChore(int familyId, Chore chore) async {
     //Service function call and pass chore
-    await Supabase.instance.client
-        .from(_choreTable)
-        .insert(_choreToMap(chore, familyId));
+    return _mapToChore(
+      (await Supabase.instance.client
+              .from(_choreTable)
+              .insert(_choreToMap(chore, familyId))
+              .select())
+          .single,
+    );
   }
 
   Future<void> deleteChore(Chore chore) async {
