@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:togetherly/models/child.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/family_child_item.dart';
@@ -29,7 +28,7 @@ class _FamilyListState extends State<FamilyList> {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
-      crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
+      crossAxisAlignment: CrossAxisAlignment.stretch, // Aligns to left
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

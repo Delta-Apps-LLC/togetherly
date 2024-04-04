@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:togetherly/models/child.dart';
 
 enum HomePageType { parent, child }
 
@@ -18,6 +19,9 @@ class ScaffoldProvider with ChangeNotifier {
   HomePageType _homePageType = HomePageType.parent;
   HomePageType get homePageType => _homePageType;
 
+  Child? _childBeingViewed;
+  Child? get childBeingViewed => _childBeingViewed;
+
   void setNavIndex(int index) {
     _index = index;
     notifyListeners();
@@ -33,15 +37,20 @@ class ScaffoldProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setScaffoldValues({int? index, String? title, HomePageType? type}) {
-    _index = index ?? _index;
-    _title = title ?? _title;
-    _homePageType = type ?? _homePageType;
+  void setChildBeingViewed(Child childBeingViewed) {
+    _childBeingViewed = childBeingViewed;
     notifyListeners();
   }
 
-  bool isParentViewingChild() {
-    bool isParent = true; // TODO: replace with person provider isParent
-    return index == 0 && isParent && homePageType == HomePageType.child;
+  void setScaffoldValues(
+      {int? index,
+      String? title,
+      HomePageType? type,
+      Child? childBeingViewed}) {
+    _index = index ?? _index;
+    _title = title ?? _title;
+    _homePageType = type ?? _homePageType;
+    _childBeingViewed = childBeingViewed;
+    notifyListeners();
   }
 }

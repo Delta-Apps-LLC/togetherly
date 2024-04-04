@@ -30,14 +30,15 @@ class CustomMaterialApp extends StatelessWidget {
           builder: (context, provider, child) => Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.brandBlue,
-              leading: provider.isParentViewingChild()
+              leading: provider.childBeingViewed != null
                   ? IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         provider.setScaffoldValues(
                             index: null,
                             title: 'Family', // TODO: replace with family name
-                            type: HomePageType.parent);
+                            type: HomePageType.parent,
+                            childBeingViewed: null);
                       },
                     )
                   : null,

@@ -37,7 +37,7 @@ class FamilyChildItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         provider.setScaffoldValues(
-            index: null, title: child.name, type: HomePageType.child);
+            index: null, title: child.name, type: HomePageType.child, childBeingViewed: child);
         // TODO: setCurrentChildBeingViewed so that when parents click
         // a child, then navigate away and back, it remains on child view.
         // TODO: would that go in person provider or chore provider?

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
-import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class FamilyParentItem extends StatelessWidget {
@@ -32,8 +30,6 @@ class FamilyParentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ScaffoldProvider>(context, listen: false);
-
     return Container(
       height: 65,
       margin: const EdgeInsets.only(top: 8),
@@ -62,7 +58,7 @@ class FamilyParentItem extends StatelessWidget {
               const Icon(
                 Icons.admin_panel_settings,
                 color: AppColors.brandBlue,
-                size: 30,
+                size: 32,
               ),
             ],
           ),

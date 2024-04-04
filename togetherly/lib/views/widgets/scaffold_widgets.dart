@@ -48,7 +48,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
       3 => 'Settings',
       int() => '',
     };
-    provider.setScaffoldValues(index: index, title: title, type: null);
+    provider.setScaffoldValues(
+        index: index,
+        title: (index == 0 && provider.childBeingViewed != null)
+            ? provider.childBeingViewed?.name
+            : title,
+        type: null,
+        childBeingViewed: provider.childBeingViewed);
   }
 
   @override
