@@ -23,17 +23,24 @@ class ChoreList extends StatelessWidget {
 
     return Consumer<ChoreProvider>(
       builder: (context, choreProvider, child) => Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
-        crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
+        mainAxisAlignment: MainAxisAlignment.center, // Aligns to center
+        crossAxisAlignment: CrossAxisAlignment.stretch, // Aligns to left
         children: <Widget>[
           Text(
             title,
             style: AppTextStyles.brandAccentLarge,
           ),
           Column(
-            children: getProperList(choreProvider)
-                .map((chore) => ChoreItem(chore: chore, isParent: isParent))
-                .toList(),
+            children: [
+              if (getProperList(choreProvider).isEmpty)
+                const Text(
+                  'No chores to display here.',
+                  style: AppTextStyles.brandAccent,
+                ),
+              ...getProperList(choreProvider)
+                  .map((chore) => ChoreItem(chore: chore, isParent: isParent))
+                  .toList(),
+            ],
           ),
         ],
       ),
