@@ -4,7 +4,6 @@ import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
-import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
@@ -68,6 +67,10 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
 
   void submitChore(BuildContext context, ChoreProvider provider) async {
     if (_formKey.currentState!.validate()) {
+      List<int> assignedIds = [];
+      for (final child in selectController.selectedOptions) {
+        assignedIds.add(child.value!.id!);
+      }
       final newChore = Chore(
         title: _title,
         description: _description,
@@ -76,7 +79,7 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
         isShared: _isShared,
       );
       setState(() => _loading = true);
-      await provider.addChore(newChore);
+      await provider.addChore(newChore, assignedIds);
       setState(() => _loading = false);
       Navigator.of(context).pop();
     }
