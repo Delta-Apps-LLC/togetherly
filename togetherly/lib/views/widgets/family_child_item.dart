@@ -5,12 +5,12 @@ import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
-class FamilyItem extends StatelessWidget {
-  const FamilyItem({super.key, required this.member});
-  final Child member;
+class FamilyChildItem extends StatelessWidget {
+  const FamilyChildItem({super.key, required this.child});
+  final Child child;
 
   Widget getAvatar(Child child) {
-    String image = switch (member.icon) {
+    String image = switch (child.icon) {
       ProfileIcon.bear => 'bear',
       ProfileIcon.cat => 'cat',
       ProfileIcon.chicken => 'chicken',
@@ -26,7 +26,7 @@ class FamilyItem extends StatelessWidget {
     };
     return Image.asset(
       'assets/images/avatars/$image.png',
-      width: 60,
+      width: 50,
     );
   }
 
@@ -37,13 +37,13 @@ class FamilyItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         provider.setScaffoldValues(
-            index: null, title: member.name, type: HomePageType.child);
+            index: null, title: child.name, type: HomePageType.child);
         // TODO: setCurrentChildBeingViewed so that when parents click
         // a child, then navigate away and back, it remains on child view.
         // TODO: would that go in person provider or chore provider?
       },
       child: Container(
-        height: 80,
+        height: 65,
         margin: const EdgeInsets.only(top: 8),
         child: PhysicalModel(
           borderRadius: BorderRadius.circular(5),
@@ -57,12 +57,12 @@ class FamilyItem extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    getAvatar(member),
+                    getAvatar(child),
                     const SizedBox(
                       width: 15,
                     ),
                     Text(
-                      member.name,
+                      child.name,
                       style:
                           AppTextStyles.brandBodyLarge.copyWith(fontSize: 22),
                     ),
@@ -76,7 +76,7 @@ class FamilyItem extends StatelessWidget {
                       color: AppColors.brandGold,
                     ),
                     Text(
-                      member.totalPoints.toString(),
+                      child.totalPoints.toString(),
                       style:
                           AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                     ),

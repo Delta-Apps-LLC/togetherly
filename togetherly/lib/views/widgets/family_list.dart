@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/family_item.dart';
+import 'package:togetherly/views/widgets/family_child_item.dart';
+import 'package:togetherly/views/widgets/family_parent_item.dart';
 import 'package:togetherly/views/widgets/new_person_dialog.dart';
 
 class FamilyList extends StatefulWidget {
@@ -39,7 +41,7 @@ class _FamilyListState extends State<FamilyList> {
             InkWell(
               onTap: () => buildPersonDialog(context),
               child: const Icon(
-                Icons.add,
+                Icons.person_add,
                 size: 30,
                 color: AppColors.brandBlack,
               ),
@@ -48,11 +50,18 @@ class _FamilyListState extends State<FamilyList> {
         ),
         Consumer<PersonProvider>(
           builder: (context, personProvider, child) => Column(
-            children: personProvider.children
-                .map((child) => FamilyItem(
-                      member: child,
-                    ))
-                .toList(),
+            children: [
+              ...personProvider.parents
+                  .map((parent) => FamilyParentItem(
+                        parent: parent,
+                      ))
+                  .toList(),
+              ...personProvider.children
+                  .map((child) => FamilyChildItem(
+                        child: child,
+                      ))
+                  .toList(),
+            ],
           ),
         ),
       ],
