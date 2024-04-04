@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/person_provider.dart';
@@ -24,7 +25,7 @@ class AppProviders extends StatefulWidget {
 class _AppProvidersState extends State<AppProviders> {
   // final ExampleService _exampleService = ExampleServiceImpl();
   final PersonService _personService = PersonService();
-  final ChoreService _choreService = ChoreService();
+  final ChoreService _choreService = ChoreService(Supabase.instance.client);
   final AssignmentService _assignmentService = AssignmentService();
   final RewardService _rewardService = RewardService();
 
