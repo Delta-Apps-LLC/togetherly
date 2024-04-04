@@ -41,7 +41,7 @@ class RewardRedemptionService {
 
   RewardRedemption _mapToRedeemedReward(Map<String, dynamic> map) =>
       RewardRedemption(
-        // id: map['id'],
+        id: map['id'],
         rewardId: map['reward_id'],
         childId: map['person_id'],
         quantity: map['quantity'],
@@ -52,6 +52,7 @@ class RewardRedemptionService {
           [int? familyId]) =>
       {
         if (familyId != null) 'family_id': familyId,
+        'id': redemption.id,
         'timestamp': redemption.timestamp,
         'person_id': redemption.childId,
         'reward_id': redemption.rewardId,
