@@ -39,7 +39,7 @@ class ChoreService {
   }
 
   Chore _mapToChore(Map<String, dynamic> map) => Chore(
-        id: map['chore_id'],
+        id: map['id'],
         title: map['title'],
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
