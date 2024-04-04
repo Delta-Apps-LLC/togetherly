@@ -46,4 +46,15 @@ class Chore {
         status: status ?? this.status,
         isShared: isShared ?? this.isShared,
       );
+
+  @override
+  String toString() => {
+        'id': id,
+        'title': title,
+        'description': description,
+        'dueDate': dueDate,
+        'points': points,
+        'status': status,
+        'isShared': isShared,
+      }.toString();
 }
