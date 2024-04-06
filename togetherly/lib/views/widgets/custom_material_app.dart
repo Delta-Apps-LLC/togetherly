@@ -23,20 +23,13 @@ class CustomMaterialApp extends StatelessWidget {
     SettingsPage(),
   ];
 
-  final bool loggedIn = false;
-
   @override
   Widget build(BuildContext context) {
-    bool isLoggedIn(BuildContext context) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      return authProvider.user != null;
-    }
-
     return AppProviders(
       child: MaterialApp(
           title: 'Togetherly',
           home: Consumer<AuthProvider>(
-            builder: (context, authProvider, child) => authProvider.user == null
+            builder: (context, authProvider, child) => (authProvider.user == null)
                 ? const LoginPage()
                 : Consumer<ScaffoldProvider>(
                     builder: (context, provider, child) => Scaffold(
