@@ -12,10 +12,14 @@ class RewardService {
     return result.map(_mapToReward).toList();
   }
 
-  Future<void> insertReward(int familyId, Reward reward) async {
-    await Supabase.instance.client
-        .from(_rewardTable)
-        .insert(_rewardToMap(reward, familyId));
+  Future<Reward> insertReward(int familyId, Reward reward) async {
+    return _mapToReward(
+      (await Supabase.instance.client
+              .from(_rewardTable)
+              .insert(_rewardToMap(reward, familyId))
+              .select())
+          .single,
+    );
   }
 
   Future<void> deleteReward(Reward reward) async {
