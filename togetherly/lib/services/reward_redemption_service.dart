@@ -3,12 +3,12 @@ import 'package:togetherly/models/reward_redemption.dart';
 
 class RewardRedemptionService {
   static const String _rewardRedemptionTable = "redeemed_reward";
-  static const String _familyRedeemedRewardsView = "family_redeemed_reward";
+  static const String _familyRewardRedemptionView = "family_redeemed_reward";
 
-  Future<List<RewardRedemption>> getRedeemedRewardsByFamily(
+  Future<List<RewardRedemption>> getRewardRedemptionsByFamily(
       int familyId) async {
     var result = await Supabase.instance.client
-        .from(_familyRedeemedRewardsView)
+        .from(_familyRewardRedemptionView)
         .select('family_id, person_id, reward_id, quantity, timestamp')
         .eq("family_id", familyId);
     return result.map(_mapToRedeemedReward).toList();
