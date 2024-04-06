@@ -66,7 +66,7 @@ class PersonProvider with ChangeNotifier {
       _children = [];
     }
     notifyListeners();
-    log("ChoreProvider refreshed!");
+    log("PersonProvider refreshed!");
   }
 
   void updateDependencies(UserIdentityProvider userIdentityProvider) {

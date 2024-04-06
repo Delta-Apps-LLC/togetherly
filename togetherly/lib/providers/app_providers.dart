@@ -66,11 +66,11 @@ class _AppProvidersState extends State<AppProviders> {
           update: (_, userIdentityProvider, previous) =>
               previous.updateDependencies(userIdentityProvider),
         ),
-        SimpleChangeNotifierProxyProvider<UserIdentityProvider, AuthProvider>(
-          create: (_, userIdentityProvider) =>
-              AuthProvider(_authService, userIdentityProvider),
-          update: (_, userIdentityProvider, previous) =>
-              previous.updateDependencies(userIdentityProvider),
+        SimpleChangeNotifierProxyProvider3<UserIdentityProvider, PersonProvider, ChoreProvider, AuthProvider>(
+          create: (_, userIdentityProvider, personProvider, choreProvider) =>
+              AuthProvider(_authService, userIdentityProvider, personProvider, choreProvider),
+          update: (_, userIdentityProvider, personProvider, choreProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider, personProvider, choreProvider),
         ),
 
         // Add to this section any providers that only transform the state of
