@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:togetherly/models/child.dart';
-import 'package:togetherly/models/person.dart';
+import 'package:provider/provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/family_item.dart';
 
@@ -13,33 +13,6 @@ class FamilyList extends StatefulWidget {
 }
 
 class _FamilyListState extends State<FamilyList> {
-  List<Child> members = const [
-    Child(
-      familyId: 0,
-      name: 'Emma',
-      icon: ProfileIcon.bear,
-      totalPoints: 45,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Jacob',
-      icon: ProfileIcon.dog,
-      totalPoints: 80,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Natalie',
-      icon: ProfileIcon.cat,
-      totalPoints: 65,
-    ),
-    Child(
-      familyId: 0,
-      name: 'Robert',
-      icon: ProfileIcon.giraffe,
-      totalPoints: 30,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,12 +39,14 @@ class _FamilyListState extends State<FamilyList> {
             ),
           ],
         ),
-        Column(
-          children: members
-              .map((child) => FamilyItem(
-                    member: child,
-                  ))
-              .toList(),
+        Consumer<PersonProvider>(
+          builder: (context, personProvider, child) => Column(
+            children: personProvider.children
+                .map((child) => FamilyItem(
+                      member: child,
+                    ))
+                .toList(),
+          ),
         ),
       ],
     );
