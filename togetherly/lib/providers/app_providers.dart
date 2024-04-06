@@ -2,11 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'package:togetherly/providers/chore_provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/reward_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
+import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
+import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
 class AppProviders extends StatefulWidget {
@@ -20,7 +23,9 @@ class AppProviders extends StatefulWidget {
 
 class _AppProvidersState extends State<AppProviders> {
   // final ExampleService _exampleService = ExampleServiceImpl();
+  final PersonService _personService = PersonService();
   final ChoreService _choreService = ChoreService();
+  final AssignmentService _assignmentService = AssignmentService();
   final RewardService _rewardService = RewardService();
 
   @override
@@ -42,9 +47,14 @@ class _AppProvidersState extends State<AppProviders> {
         //         ExampleProvider(exampleService, otherProvider),
         //     update: (_, otherProvider, previous) =>
         //         previous.updateDependencies(otherProvider)),
+        SimpleChangeNotifierProxyProvider<UserIdentityProvider, PersonProvider>(
+            create: (_, userIdentityProvider) => PersonProvider(
+                _personService, userIdentityProvider),
+            update: (_, userIdentityProvider, previous) =>
+                previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
-            create: (_, userIdentityProvider) =>
-                ChoreProvider(_choreService, userIdentityProvider),
+            create: (_, userIdentityProvider) => ChoreProvider(
+                _choreService, _assignmentService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(

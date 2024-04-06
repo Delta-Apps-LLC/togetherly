@@ -45,7 +45,6 @@ class ChoreService {
         description: map['description'],
         dueDate: DateTime.parse(map['date_due']),
         points: map['points'],
-        // status: _parseChoreStatus(map['status']),
         isShared: map['shared'],
       );
 
@@ -55,21 +54,6 @@ class ChoreService {
         'description': chore.description,
         'date_due': chore.dueDate.toString(),
         'points': chore.points,
-        // 'status': _choreStatusToString(chore.status), // removed from chore table
         'shared': chore.isShared,
-      };
-
-  ChoreStatus _parseChoreStatus(String status) => switch (status) {
-        'assigned' => ChoreStatus.assigned,
-        'pending' => ChoreStatus.pending,
-        'completed' => ChoreStatus.completed,
-        _ => throw FormatException(
-            'Unsupported chore status from database "$status"'),
-      };
-
-  String _choreStatusToString(ChoreStatus status) => switch (status) {
-        ChoreStatus.assigned => 'assigned',
-        ChoreStatus.pending => 'pending',
-        ChoreStatus.completed => 'completed',
       };
 }
