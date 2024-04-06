@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
         'dialog': const LoginDialog(),
       },
       {
-        'text': 'Signup',
+        'text': 'Sign Up',
         'buttonColor': AppColors.brandLightGray,
         'textColor': AppColors.brandBlack,
         'dialog': const SignupDialog(),

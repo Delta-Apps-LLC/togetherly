@@ -31,6 +31,10 @@ class AuthService {
     return Supabase.instance.client.auth.currentUser;
   }
 
+  Session? getCurrentSession() {
+    return Supabase.instance.client.auth.currentSession;
+  }
+
   Future<void> logout() async {
     await Supabase.instance.client.auth.signOut();
   }
