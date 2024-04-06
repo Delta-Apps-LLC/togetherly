@@ -17,11 +17,13 @@ class ChoreService {
   }
 
   Future<Chore> insertChore(int familyId, Chore chore) async {
-    await supabaseClient
-        .from(_choreTable)
-        .insert(_choreToMap(chore, familyId));
-    // TODO: Return selected chore from database
-    return chore;
+    return _mapToChore(
+      (await supabaseClient
+              .from(_choreTable)
+              .insert(_choreToMap(chore, familyId))
+              .select())
+          .single,
+    );
   }
 
   Future<void> deleteChore(Chore chore) async {
