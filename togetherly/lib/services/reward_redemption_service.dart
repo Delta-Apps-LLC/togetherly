@@ -9,7 +9,7 @@ class RewardRedemptionService {
       int familyId) async {
     var result = await Supabase.instance.client
         .from(_familyRewardRedemptionView)
-        .select('family_id, person_id, reward_id, quantity, timestamp')
+        .select('id, person_id, reward_id, quantity, timestamp')
         .eq("family_id", familyId);
     return result.map(_mapToRedeemedReward).toList();
   }
@@ -45,14 +45,14 @@ class RewardRedemptionService {
         rewardId: map['reward_id'],
         childId: map['person_id'],
         quantity: map['quantity'],
-        timestamp: map['timestamp'],
+        timestamp: DateTime.parse(map['timestamp']),
       );
 
   Map<String, dynamic> _rewardRedemptionToMap(RewardRedemption redemption) => {
         'id': redemption.id,
-        'timestamp': redemption.timestamp,
-        'person_id': redemption.childId,
         'reward_id': redemption.rewardId,
+        'person_id': redemption.childId,
         'quantity': redemption.quantity,
+        'timestamp': redemption.timestamp.toString(),
       };
 }
