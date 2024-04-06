@@ -3,7 +3,7 @@ import 'package:togetherly/models/reward_redemption.dart';
 
 class RewardRedemptionService {
   static const String _rewardRedemptionTable = "redeemed_reward";
-  static const String _familyRedeemedRewardsView = "family_redeemed_rewards";
+  static const String _familyRedeemedRewardsView = "family_redeemed_reward";
 
   Future<List<RewardRedemption>> getRedeemedRewardsByFamily(
       int familyId) async {
@@ -14,28 +14,28 @@ class RewardRedemptionService {
     return result.map(_mapToRedeemedReward).toList();
   }
 
-  Future<RewardRedemption> insertReward(
+  Future<RewardRedemption> insertRewardRedemption(
       int familyId, RewardRedemption redemption) async {
     return _mapToRedeemedReward(
       (await Supabase.instance.client
               .from(_rewardRedemptionTable)
-              .insert(_rewardToMap(redemption, familyId))
+              .insert(_rewardRedemptionToMap(redemption))
               .select())
           .single,
     );
   }
 
-  Future<void> deleteReward(RewardRedemption redemption) async {
+  Future<void> deleteRewardRedemption(RewardRedemption redemption) async {
     await Supabase.instance.client
         .from(_rewardRedemptionTable)
         .delete()
         .match({'id': redemption.id});
   }
 
-  Future<void> updateReward(RewardRedemption redemption) async {
+  Future<void> updateRewardRedemption(RewardRedemption redemption) async {
     await Supabase.instance.client
         .from(_rewardRedemptionTable)
-        .update(_rewardToMap(redemption))
+        .update(_rewardRedemptionToMap(redemption))
         .match({'id': redemption.id});
   }
 
@@ -48,10 +48,8 @@ class RewardRedemptionService {
         timestamp: map['timestamp'],
       );
 
-  Map<String, dynamic> _rewardToMap(RewardRedemption redemption,
-          [int? familyId]) =>
+  Map<String, dynamic> _rewardRedemptionToMap(RewardRedemption redemption) =>
       {
-        if (familyId != null) 'family_id': familyId,
         'id': redemption.id,
         'timestamp': redemption.timestamp,
         'person_id': redemption.childId,
