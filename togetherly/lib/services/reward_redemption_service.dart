@@ -15,7 +15,7 @@ class RewardRedemptionService {
   }
 
   Future<RewardRedemption> insertRewardRedemption(
-      int familyId, RewardRedemption redemption) async {
+      RewardRedemption redemption) async {
     return _mapToRedeemedReward(
       (await Supabase.instance.client
               .from(_rewardRedemptionTable)
@@ -48,8 +48,7 @@ class RewardRedemptionService {
         timestamp: map['timestamp'],
       );
 
-  Map<String, dynamic> _rewardRedemptionToMap(RewardRedemption redemption) =>
-      {
+  Map<String, dynamic> _rewardRedemptionToMap(RewardRedemption redemption) => {
         'id': redemption.id,
         'timestamp': redemption.timestamp,
         'person_id': redemption.childId,
