@@ -69,6 +69,7 @@ class PersonService {
   Map<String, dynamic> _childToMap(Child child) => {
         'id': child.id,
         'family_id': child.familyId,
+        'pin': child.pin,
         'name': child.name,
         'is_parent': false,
         'profile_pic': _profilePicToString(child.icon),
@@ -86,6 +87,7 @@ class PersonService {
   Map<String, dynamic> _parentToMap(Parent parent) => {
         'id': parent.id,
         'family_id': parent.familyId,
+        'pin': parent.pin,
         'name': parent.name,
         'is_parent': true,
         'profile_pic': _profilePicToString(parent.icon),

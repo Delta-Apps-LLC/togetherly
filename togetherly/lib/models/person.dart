@@ -22,8 +22,8 @@ abstract class Person {
 
   const Person({
     this.id,
-    required this.pin,
     required this.familyId,
+    required this.pin,
     required this.name,
     required this.icon,
   });
