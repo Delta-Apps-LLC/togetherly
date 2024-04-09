@@ -22,21 +22,27 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   List<Child> get children => _children;
 
-  Future<void> addPerson(Person person) async {
+  bool _ready = false;
+  bool get ready => _ready;
+
+  Future<int?> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
+      int? id;
       if (person is Parent) {
-        await _service.insertParent(person);
+        id = await _service.insertParent(person);
       } else if (person is Child) {
-        await _service.insertChild(person);
+        id = await _service.insertChild(person);
       } else {
         throw Exception(
             'Cannot add a person that is neither a parent nor a child');
       }
       await refresh();
+      return id;
     } else {
       // TODO: Report some kind of error, possibly.
     }
+    return null;
   }
 
   Future<void> deletePerson(Person person) async {
@@ -57,13 +63,16 @@ class PersonProvider with ChangeNotifier {
   }
 
   Future<void> refresh() async {
+    _ready = false;
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       _parents = await _service.getParents(familyId);
       _children = await _service.getChildren(familyId);
+      _ready = true;
     } else {
       _parents = [];
       _children = [];
+      _ready = true;
     }
     notifyListeners();
     log("PersonProvider refreshed!");

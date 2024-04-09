@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   Future<AuthException?> signUp(String email, String password) async {
     try {
-      final AuthResponse res = await Supabase.instance.client.auth.signUp(
+      await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
+        data: {'family_id': null},
       );
       return null;
     } on AuthException catch (err) {
@@ -16,10 +16,22 @@ class AuthService {
 
   Future<AuthException?> signIn(String email, String password) async {
     try {
-      final AuthResponse res =
-          await Supabase.instance.client.auth.signInWithPassword(
+      await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
+      );
+      return null;
+    } on AuthException catch (err) {
+      return err;
+    }
+  }
+
+  Future<AuthException?> updateAuthUser(int familyId) async {
+    try {
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(
+          data: {'family_id': familyId},
+        ),
       );
       return null;
     } on AuthException catch (err) {

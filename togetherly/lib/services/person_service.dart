@@ -24,16 +24,20 @@ class PersonService {
     return result.map(_mapToChild).toList();
   }
 
-  Future<void> insertParent(Parent parent) async {
-    await Supabase.instance.client
+  Future<int?> insertParent(Parent parent) async {
+    var person = await Supabase.instance.client
         .from(_personTable)
-        .insert({_parentToMap(parent)});
+        .insert({..._parentToMap(parent), 'pin': '11111'}).select();
+
+    return person[0]['id'];
   }
 
-  Future<void> insertChild(Child child) async {
-    await Supabase.instance.client
+  Future<int?> insertChild(Child child) async {
+    var person = await Supabase.instance.client
         .from(_personTable)
-        .insert({_childToMap(child)});
+        .insert({..._childToMap(child), 'pin': '11111'}).select();
+
+    return person[0]['id'];
   }
 
   Future<void> deletePerson(Person person) async {
@@ -66,7 +70,7 @@ class PersonService {
       );
 
   Map<String, dynamic> _childToMap(Child child) => {
-        'id': child.id,
+        // 'id': child.id,
         'family_id': child.familyId,
         'name': child.name,
         'is_parent': false,
@@ -82,7 +86,7 @@ class PersonService {
       );
 
   Map<String, dynamic> _parentToMap(Parent parent) => {
-        'id': parent.id,
+        // 'id': parent.id,
         'family_id': parent.familyId,
         'name': parent.name,
         'is_parent': true,
@@ -90,34 +94,34 @@ class PersonService {
       };
 
   ProfileIcon _parseProfilePic(String pic) => switch (pic) {
-    "bear" => ProfileIcon.bear,
-    "cat" => ProfileIcon.cat,
-    "chicken" => ProfileIcon.chicken,
-    "dog" => ProfileIcon.dog,
-    "fish" => ProfileIcon.fish,
-    "fox" => ProfileIcon.fox,
-    "giraffe" => ProfileIcon.giraffe,
-    "gorilla" => ProfileIcon.gorilla,
-    "koala" => ProfileIcon.koala,
-    "panda" => ProfileIcon.panda,
-    "rabbit" => ProfileIcon.rabbit,
-    "tiger" => ProfileIcon.tiger,
-    _ => throw FormatException(
-        'Unsupported profile pic from database "$pic"'),
-  };
+        "bear" => ProfileIcon.bear,
+        "cat" => ProfileIcon.cat,
+        "chicken" => ProfileIcon.chicken,
+        "dog" => ProfileIcon.dog,
+        "fish" => ProfileIcon.fish,
+        "fox" => ProfileIcon.fox,
+        "giraffe" => ProfileIcon.giraffe,
+        "gorilla" => ProfileIcon.gorilla,
+        "koala" => ProfileIcon.koala,
+        "panda" => ProfileIcon.panda,
+        "rabbit" => ProfileIcon.rabbit,
+        "tiger" => ProfileIcon.tiger,
+        _ =>
+          throw FormatException('Unsupported profile pic from database "$pic"'),
+      };
 
   String _profilePicToString(ProfileIcon pic) => switch (pic) {
-    ProfileIcon.bear => "bear",
-    ProfileIcon.cat => "cat",
-    ProfileIcon.chicken => "chicken",
-    ProfileIcon.dog => "dog",
-    ProfileIcon.fish => "fish",
-    ProfileIcon.fox => "fox",
-    ProfileIcon.giraffe => "giraffe",
-    ProfileIcon.gorilla => "gorilla",
-    ProfileIcon.koala => "koala",
-    ProfileIcon.panda => "panda",
-    ProfileIcon.rabbit => "rabbit",
-    ProfileIcon.tiger => "tiger",
-  };
+        ProfileIcon.bear => "bear",
+        ProfileIcon.cat => "cat",
+        ProfileIcon.chicken => "chicken",
+        ProfileIcon.dog => "dog",
+        ProfileIcon.fish => "fish",
+        ProfileIcon.fox => "fox",
+        ProfileIcon.giraffe => "giraffe",
+        ProfileIcon.gorilla => "gorilla",
+        ProfileIcon.koala => "koala",
+        ProfileIcon.panda => "panda",
+        ProfileIcon.rabbit => "rabbit",
+        ProfileIcon.tiger => "tiger",
+      };
 }
