@@ -17,7 +17,7 @@ class Child extends Person {
   Child copyWith({
     Value<int?>? id,
     int? familyId,
-    int? pin,
+    String? pin,
     String? name,
     ProfileIcon? icon,
     int? totalPoints,

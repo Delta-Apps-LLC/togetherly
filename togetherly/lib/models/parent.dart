@@ -13,7 +13,7 @@ class Parent extends Person {
   Parent copyWith({
     Value<int?>? id,
     int? familyId,
-    int? pin,
+    String? pin,
     String? name,
     ProfileIcon? icon,
   }) =>

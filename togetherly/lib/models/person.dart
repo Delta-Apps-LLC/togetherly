@@ -16,7 +16,7 @@ enum ProfileIcon {
 abstract class Person {
   final int? id;
   final int familyId;
-  final int pin;
+  final String pin;
   final String name;
   final ProfileIcon icon;
 
