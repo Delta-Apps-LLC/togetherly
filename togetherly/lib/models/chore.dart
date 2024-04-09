@@ -48,13 +48,6 @@ class Chore {
       );
 
   @override
-  String toString() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'dueDate': dueDate,
-        'points': points,
-        'status': status,
-        'isShared': isShared,
-      }.toString();
+  String toString() =>
+      'Chore(id: $id, title: "$title", description: "$description", dueDate: $dueDate, points: $points, isShared: $isShared)';
 }

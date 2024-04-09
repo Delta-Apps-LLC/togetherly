@@ -30,4 +30,8 @@ class RewardRedemption {
         quantity: quantity ?? this.quantity,
         timestamp: timestamp ?? this.timestamp,
       );
+
+  @override
+  String toString() =>
+      'RewardRedemption(id: $id, rewardId: $rewardId, childId: $childId, quantity: $quantity, timestamp: $timestamp)';
 }

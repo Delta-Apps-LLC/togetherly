@@ -8,4 +8,7 @@ class Family {
 
   Family copyWith({Value<int?>? id, String? name}) =>
       Family(id: (id ?? Value(this.id)).value, name: name ?? this.name);
+
+  @override
+  String toString() => 'Family(id: $id, name: "$name")';
 }

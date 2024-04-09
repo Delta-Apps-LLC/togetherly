@@ -29,4 +29,8 @@ class Reward {
         points: points ?? this.points,
         quantity: quantity ?? this.quantity,
       );
+
+  @override
+  String toString() =>
+      'Reward(id: $id, title: "$title", description: "$description", points: $points, quantity: $quantity)';
 }

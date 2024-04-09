@@ -30,4 +30,8 @@ class Child extends Person {
         icon: icon ?? this.icon,
         totalPoints: totalPoints ?? this.totalPoints,
       );
+
+  @override
+  String toString() =>
+      'Child(id: $id, familyId: $familyId, pin: "${'*' * pin.length}", name: "$name", icon: $icon, totalPoints: $totalPoints)';
 }

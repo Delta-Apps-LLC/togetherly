@@ -24,4 +24,8 @@ class Parent extends Person {
         name: name ?? this.name,
         icon: icon ?? this.icon,
       );
+
+  @override
+  String toString() =>
+      'Parent(id: $id, familyId: $familyId, pin: "${'*' * pin.length}", name: "$name", icon: $icon)';
 }

@@ -26,4 +26,8 @@ class Assignment {
         choreId: choreId ?? this.choreId,
         status: status ?? this.status,
       );
+
+  @override
+  String toString() =>
+      'Assignment(personId: $personId, choreId: $choreId, status: $status)';
 }
