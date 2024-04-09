@@ -2,8 +2,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:togetherly/models/family.dart';
 
 class FamilyService {
+  FamilyService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<String> getFamilyName(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from('family')
         .select('name')
         .match({'id': familyId});
@@ -17,9 +22,9 @@ class FamilyService {
 
   Future<Family> insertFamily(String name) async {
     //Service function call and pass chore
-    Map<String, dynamic> map = (await Supabase.instance.client
-            .from('family')
-            .insert({'name': name}).select())
+    Map<String, dynamic> map = (await _supabaseClient.from('family').insert({
+      'name': name,
+    }).select())
         .single;
 
     return Family(
@@ -30,15 +35,12 @@ class FamilyService {
 
   Future<void> deleteFamily(int familyId) async {
     //await
-    await Supabase.instance.client
-        .from('family')
-        .delete()
-        .match({'id': familyId});
+    await _supabaseClient.from('family').delete().match({'id': familyId});
   }
 
   Future<void> updateFamilyName(int familyId, String newName) async {
     //Query by choreID
-    await Supabase.instance.client
+    await _supabaseClient
         .from('family')
         .update({'name': newName}).match({'id': familyId});
   }

@@ -6,8 +6,13 @@ import '../models/person.dart';
 class PersonService {
   static const String _personTable = "person";
 
+  PersonService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<List<Parent>> getParents(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_personTable)
         .select('id, family_id, pin, name, profile_pic, is_parent')
         .match({'family_id': familyId, 'is_parent': true});
@@ -16,7 +21,7 @@ class PersonService {
   }
 
   Future<List<Child>> getChildren(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_personTable)
         .select(
             'id, family_id, pin, name, profile_pic, is_parent, total_points')
@@ -27,7 +32,7 @@ class PersonService {
 
   Future<Parent> insertParent(Parent parent) async {
     return _mapToParent(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_personTable)
               .insert({_parentToMap(parent)}).select())
           .single,
@@ -35,27 +40,22 @@ class PersonService {
   }
 
   Future<void> insertChild(Child child) async {
-    await Supabase.instance.client
-        .from(_personTable)
-        .insert({_childToMap(child)});
+    await _supabaseClient.from(_personTable).insert({_childToMap(child)});
   }
 
   Future<void> deletePerson(Person person) async {
-    await Supabase.instance.client
-        .from(_personTable)
-        .delete()
-        .match({'id': person.id});
+    await _supabaseClient.from(_personTable).delete().match({'id': person.id});
   }
 
   Future<void> updateChild(Child child) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_personTable)
         .update(_childToMap(child))
         .match({'id': child.id});
   }
 
   Future<void> updateParent(Parent parent) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_personTable)
         .update(_parentToMap(parent))
         .match({'id': parent.id});
