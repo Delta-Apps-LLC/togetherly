@@ -69,9 +69,6 @@ class _NewPersonDialogState extends State<NewPersonDialog> {
       setState(() => _showAvatarError = false);
     }
     if (_formKey.currentState!.validate() && !_showAvatarError) {
-      print(_name);
-      print(_isParent);
-      print(_selectedAvatar['title']);
       setState(() => _loading = true);
       await Future.delayed(const Duration(seconds: 2));
       setState(() => _loading = false);
