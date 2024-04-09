@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/auth_provider.dart';
 
 class UserIdentityProvider with ChangeNotifier {

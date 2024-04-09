@@ -22,6 +22,9 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   List<Child> get children => _children;
 
+  Person? _currentPerson;
+  Person? get currentPerson => _currentPerson;
+
   bool _ready = false;
   bool get ready => _ready;
 
@@ -65,10 +68,15 @@ class PersonProvider with ChangeNotifier {
   Future<void> refresh() async {
     _ready = false;
     final familyId = _userIdentityProvider.familyId;
+    final personId = _userIdentityProvider.personId;
     if (familyId != null) {
       _parents = await _service.getParents(familyId);
       _children = await _service.getChildren(familyId);
       _ready = true;
+      if (personId != null) {
+        _currentPerson = [...parents, ...children]
+            .singleWhere((element) => element.id == personId);
+      }
     } else {
       _parents = [];
       _children = [];

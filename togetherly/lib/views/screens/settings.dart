@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/auth_provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/themes.dart';
@@ -17,7 +19,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    void logout(AuthProvider authProvider) async {
+    void logout() async {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final scaffoldProvider =
           Provider.of<ScaffoldProvider>(context, listen: false);
       final userProvider =
@@ -36,25 +39,137 @@ class _SettingsPageState extends State<SettingsPage> {
       userProvider.setPersonId(null);
     }
 
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) => Padding(
+    Widget getAvatar(Person? person) {
+      String? image = switch (person?.icon) {
+        ProfileIcon.bear => 'bear',
+        ProfileIcon.cat => 'cat',
+        ProfileIcon.chicken => 'chicken',
+        ProfileIcon.dog => 'dog',
+        ProfileIcon.fish => 'fish',
+        ProfileIcon.fox => 'fox',
+        ProfileIcon.giraffe => 'giraffe',
+        ProfileIcon.gorilla => 'gorilla',
+        ProfileIcon.koala => 'koala',
+        ProfileIcon.panda => 'panda',
+        ProfileIcon.rabbit => 'rabbit',
+        ProfileIcon.tiger => 'tiger',
+        // TODO: Handle this case.
+        null => null,
+      };
+      return Image.asset(
+        'assets/images/avatars/$image.png',
+        width: 80,
+      );
+    }
+
+    return Consumer<PersonProvider>(
+      builder: (context, personProvider, child) => Padding(
         padding: AppWidgetStyles.appPadding,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const Center(
-                child: Text('Hello there! This is the Settings page.'),
+                child: Text(
+                  'My Profile',
+                  style: AppTextStyles.brandHeading,
+                ),
               ),
-              ElevatedButton.icon(
-                onPressed: () => logout(authProvider),
-                icon: const Icon(Icons.exit_to_app),
-                label: const Text('Logout'),
+              const SizedBox(
+                height: 15,
+              ),
+              getAvatar(personProvider.currentPerson),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Name:',
+                        style: AppTextStyles.brandAccentLarge,
+                      ),
+                      Text(
+                        personProvider.currentPerson!.name,
+                        style: AppTextStyles.brandAccentLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Family:',
+                        style: AppTextStyles.brandAccentLarge,
+                      ),
+                      Text(
+                        // TODO: get family name
+                        personProvider.currentPerson!.familyId.toString(),
+                        style: AppTextStyles.brandAccentLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
               ),
               ElevatedButton.icon(
                 onPressed: () => changeProfile(),
-                icon: const Icon(Icons.account_circle),
-                label: const Text('Change Profile'),
+                icon: const Icon(
+                  Icons.account_circle,
+                  color: AppColors.brandBlue,
+                ),
+                label: Text(
+                  'Change Profile',
+                  style: AppTextStyles.brandAccent
+                      .copyWith(color: AppColors.brandBlack),
+                ),
+                style: const ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(AppColors.brandWhite),
+                  textStyle:
+                      MaterialStatePropertyAll(AppTextStyles.brandAccent),
+                  fixedSize:
+                      MaterialStatePropertyAll<Size>(Size.fromWidth(200)),
+                  padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+                      EdgeInsets.only(top: 10, bottom: 10)),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ElevatedButton.icon(
+                onPressed: () => logout(),
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                label: Text(
+                  'Log Out',
+                  style: AppTextStyles.brandAccent
+                      .copyWith(color: AppColors.brandBlack),
+                ),
+                style: const ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(AppColors.brandWhite),
+                  textStyle:
+                      MaterialStatePropertyAll(AppTextStyles.brandAccent),
+                  fixedSize:
+                      MaterialStatePropertyAll<Size>(Size.fromWidth(200)),
+                  padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+                      EdgeInsets.only(top: 10, bottom: 10)),
+                ),
               ),
               if (_loading) const CircularProgressIndicator(),
             ],
