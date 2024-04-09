@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:togetherly/models/family.dart';
 
 class FamilyService {
   Future<String> getFamilyName(int familyId) async {
@@ -14,12 +15,17 @@ class FamilyService {
     return Future<String>.value(name);
   }
 
-  Future<int> insertFamily(String name) async {
-    final family = await Supabase.instance.client
-        .from('family')
-        .insert({'name': name}).select();
+  Future<Family> insertFamily(String name) async {
+    //Service function call and pass chore
+    Map<String, dynamic> map = (await Supabase.instance.client
+            .from('family')
+            .insert({'name': name}).select())
+        .single;
 
-    return family[0]['id'];
+    return Family(
+      id: map['id'],
+      name: map['name'],
+    );
   }
 
   Future<void> deleteFamily(int familyId) async {

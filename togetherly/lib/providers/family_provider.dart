@@ -18,7 +18,7 @@ class FamilyProvider with ChangeNotifier {
 
   Future<void> createFamily(String name) async {
     final res = await _familyService.insertFamily(name);
-    await _authProvider.updateAuthUser(res);
+    await _authProvider.updateAuthUser(res.id!);
     await refresh();
   }
 

@@ -28,17 +28,17 @@ class PersonProvider with ChangeNotifier {
   Future<int?> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      int? id;
+      Person? person;
       if (person is Parent) {
-        id = await _service.insertParent(person);
+        person = await _service.insertParent(person);
       } else if (person is Child) {
-        id = await _service.insertChild(person);
+        person = await _service.insertChild(person);
       } else {
         throw Exception(
             'Cannot add a person that is neither a parent nor a child');
       }
       await refresh();
-      return id;
+      return person?.id;
     } else {
       // TODO: Report some kind of error, possibly.
     }

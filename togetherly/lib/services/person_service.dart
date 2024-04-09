@@ -24,20 +24,22 @@ class PersonService {
     return result.map(_mapToChild).toList();
   }
 
-  Future<int?> insertParent(Parent parent) async {
-    var person = await Supabase.instance.client
-        .from(_personTable)
-        .insert({..._parentToMap(parent), 'pin': '11111'}).select();
-
-    return person[0]['id'];
+  Future<Parent> insertParent(Parent parent) async {
+    return _mapToParent(
+      (await Supabase.instance.client
+              .from(_personTable)
+              .insert({..._parentToMap(parent), 'pin': '11111'}).select())
+          .single,
+    );
   }
 
-  Future<int?> insertChild(Child child) async {
-    var person = await Supabase.instance.client
-        .from(_personTable)
-        .insert({..._childToMap(child), 'pin': '11111'}).select();
-
-    return person[0]['id'];
+  Future<Child> insertChild(Child child) async {
+    return _mapToChild(
+      (await Supabase.instance.client
+              .from(_personTable)
+              .insert({..._childToMap(child), 'pin': '11111'}).select())
+          .single,
+    );
   }
 
   Future<void> deletePerson(Person person) async {

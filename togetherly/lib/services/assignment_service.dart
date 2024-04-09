@@ -13,10 +13,14 @@ class AssignmentService {
     return result.map(_mapToAssignment).toList();
   }
 
-  Future<void> insertAssignment(Assignment assignment) async {
-    await Supabase.instance.client
-        .from(_assignmentTable)
-        .insert(_assignmentToMap(assignment));
+  Future<Assignment> insertAssignment(Assignment assignment) async {
+    return _mapToAssignment(
+      (await Supabase.instance.client
+              .from(_assignmentTable)
+              .insert(_assignmentToMap(assignment))
+              .select())
+          .single,
+    );
   }
 
   Future<void> deleteAssignment(Assignment assignment) async {
