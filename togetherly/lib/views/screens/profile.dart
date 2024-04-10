@@ -101,11 +101,15 @@ class _ProfilePageState extends State<ProfilePage> {
           ? Parent(
               familyId: userIdentityProvider.familyId!,
               name: name,
-              icon: _parseProfilePic(_selectedAvatar['title']))
+              icon: _parseProfilePic(_selectedAvatar['title']),
+              pin: pin,
+            )
           : Child(
               familyId: userIdentityProvider.familyId!,
               name: name,
-              icon: _parseProfilePic(_selectedAvatar['title']));
+              icon: _parseProfilePic(_selectedAvatar['title']),
+              pin: pin,
+            );
       final id = await personProvider.addPerson(person);
       userIdentityProvider.setPersonId(id);
       setState(() => _loading = false);
@@ -200,7 +204,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            // TODO: merge in PR with PIN in model
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(

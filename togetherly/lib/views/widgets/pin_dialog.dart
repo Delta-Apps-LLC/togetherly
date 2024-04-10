@@ -25,7 +25,6 @@ class _PinDialogState extends State<PinDialog> {
           Provider.of<UserIdentityProvider>(context, listen: false);
       if (_formKey.currentState!.validate()) {
         setState(() => _loading = true);
-        // TODO: add logic to check if the pin is correct
         await userProvider.setPersonId(widget.person.id);
         setState(() => _loading = false);
         Navigator.of(context).pop();
@@ -55,6 +54,8 @@ class _PinDialogState extends State<PinDialog> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your PIN';
+                } else if (value != widget.person.pin) {
+                  return 'Incorrect PIN';
                 }
                 return null;
               },

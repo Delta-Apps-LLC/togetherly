@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/providers/auth_provider.dart';
+import 'package:togetherly/providers/family_provider.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
@@ -16,6 +17,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool _loading = false;
+  bool _pinVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,12 @@ class _SettingsPageState extends State<SettingsPage> {
         'assets/images/avatars/$image.png',
         width: 80,
       );
+    }
+
+    String getFamilyName() {
+      final familyProvider =
+          Provider.of<FamilyProvider>(context, listen: false);
+      return familyProvider.familyName ?? '';
     }
 
     return Consumer<PersonProvider>(
@@ -113,9 +121,46 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: AppTextStyles.brandAccentLarge,
                       ),
                       Text(
-                        // TODO: get family name
-                        personProvider.currentPerson!.familyId.toString(),
+                        getFamilyName(),
                         style: AppTextStyles.brandAccentLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'PIN:',
+                        style: AppTextStyles.brandAccentLarge,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            _pinVisible
+                                ? personProvider.currentPerson!.pin
+                                : '*****',
+                            style: AppTextStyles.brandAccentLarge,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                            onPressed: () =>
+                                setState(() => _pinVisible = !_pinVisible),
+                            icon: Icon(
+                                _pinVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: AppColors.brandBlack,
+                                size: 25),
+                          ),
+                        ],
                       ),
                     ],
                   ),

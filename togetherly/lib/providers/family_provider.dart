@@ -16,6 +16,9 @@ class FamilyProvider with ChangeNotifier {
   AuthProvider _authProvider;
   UserIdentityProvider _userIdentityProvider;
 
+  String? _familyName;
+  String? get familyName => _familyName;
+
   Future<void> createFamily(String name) async {
     final res = await _familyService.insertFamily(name);
     await _authProvider.updateAuthUser(res.id!);
@@ -23,6 +26,12 @@ class FamilyProvider with ChangeNotifier {
   }
 
   Future<void> refresh() async {
+    final familyId = _userIdentityProvider.familyId;
+    if (familyId != null) {
+      _familyName = await _familyService.getFamilyName(familyId);
+    } else {
+      _familyName = null;
+    }
     notifyListeners();
     log("FamilyProvider refreshed!");
   }
