@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:togetherly/themes.dart';
-import 'package:togetherly/views/widgets/login.dialog.dart';
+import 'package:togetherly/views/widgets/login_dialog.dart';
 import 'package:togetherly/views/widgets/signup_dialog.dart';
 
 class LoginPage extends StatelessWidget {
