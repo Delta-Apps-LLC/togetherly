@@ -16,7 +16,8 @@ import 'service_tests.mocks.dart';
 
 /// Helper function for stubbing the result of a query.
 ThenPostExpectation<T> whenExecuted<T>(MockPostgrestFilterBuilder<T> mock) {
-  return ThenPostExpectation(when(mock.then(any, onError: anyNamed('onError'))));
+  return ThenPostExpectation(
+      when(mock.then(any, onError: anyNamed('onError'))));
 }
 
 /// Helper class for stubbing the result of a query.
@@ -27,7 +28,8 @@ class ThenPostExpectation<T> {
 
   void thenCompleteWith(Future<T> result) {
     wrapped.thenAnswer((realInvocation) async {
-      final onValue = realInvocation.positionalArguments[0] as FutureOr Function(T);
+      final onValue =
+          realInvocation.positionalArguments[0] as FutureOr Function(T);
       final onError = realInvocation.namedArguments['onError'] as Function?;
       return result.then(onValue, onError: onError);
     });
@@ -85,12 +87,52 @@ void main() {
   });
 
   group("ChoreService tests", () {
+    final testChore1 = Chore(
+      id: 5,
+      title: "Title",
+      description: "Description",
+      dueDate: DateTime(2040),
+      points: 42,
+      isShared: true,
+    );
+    final testChore2 = Chore(
+      id: 6,
+      title: "Title2",
+      description: "Description2",
+      dueDate: DateTime(2042),
+      points: 43,
+      isShared: false,
+    );
+
+    final testChore1Map = {
+      "id": 5,
+      "title": "Title",
+      "description": "Description",
+      "points": 42,
+      "shared": true,
+      "date_due": "2040-01-01 00:00:00",
+    };
+    final testChore2Map = {
+      "id": 6,
+      "title": "Title2",
+      "description": "Description2",
+      "points": 43,
+      "shared": false,
+      "date_due": "2042-01-01 00:00:00",
+    };
+
     late ChoreService choreService;
     setUp(() => choreService = ChoreService(supabaseClient));
 
     test('getChoresByFamily', () async {
-      final result = await choreService.getChoresByFamily(1);
-      debugPrint("$result");
+      when(filterBuilder.eq('family_id', 12)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder)
+          .thenCompleteWith(Future.value([testChore1Map, testChore2Map]));
+
+      final expected = [testChore1, testChore2];
+      final actual = await choreService.getChoresByFamily(12);
+
+      expect(actual, expected);
     });
 
     test('insertChore', () async {
