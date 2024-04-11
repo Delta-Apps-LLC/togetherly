@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -37,12 +37,12 @@ void main() {
 
     test('getChildren', () async {
       final result = await personService.getChildren(1);
-      log("$result");
+      debugPrint("$result");
     });
 
     test('getParents', () async {
       final result = await personService.getParents(1);
-      log("$result");
+      debugPrint("$result");
     });
 
     test('insertChild', () async {
@@ -52,14 +52,14 @@ void main() {
           name: "John",
           icon: ProfileIcon.dog,
           totalPoints: 10));
-      log("$result");
+      debugPrint("$result");
       await personService.deletePerson(result);
     });
 
     test('insertParent', () async {
       final result = await personService.insertParent(const Parent(
           familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
-      log("$result");
+      debugPrint("$result");
       await personService.deletePerson(result);
     });
   });
@@ -70,7 +70,7 @@ void main() {
 
     test('getChoresByFamily', () async {
       final result = await choreService.getChoresByFamily(1);
-      log("$result");
+      debugPrint("$result");
     });
 
     test('insertChore', () async {
@@ -82,7 +82,7 @@ void main() {
             points: 10,
             isShared: true,
           ));
-      log("$result");
+      debugPrint("$result");
       await choreService.deleteChore(result);
     });
   });
