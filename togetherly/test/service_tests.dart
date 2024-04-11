@@ -43,16 +43,18 @@ void main() {
 
   late MockSupabaseClient supabaseClient;
   late MockSupabaseQueryBuilder queryBuilder;
-  late MockPostgrestFilterBuilder<List<Map<String, dynamic>>> filterBuilder;
+  late MockPostgrestFilterBuilder<List<Map<String, dynamic>>> selectBuilder;
+  late MockPostgrestFilterBuilder<dynamic> filterBuilder;
 
   setUp(() async {
     supabaseClient = MockSupabaseClient();
     queryBuilder = MockSupabaseQueryBuilder();
+    selectBuilder = MockPostgrestFilterBuilder();
     filterBuilder = MockPostgrestFilterBuilder();
 
     when(supabaseClient.from(any)).thenAnswer((_) => queryBuilder);
     when(queryBuilder.insert(any)).thenAnswer((_) => filterBuilder);
-    when(queryBuilder.select(any)).thenAnswer((_) => filterBuilder);
+    when(queryBuilder.select(any)).thenAnswer((_) => selectBuilder);
     when(queryBuilder.update(any)).thenAnswer((_) => filterBuilder);
     when(queryBuilder.delete()).thenAnswer((_) => filterBuilder);
   });
@@ -138,9 +140,9 @@ void main() {
     setUp(() => choreService = ChoreService(supabaseClient));
 
     test('getChoresByFamily should return all chores', () async {
-      when(filterBuilder.eq('family_id', testFamilyId))
-          .thenAnswer((_) => filterBuilder);
-      whenExecuted(filterBuilder)
+      when(selectBuilder.eq('family_id', testFamilyId))
+          .thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder)
           .thenCompleteWith(Future.value([testChore1Map, testChore2Map]));
 
       final expected = [testChore1, testChore2];
@@ -150,8 +152,8 @@ void main() {
     });
 
     test('insertChore should insert data and return chore', () async {
-      when(filterBuilder.select('*')).thenAnswer((_) => filterBuilder);
-      whenExecuted(filterBuilder)
+      when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder)
           .thenCompleteWith(Future.value([testChore1Map]));
 
       final expected = testChore1;
@@ -160,6 +162,15 @@ void main() {
 
       expect(actual, expected);
       verify(queryBuilder.insert(testNewChore1Map));
+    });
+
+    test('deleteChore should match against id', () async {
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await choreService.deleteChore(testChore1);
+
+      verify(filterBuilder.match({"id": 5}));
     });
   });
 
