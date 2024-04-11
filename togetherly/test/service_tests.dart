@@ -14,6 +14,26 @@ import 'package:togetherly/services/person_service.dart';
 
 import 'service_tests.mocks.dart';
 
+/// Helper function for stubbing the result of a query.
+ThenPostExpectation<T> whenExecuted<T>(MockPostgrestFilterBuilder<T> mock) {
+  return ThenPostExpectation(when(mock.then(any, onError: anyNamed('onError'))));
+}
+
+/// Helper class for stubbing the result of a query.
+class ThenPostExpectation<T> {
+  final PostExpectation<Future<dynamic>> wrapped;
+
+  ThenPostExpectation(this.wrapped);
+
+  void thenCompleteWith(Future<T> result) {
+    wrapped.thenAnswer((realInvocation) async {
+      final onValue = realInvocation.positionalArguments[0] as FutureOr Function(T);
+      final onError = realInvocation.namedArguments['onError'] as Function?;
+      return result.then(onValue, onError: onError);
+    });
+  }
+}
+
 @GenerateMocks([SupabaseClient, SupabaseQueryBuilder, PostgrestFilterBuilder])
 void main() {
   late MockSupabaseClient supabaseClient;
