@@ -16,7 +16,7 @@ class RewardProvider with ChangeNotifier {
   UserIdentityProvider _userIdentityProvider;
 
   List<Reward> _rewards = [];
-  List<Reward> get rewards => _rewards;
+  Iterable<Reward> get rewards => _rewards;
 
   Future<void> addReward(Reward reward) async {
     final familyId = _userIdentityProvider.familyId;

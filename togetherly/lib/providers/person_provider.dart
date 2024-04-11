@@ -17,10 +17,10 @@ class PersonProvider with ChangeNotifier {
   UserIdentityProvider _userIdentityProvider;
 
   List<Parent> _parents = [];
-  List<Parent> get parents => _parents;
+  Iterable<Parent> get parents => _parents;
 
   List<Child> _children = [];
-  List<Child> get children => _children;
+  Iterable<Child> get children => _children;
 
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;

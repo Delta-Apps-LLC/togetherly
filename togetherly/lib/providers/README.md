@@ -132,7 +132,7 @@ its results should instead be treated as part of the state.
 
 BAD example:
 ```dart
-Future<List<Thing>> searchForThings(string query) async {
+Future<Iterable<Thing>> searchForThings(string query) async {
   ...
   return resultSet;
 }
@@ -144,7 +144,7 @@ string? _currentQuery;
 string? currentQuery get => _currentQuery;
 
 List<Thing>? _currentSearchResults;
-List<Thing>? currentSearchResults get => _currentSearchResults;
+Iterable<Thing>? currentSearchResults get => _currentSearchResults;
 
 Future<void> updateQuery(string query) async {
   _currentQuery = query;
