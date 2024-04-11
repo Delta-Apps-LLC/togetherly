@@ -5,21 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/utilities/env.dart';
 
+import 'setup.dart';
+
 void main() {
   late ChoreService choreService;
 
-  setUpAll(() async {
-    SharedPreferences.setMockInitialValues({});
-    // In automated unit tests, this would be TestWidgetsFlutterBinding.
-    WidgetsFlutterBinding.ensureInitialized();
-    await Supabase.initialize(
-      url: 'https://ejsdquitvcfduhsrdwvx.supabase.co',
-      anonKey: Env.supabaseAnonKey,
-    );
-  });
+  setUpAll(setUpManualServiceTest);
 
   setUp(() {
-    choreService = ChoreService(Supabase.instance.client);
+    choreService = ChoreService();
   });
 
   test('Get chores by family', () async {
