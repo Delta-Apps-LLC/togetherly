@@ -14,6 +14,7 @@ import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/utilities/value.dart';
 
 import 'service_tests.mocks.dart';
+import 'test_data.dart';
 
 /// Helper function for stubbing the result of a query.
 ThenPostExpectation<T> whenExecuted<T>(MockPostgrestFilterBuilder<T> mock) {
@@ -39,7 +40,7 @@ class ThenPostExpectation<T> {
 
 @GenerateMocks([SupabaseClient, SupabaseQueryBuilder, PostgrestFilterBuilder])
 void main() {
-  const testFamilyId = 12;
+  const testData = TestData();
 
   late MockSupabaseClient supabaseClient;
   late MockSupabaseQueryBuilder queryBuilder;
@@ -95,58 +96,21 @@ void main() {
   group("ChoreService tests", () {
     late ChoreService choreService;
 
-    final testNewChore1 = Chore(
-      title: "Title",
-      description: "Description",
-      dueDate: DateTime(2040),
-      points: 42,
-      isShared: true,
-    );
-    final testNewChore2 = Chore(
-      title: "Title2",
-      description: "Description2",
-      dueDate: DateTime(2042),
-      points: 43,
-      isShared: false,
-    );
-    final testChore1 = testNewChore1.copyWith(id: const Value(5));
-    final testChore2 = testNewChore2.copyWith(id: const Value(6));
-
-    final testNewChore1Map = Map<String, dynamic>.unmodifiable({
-      "family_id": testFamilyId,
-      "title": "Title",
-      "description": "Description",
-      "points": 42,
-      "shared": true,
-      "date_due": "2040-01-01 00:00:00.000",
-    });
-    final testNewChore2Map = Map<String, dynamic>.unmodifiable({
-      "family_id": testFamilyId,
-      "title": "Title2",
-      "description": "Description2",
-      "points": 43,
-      "shared": false,
-      "date_due": "2042-01-01 00:00:00.000",
-    });
-    final testChore1Map =
-        Map<String, dynamic>.unmodifiable(Map.of(testNewChore1Map)
-          ..addAll({"id": 5, "date_due": "2040-01-01 00:00:00"})
-          ..remove("family_id"));
-    final testChore2Map =
-        Map<String, dynamic>.unmodifiable(Map.of(testNewChore2Map)
-          ..addAll({"id": 6, "date_due": "2042-01-01 00:00:00"})
-          ..remove("family_id"));
-
     setUp(() => choreService = ChoreService(supabaseClient));
 
     test('getChoresByFamily should return all chores', () async {
-      when(selectBuilder.eq('family_id', testFamilyId))
+      when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testChore1Map, testChore2Map]));
+      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
+        testData.getMapForChore(0, id: 5),
+        testData.getMapForChore(0, id: 6)
+      ]));
 
-      final expected = [testChore1, testChore2];
-      final actual = await choreService.getChoresByFamily(testFamilyId);
+      final expected = [
+        testData.getChore(0, id: 5),
+        testData.getChore(0, id: 6)
+      ];
+      final actual = await choreService.getChoresByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -154,21 +118,22 @@ void main() {
     test('insertChore should insert data and return chore', () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testChore1Map]));
+          .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
-      final expected = testChore1;
+      final expected = testData.getChore(0, id: 5);
       final actual = await choreService.insertChore(
-          testFamilyId, testChore1.copyWith(id: const Value(null)));
+          testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(testNewChore1Map));
+      verify(queryBuilder.insert(
+          testData.getMapForChore(0, includeFamilyId: true, includeMs: true)));
     });
 
     test('deleteChore should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testChore1);
+      await choreService.deleteChore(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
