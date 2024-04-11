@@ -11,6 +11,7 @@ import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/utilities/value.dart';
 
 import 'service_tests.mocks.dart';
 
@@ -38,12 +39,15 @@ class ThenPostExpectation<T> {
 
 @GenerateMocks([SupabaseClient, SupabaseQueryBuilder, PostgrestFilterBuilder])
 void main() {
+  const testFamilyId = 12;
+
   late MockSupabaseClient supabaseClient;
+  late MockSupabaseQueryBuilder queryBuilder;
   late MockPostgrestFilterBuilder<List<Map<String, dynamic>>> filterBuilder;
 
   setUp(() async {
     supabaseClient = MockSupabaseClient();
-    final queryBuilder = MockSupabaseQueryBuilder();
+    queryBuilder = MockSupabaseQueryBuilder();
     filterBuilder = MockPostgrestFilterBuilder();
 
     when(supabaseClient.from(any)).thenAnswer((_) => queryBuilder);
@@ -87,50 +91,60 @@ void main() {
   });
 
   group("ChoreService tests", () {
-    final testChore1 = Chore(
-      id: 5,
+    late ChoreService choreService;
+
+    final testNewChore1 = Chore(
       title: "Title",
       description: "Description",
       dueDate: DateTime(2040),
       points: 42,
       isShared: true,
     );
-    final testChore2 = Chore(
-      id: 6,
+    final testNewChore2 = Chore(
       title: "Title2",
       description: "Description2",
       dueDate: DateTime(2042),
       points: 43,
       isShared: false,
     );
+    final testChore1 = testNewChore1.copyWith(id: const Value(5));
+    final testChore2 = testNewChore2.copyWith(id: const Value(6));
 
-    final testChore1Map = {
-      "id": 5,
+    final testNewChore1Map = Map<String, dynamic>.unmodifiable({
+      "family_id": testFamilyId,
       "title": "Title",
       "description": "Description",
       "points": 42,
       "shared": true,
-      "date_due": "2040-01-01 00:00:00",
-    };
-    final testChore2Map = {
-      "id": 6,
+      "date_due": "2040-01-01 00:00:00.000",
+    });
+    final testNewChore2Map = Map<String, dynamic>.unmodifiable({
+      "family_id": testFamilyId,
       "title": "Title2",
       "description": "Description2",
       "points": 43,
       "shared": false,
-      "date_due": "2042-01-01 00:00:00",
-    };
+      "date_due": "2042-01-01 00:00:00.000",
+    });
+    final testChore1Map =
+        Map<String, dynamic>.unmodifiable(Map.of(testNewChore1Map)
+          ..addAll({"id": 5, "date_due": "2040-01-01 00:00:00"})
+          ..remove("family_id"));
+    final testChore2Map =
+        Map<String, dynamic>.unmodifiable(Map.of(testNewChore2Map)
+          ..addAll({"id": 6, "date_due": "2042-01-01 00:00:00"})
+          ..remove("family_id"));
 
-    late ChoreService choreService;
     setUp(() => choreService = ChoreService(supabaseClient));
 
     test('getChoresByFamily', () async {
-      when(filterBuilder.eq('family_id', 12)).thenAnswer((_) => filterBuilder);
+      when(filterBuilder.eq('family_id', testFamilyId))
+          .thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder)
           .thenCompleteWith(Future.value([testChore1Map, testChore2Map]));
 
       final expected = [testChore1, testChore2];
-      final actual = await choreService.getChoresByFamily(12);
+      final actual = await choreService.getChoresByFamily(testFamilyId);
 
       expect(actual, expected);
     });
