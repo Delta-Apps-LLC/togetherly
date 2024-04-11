@@ -129,6 +129,16 @@ void main() {
           testData.getMapForChore(0, includeFamilyId: true, includeMs: true)));
     });
 
+    test('updateChore should update data', () async {
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await choreService.updateChore(testData.getChore(0, id: 5));
+
+      debugPrint(testData.getMapForChore(0, includeMs: true).toString());
+      verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
+    });
+
     test('deleteChore should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
