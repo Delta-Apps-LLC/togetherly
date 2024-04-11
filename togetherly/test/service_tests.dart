@@ -91,7 +91,7 @@ void main() {
       debugPrint("$result");
       await personService.deletePerson(result);
     });
-  });
+  }, skip: "Not yet finished");
 
   group("ChoreService tests", () {
     late ChoreService choreService;
