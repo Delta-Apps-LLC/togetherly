@@ -137,7 +137,7 @@ void main() {
 
     setUp(() => choreService = ChoreService(supabaseClient));
 
-    test('getChoresByFamily', () async {
+    test('getChoresByFamily should return all chores', () async {
       when(filterBuilder.eq('family_id', testFamilyId))
           .thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder)
@@ -149,17 +149,17 @@ void main() {
       expect(actual, expected);
     });
 
-    test('insertChore', () async {
-      final result = await choreService.insertChore(
-          1,
-          Chore(
-            title: "Test",
-            dueDate: DateTime(2030),
-            points: 10,
-            isShared: true,
-          ));
-      debugPrint("$result");
-      await choreService.deleteChore(result);
+    test('insertChore should insert data and return chore', () async {
+      when(filterBuilder.select('*')).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder)
+          .thenCompleteWith(Future.value([testChore1Map]));
+
+      final expected = testChore1;
+      final actual = await choreService.insertChore(
+          testFamilyId, testChore1.copyWith(id: const Value(null)));
+
+      expect(actual, expected);
+      verify(queryBuilder.insert(testNewChore1Map));
     });
   });
 
