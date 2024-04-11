@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:togetherly/utilities/value.dart';
 
 class Reward {
@@ -6,6 +8,7 @@ class Reward {
   final String description;
   final int points;
   final int quantity;
+  final Uint8 icon;
 
   const Reward({
     this.id,
@@ -13,6 +16,7 @@ class Reward {
     this.description = '',
     required this.points,
     required this.quantity,
+    required this.icon,
   });
 
   Reward copyWith({
@@ -21,6 +25,7 @@ class Reward {
     String? description,
     int? points,
     int? quantity,
+    Uint8? icon,
   }) =>
       Reward(
         id: (id ?? Value(this.id)).value,
@@ -28,5 +33,6 @@ class Reward {
         description: description ?? this.description,
         points: points ?? this.points,
         quantity: quantity ?? this.quantity,
+        icon: icon ?? this.icon,
       );
 }
