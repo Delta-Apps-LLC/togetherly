@@ -39,8 +39,13 @@ class PersonService {
     );
   }
 
-  Future<void> insertChild(Child child) async {
-    await _supabaseClient.from(_personTable).insert({_childToMap(child)});
+  Future<Child> insertChild(Child child) async {
+    return _mapToChild(
+      (await _supabaseClient
+              .from(_personTable)
+              .insert({_childToMap(child)}).select())
+          .single,
+    );
   }
 
   Future<void> deletePerson(Person person) async {
