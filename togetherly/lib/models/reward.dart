@@ -8,7 +8,7 @@ class Reward {
   final String description;
   final int points;
   final int quantity;
-  final Uint8 icon;
+  final Char icon;
 
   const Reward({
     this.id,
@@ -25,7 +25,7 @@ class Reward {
     String? description,
     int? points,
     int? quantity,
-    Uint8? icon,
+    Char? icon,
   }) =>
       Reward(
         id: (id ?? Value(this.id)).value,
