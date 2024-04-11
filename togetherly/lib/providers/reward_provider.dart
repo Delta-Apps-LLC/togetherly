@@ -38,6 +38,18 @@ class RewardProvider with ChangeNotifier {
     await refresh();
   }
 
+  Future<void> redeemReward(Reward reward, int quantity) async {
+    if(reward.quantity > quantity){
+      updateReward(Reward(title: reward.title, points: reward.points, quantity: reward.quantity - quantity, icon: reward.icon));
+    } else if(reward.quantity == quantity){
+      await _service.deleteReward(reward);
+    } else {
+      //TODO: what does the front end want?
+      await _service.deleteReward(reward);
+    }
+    //TODO: add to redeem reward service/table
+  }
+
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
