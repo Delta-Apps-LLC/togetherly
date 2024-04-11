@@ -34,4 +34,15 @@ class Child extends Person {
   @override
   String toString() =>
       'Child(id: $id, familyId: $familyId, pin: "${'*' * pin.length}", name: "$name", icon: $icon, totalPoints: $totalPoints)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is Child &&
+          runtimeType == other.runtimeType &&
+          totalPoints == other.totalPoints;
+
+  @override
+  int get hashCode => super.hashCode ^ totalPoints.hashCode;
 }

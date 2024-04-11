@@ -28,4 +28,14 @@ class Parent extends Person {
   @override
   String toString() =>
       'Parent(id: $id, familyId: $familyId, pin: "${'*' * pin.length}", name: "$name", icon: $icon)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other && other is Parent && runtimeType == other.runtimeType;
+
+  // Must override hashCode to get rid of one warning, and must modify the value
+  // of super.hashCode in some way to get rid of a different warning.
+  @override
+  int get hashCode => super.hashCode ^ 1;
 }
