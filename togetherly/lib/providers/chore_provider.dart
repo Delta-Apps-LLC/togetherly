@@ -6,13 +6,17 @@ import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
+
+import '../models/chore_completion.dart';
 
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
     this._choreService,
     this._assignmentService,
     this._userIdentityProvider,
+    this._choreCompletionService,
   ) {
     log("ChoreProvider created");
     refresh();
@@ -20,6 +24,7 @@ class ChoreProvider with ChangeNotifier {
 
   final ChoreService _choreService;
   final AssignmentService _assignmentService;
+  final ChoreCompletionService _choreCompletionService;
 
   UserIdentityProvider _userIdentityProvider;
 
@@ -110,10 +115,12 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  // TODO: Remove/update this once ChoreCompletion code is done (as there
-  //       won't be anything left to update without the status field).
-  Future<void> updateAssignment(Assignment assignment) async {
+  Future<void> updateAssignment(Assignment assignment, Chore chore) async {
     await _assignmentService.updateAssignment(assignment);
+    if(assignment.status == AssignmentStatus.completed) {
+      //TODO updated isApproved when adding parental approval functionality
+      await _choreCompletionService.insertChoreCompletion(ChoreCompletion(choreId: assignment.choreId, childId: assignment.personId, dateSubmitted: DateTime.now(), dueDate: chore.dueDate, isApproved: true));
+    }
     await refresh();
   }
 
