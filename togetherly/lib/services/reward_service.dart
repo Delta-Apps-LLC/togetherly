@@ -12,7 +12,7 @@ class RewardService {
   Future<List<Reward>> getRewardsByFamily(int familyId) async {
     var result = await _supabaseClient
         .from(_rewardTable)
-        .select("id, title, description, points, quantity")
+        .select("id, title, description, points, quantity, icon")
         .eq("family_id", familyId);
     return result.map(_mapToReward).toList();
   }
@@ -44,6 +44,7 @@ class RewardService {
         description: map['description'],
         points: map['points'],
         quantity: map['quantity'],
+        icon: (map['icon'] as String).runes.single,
       );
 
   Map<String, dynamic> _rewardToMap(Reward reward, [int? familyId]) => {
@@ -52,5 +53,6 @@ class RewardService {
         'description': reward.description,
         'points': reward.points,
         'quantity': reward.quantity,
+        'icon': String.fromCharCode(reward.icon),
       };
 }

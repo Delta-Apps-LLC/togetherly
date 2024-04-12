@@ -7,12 +7,16 @@ class Reward {
   final int points;
   final int quantity;
 
+  /// Icon represented as a Unicode code point
+  final int icon;
+
   const Reward({
     this.id,
     required this.title,
     this.description = '',
     required this.points,
     required this.quantity,
+    required this.icon,
   });
 
   Reward copyWith({
@@ -21,6 +25,7 @@ class Reward {
     String? description,
     int? points,
     int? quantity,
+    int? icon,
   }) =>
       Reward(
         id: (id ?? Value(this.id)).value,
@@ -28,6 +33,7 @@ class Reward {
         description: description ?? this.description,
         points: points ?? this.points,
         quantity: quantity ?? this.quantity,
+        icon: icon ?? this.icon,
       );
 
   @override
