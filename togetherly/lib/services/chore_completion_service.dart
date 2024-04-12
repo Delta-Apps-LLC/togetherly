@@ -49,7 +49,6 @@ class ChoreCompletionService {
       );
 
   Map<String, dynamic> _choreCompletionToMap(ChoreCompletion completion) => {
-        'id': completion.id,
         'chore_id': completion.choreId,
         'person_id': completion.childId,
         'date_submitted': completion.dateSubmitted.toString(),
