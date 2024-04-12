@@ -28,7 +28,7 @@ class PersonProvider with ChangeNotifier {
   bool _ready = false;
   bool get ready => _ready;
 
-  Future<int?> addPerson(Person person) async {
+  Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       Person? person;
@@ -40,12 +40,13 @@ class PersonProvider with ChangeNotifier {
         throw Exception(
             'Cannot add a person that is neither a parent nor a child');
       }
+      if (parents.isEmpty && children.isEmpty) {
+        _userIdentityProvider.setPersonId(person?.id);
+      }
       await refresh();
-      return person?.id;
     } else {
-      // TODO: Report some kind of error, possibly.
+      throw Exception('Cannot add a person without the familyId');
     }
-    return null;
   }
 
   Future<void> deletePerson(Person person) async {

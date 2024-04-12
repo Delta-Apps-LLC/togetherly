@@ -110,8 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: _parseProfilePic(_selectedAvatar['title']),
               pin: pin,
             );
-      final id = await personProvider.addPerson(person);
-      userIdentityProvider.setPersonId(id);
+      await personProvider.addPerson(person);
       setState(() => _loading = false);
     }
   }
