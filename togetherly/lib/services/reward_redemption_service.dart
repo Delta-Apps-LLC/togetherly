@@ -49,7 +49,6 @@ class RewardRedemptionService {
       );
 
   Map<String, dynamic> _rewardRedemptionToMap(RewardRedemption redemption) => {
-        'id': redemption.id,
         'reward_id': redemption.rewardId,
         'person_id': redemption.childId,
         'quantity': redemption.quantity,
