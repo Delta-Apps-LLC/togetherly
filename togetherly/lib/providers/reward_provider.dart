@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/reward.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/reward_service.dart';
 
 class RewardProvider with ChangeNotifier {
-  RewardProvider(this._service, this._userIdentityProvider) {
+  RewardProvider(this._service, this._userIdentityProvider, this._personProvider) {
     log("RewardProvider created");
     refresh();
   }
@@ -14,6 +15,7 @@ class RewardProvider with ChangeNotifier {
   final RewardService _service;
 
   UserIdentityProvider _userIdentityProvider;
+  PersonProvider _personProvider;
 
   List<Reward> _rewards = [];
   List<Reward> get rewards => _rewards;
@@ -24,7 +26,7 @@ class RewardProvider with ChangeNotifier {
       await _service.insertReward(familyId, reward);
       await refresh();
     } else {
-      // TODO: Report some kind of error, possibly.
+      //TODO throw error?
     }
   }
 
@@ -39,8 +41,8 @@ class RewardProvider with ChangeNotifier {
   }
 
   Future<void> redeemReward(Reward reward, int quantity) async {
-    if(reward.quantity > quantity){
-      updateReward(Reward(title: reward.title, points: reward.points, quantity: reward.quantity - quantity, icon: reward.icon));
+    if(reward.quantity > quantity) {
+      await updateReward(reward.copyWith(quantity: (reward.quantity - quantity)));
     } else if(reward.quantity == quantity){
       await _service.deleteReward(reward);
     } else {
