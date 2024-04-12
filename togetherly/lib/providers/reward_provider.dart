@@ -16,7 +16,7 @@ class RewardProvider with ChangeNotifier {
   UserIdentityProvider _userIdentityProvider;
 
   List<Reward> _rewards = [];
-  List<Reward> get rewards => _rewards;
+  Iterable<Reward> get rewards => _rewards;
 
   Future<void> addReward(Reward reward) async {
     final familyId = _userIdentityProvider.familyId;
@@ -36,6 +36,15 @@ class RewardProvider with ChangeNotifier {
   Future<void> updateReward(Reward reward) async {
     await _service.updateReward(reward);
     await refresh();
+  }
+
+  Future<void> redeemReward(Reward reward, int quantity) async {
+    if (reward.quantity >= quantity) {
+      updateReward(reward.copyWith(quantity: reward.quantity - quantity));
+    } else {
+      //TODO: throw an error
+    }
+    //TODO: save reward redemption event
   }
 
   Future<void> refresh() async {
