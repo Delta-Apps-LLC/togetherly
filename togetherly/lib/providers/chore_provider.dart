@@ -24,8 +24,8 @@ class ChoreProvider with ChangeNotifier {
 
   UserIdentityProvider _userIdentityProvider;
 
-  List<Chore> _allChores = [];
-  List<Chore> get allChores => _allChores;
+  Iterable<Chore> _allChores = [];
+  Iterable<Chore> get allChores => _allChores;
   List<Chore> get choreListDueToday => _allChores
       .where((chore) => chore.dueDate == DateHelpers.getDateToday())
       .toList();
@@ -49,7 +49,7 @@ class ChoreProvider with ChangeNotifier {
   }
 
   List<Assignment> _allAssignments = [];
-  List<Assignment> get allAssignments => _allAssignments;
+  Iterable<Assignment> get allAssignments => _allAssignments;
 
   /// Cached copy of [_choreIdToPersonIds].
   Map<int, Set<int>>? _choreIdToPersonIdsCache;
@@ -88,7 +88,7 @@ class ChoreProvider with ChangeNotifier {
               (a) => a.choreId == chore.id && a.personId == personId)
           ?.status;
 
-  Future<void> addChore(Chore chore, [List<int>? assignedChildIds]) async {
+  Future<void> addChore(Chore chore, [Iterable<int>? assignedChildIds]) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       final newChoreId = (await _choreService.insertChore(familyId, chore)).id;
@@ -114,7 +114,8 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> updateChore(Chore chore, [List<int>? assignedChildIds]) async {
+  Future<void> updateChore(Chore chore,
+      [Iterable<int>? assignedChildIds]) async {
     await _choreService.updateChore(chore);
     if (assignedChildIds != null) {
       await updateChildrenAssignedToChore(chore, assignedChildIds);
@@ -141,7 +142,7 @@ class ChoreProvider with ChangeNotifier {
   }
 
   Future<void> updateChildrenAssignedToChore(
-      Chore chore, List<int> assignedChildIds) async {
+      Chore chore, Iterable<int> assignedChildIds) async {
     final choreId = chore.id!;
     Set<int> previous = personIdsAssignedToChore(chore).toSet();
     Set<int> updated = assignedChildIds.toSet();
