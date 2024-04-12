@@ -67,12 +67,12 @@ class PersonProvider with ChangeNotifier {
 
   Future<void> refresh() async {
     _ready = false;
+    notifyListeners();
     final familyId = _userIdentityProvider.familyId;
     final personId = _userIdentityProvider.personId;
     if (familyId != null) {
       _parents = await _service.getParents(familyId);
       _children = await _service.getChildren(familyId);
-      _ready = true;
       if (personId != null) {
         _currentPerson = [...parents, ...children]
             .singleWhere((element) => element.id == personId);
@@ -80,8 +80,8 @@ class PersonProvider with ChangeNotifier {
     } else {
       _parents = [];
       _children = [];
-      _ready = true;
     }
+    _ready = true;
     notifyListeners();
     log("PersonProvider refreshed!");
   }

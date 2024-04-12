@@ -74,7 +74,6 @@ class PersonService {
       );
 
   Map<String, dynamic> _childToMap(Child child) => {
-        // 'id': child.id,
         'family_id': child.familyId,
         'pin': child.pin,
         'name': child.name,
@@ -92,7 +91,6 @@ class PersonService {
       );
 
   Map<String, dynamic> _parentToMap(Parent parent) => {
-        // 'id': parent.id,
         'family_id': parent.familyId,
         'pin': parent.pin,
         'name': parent.name,

@@ -9,11 +9,7 @@ import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/utilities/date.dart';
 
-enum ChoreType {
-  today,
-  comingSoon,
-  overdue
-}
+enum ChoreType { today, comingSoon, overdue }
 
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
