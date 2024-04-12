@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:togetherly/utilities/value.dart';
 
 class Reward {
@@ -8,6 +6,7 @@ class Reward {
   final String description;
   final int points;
   final int quantity;
+
   /// Icon represented as a Unicode code point
   final int icon;
 
