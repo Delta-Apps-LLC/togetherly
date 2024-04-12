@@ -22,8 +22,8 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   Iterable<Child> get children => _children;
 
-  Person? _currentPerson;
-  Person? get currentPerson => _currentPerson;
+  Person? get currentPerson => [...parents, ...children]
+      .singleWhere((element) => element.id == _userIdentityProvider.personId);
 
   bool _ready = false;
   bool get ready => _ready;
@@ -69,14 +69,9 @@ class PersonProvider with ChangeNotifier {
     _ready = false;
     notifyListeners();
     final familyId = _userIdentityProvider.familyId;
-    final personId = _userIdentityProvider.personId;
     if (familyId != null) {
       _parents = await _service.getParents(familyId);
       _children = await _service.getChildren(familyId);
-      if (personId != null) {
-        _currentPerson = [...parents, ...children]
-            .singleWhere((element) => element.id == personId);
-      }
     } else {
       _parents = [];
       _children = [];
