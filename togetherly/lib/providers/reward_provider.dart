@@ -38,6 +38,15 @@ class RewardProvider with ChangeNotifier {
     await refresh();
   }
 
+  Future<void> redeemReward(Reward reward, int quantity) async {
+    if (reward.quantity >= quantity) {
+      updateReward(reward.copyWith(quantity: reward.quantity - quantity));
+    } else {
+      //TODO: throw an error
+    }
+    //TODO: save reward redemption event
+  }
+
   Future<void> refresh() async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
