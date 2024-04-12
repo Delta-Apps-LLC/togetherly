@@ -2,20 +2,25 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/reward.dart';
+import 'package:togetherly/models/reward_redemption.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
+import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
+import '../models/child.dart';
+
 class RewardProvider with ChangeNotifier {
-  RewardProvider(this._service, this._userIdentityProvider, this._personProvider) {
+  RewardProvider(this._service, this._userIdentityProvider, this._personProvider, this._redemptionService) {
     log("RewardProvider created");
     refresh();
   }
 
   final RewardService _service;
+  final RewardRedemptionService _redemptionService;
 
   UserIdentityProvider _userIdentityProvider;
-  PersonProvider _personProvider;
+  final PersonProvider _personProvider;
 
   List<Reward> _rewards = [];
   Iterable<Reward> get rewards => _rewards;
@@ -25,8 +30,6 @@ class RewardProvider with ChangeNotifier {
     if (familyId != null) {
       await _service.insertReward(familyId, reward);
       await refresh();
-    } else {
-      //TODO throw error?
     }
   }
 
@@ -40,15 +43,14 @@ class RewardProvider with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> redeemReward(Reward reward, int quantity) async {
+  Future<void> redeemReward(Reward reward, int quantity, Child child) async {
     if(reward.quantity > quantity) {
       await updateReward(reward.copyWith(quantity: (reward.quantity - quantity)));
-    } else if(reward.quantity == quantity){
+    } else if(reward.quantity == quantity) {
       await _service.deleteReward(reward);
-    } else {
-      //TODO: throw an error
     }
-    //TODO: save reward redemption event
+    await _personProvider.updatePerson(child.copyWith(totalPoints: child.totalPoints - (quantity * reward.points)));
+    await _redemptionService.insertRewardRedemption(RewardRedemption(rewardId: reward.id!, childId: child.id!, quantity: quantity, timestamp: DateTime.now()));
   }
 
   Future<void> refresh() async {

@@ -10,6 +10,7 @@ import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
 class AppProviders extends StatefulWidget {
@@ -27,6 +28,7 @@ class _AppProvidersState extends State<AppProviders> {
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
   final RewardService _rewardService = RewardService();
+  final RewardRedemptionService _rewardRedemptionService = RewardRedemptionService();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class _AppProvidersState extends State<AppProviders> {
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
           create: (_, userIdentityProvider) =>
-              RewardProvider(_rewardService, userIdentityProvider),
+              RewardProvider(_rewardService, userIdentityProvider, PersonProvider(_personService,userIdentityProvider), _rewardRedemptionService),
           update: (_, userIdentityProvider, previous) =>
               previous.updateDependencies(userIdentityProvider),
         ),
