@@ -44,9 +44,17 @@ class ChoreProvider with ChangeNotifier {
 
   bool _isChoreOverdue(DateTime dueDate) {
     final dateToday = DateHelpers.getDateToday();
-    return dueDate.year <= dateToday.year &&
-        dueDate.month <= dateToday.month &&
-        dueDate.day < dateToday.day;
+    if (dueDate.year < dateToday.year) {
+      return true;
+    } else if (dueDate.year == dateToday.year &&
+        dueDate.month < dateToday.month) {
+      return true;
+    } else if (dueDate.year == dateToday.year &&
+        dueDate.month == dateToday.month &&
+        dueDate.day < dateToday.day) {
+      return true;
+    }
+    return false;
   }
 
   List<Assignment> _allAssignments = [];
