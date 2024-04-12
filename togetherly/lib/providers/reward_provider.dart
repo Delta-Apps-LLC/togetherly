@@ -18,7 +18,7 @@ class RewardProvider with ChangeNotifier {
   PersonProvider _personProvider;
 
   List<Reward> _rewards = [];
-  List<Reward> get rewards => _rewards;
+  Iterable<Reward> get rewards => _rewards;
 
   Future<void> addReward(Reward reward) async {
     final familyId = _userIdentityProvider.familyId;
@@ -46,10 +46,9 @@ class RewardProvider with ChangeNotifier {
     } else if(reward.quantity == quantity){
       await _service.deleteReward(reward);
     } else {
-      //TODO: what does the front end want?
-      await _service.deleteReward(reward);
+      //TODO: throw an error
     }
-    //TODO: add to redeem reward service/table
+    //TODO: save reward redemption event
   }
 
   Future<void> refresh() async {

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:togetherly/utilities/value.dart';
 
 class Reward {
@@ -8,7 +6,9 @@ class Reward {
   final String description;
   final int points;
   final int quantity;
-  final Char icon;
+
+  /// Icon represented as a Unicode code point
+  final int icon;
 
   const Reward({
     this.id,
@@ -25,7 +25,7 @@ class Reward {
     String? description,
     int? points,
     int? quantity,
-    Char? icon,
+    int? icon,
   }) =>
       Reward(
         id: (id ?? Value(this.id)).value,
