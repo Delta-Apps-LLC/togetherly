@@ -39,15 +39,12 @@ class RewardProvider with ChangeNotifier {
   }
 
   Future<void> redeemReward(Reward reward, int quantity) async {
-    if(reward.quantity > quantity){
-      updateReward(Reward(title: reward.title, points: reward.points, quantity: reward.quantity - quantity, icon: reward.icon));
-    } else if(reward.quantity == quantity){
-      await _service.deleteReward(reward);
+    if (reward.quantity >= quantity) {
+      updateReward(reward.copyWith(quantity: reward.quantity - quantity));
     } else {
-      //TODO: what does the front end want?
-      await _service.deleteReward(reward);
+      //TODO: throw an error
     }
-    //TODO: add to redeem reward service/table
+    //TODO: save reward redemption event
   }
 
   Future<void> refresh() async {
