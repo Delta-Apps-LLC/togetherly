@@ -9,6 +9,12 @@ import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/utilities/date.dart';
 
+enum ChoreType {
+  today,
+  comingSoon,
+  overdue
+}
+
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
     this._choreService,
@@ -26,13 +32,12 @@ class ChoreProvider with ChangeNotifier {
 
   Iterable<Chore> _allChores = [];
   Iterable<Chore> get allChores => _allChores;
-  List<Chore> get choreListDueToday => _allChores
-      .where((chore) => chore.dueDate == DateHelpers.getDateToday())
-      .toList();
-  List<Chore> get choreListComingSoon =>
-      _allChores.where((chore) => _isChoreDueTomorrow(chore.dueDate)).toList();
-  List<Chore> get choreListOverdue =>
-      _allChores.where((chore) => _isChoreOverdue(chore.dueDate)).toList();
+  Iterable<Chore> get choresDueToday =>
+      _allChores.where((chore) => chore.dueDate == DateHelpers.getDateToday());
+  Iterable<Chore> get choresComingSoon =>
+      _allChores.where((chore) => _isChoreDueTomorrow(chore.dueDate));
+  Iterable<Chore> get choresOverdue =>
+      _allChores.where((chore) => _isChoreOverdue(chore.dueDate));
 
   bool _isChoreDueTomorrow(DateTime dueDate) {
     final dateToday = DateHelpers.getDateToday();
@@ -171,7 +176,7 @@ class ChoreProvider with ChangeNotifier {
     if (familyId != null) {
       _allChores = await _choreService.getChoresByFamily(familyId);
       _allAssignments =
-      await _assignmentService.getAssignmentsByFamily(familyId);
+          await _assignmentService.getAssignmentsByFamily(familyId);
     } else {
       _allChores = [];
       _allAssignments = [];

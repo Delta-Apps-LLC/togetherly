@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/filters_dialog.dart';
@@ -79,15 +80,15 @@ class FamilyChoresDialog extends StatelessWidget {
                 child: Column(
                   children: [
                     ChoreList(
-                      title: 'Today',
+                      type: ChoreType.today,
                     ),
                     SizedBox(height: 20.0),
                     ChoreList(
-                      title: 'Coming Soon',
+                      type: ChoreType.comingSoon,
                     ),
                     SizedBox(height: 20.0),
                     ChoreList(
-                      title: 'Overdue',
+                      type: ChoreType.overdue,
                     ),
                     SizedBox(height: 20.0),
                   ],

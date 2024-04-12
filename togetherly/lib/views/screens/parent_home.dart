@@ -108,7 +108,7 @@ class ParentHomePage extends StatelessWidget {
                 ],
               ),
               const ChoreList(
-                title: 'Today',
+                type: ChoreType.today,
               ),
               const SizedBox(height: 20.0),
             ],
