@@ -27,7 +27,7 @@ create table Reward (
   description varchar(255),
   points integer not null,
   quantity integer,
-  icon char(1) not null default '0',
+  icon varchar(4) not null default '0',
    CONSTRAINT family_id
       FOREIGN KEY(familyId)
         REFERENCES family(id)
