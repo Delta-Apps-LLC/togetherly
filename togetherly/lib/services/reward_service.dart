@@ -42,7 +42,7 @@ class RewardService {
         description: map['description'],
         points: map['points'],
         quantity: map['quantity'],
-        icon: map['icon']
+        icon: (map['icon'] as String).runes.single
       );
 
   Map<String, dynamic> _rewardToMap(Reward reward, [int? familyId]) => {
@@ -51,6 +51,6 @@ class RewardService {
         'description': reward.description,
         'points': reward.points,
         'quantity': reward.quantity,
-        'icon': reward.icon,
+        'icon': String.fromCharCode(reward.icon),
       };
 }
