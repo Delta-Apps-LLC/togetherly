@@ -8,6 +8,7 @@ import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/services/reward_redemption_service.dart';
@@ -27,6 +28,8 @@ class _AppProvidersState extends State<AppProviders> {
   final PersonService _personService = PersonService();
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
+  final ChoreCompletionService _choreCompletionService =
+      ChoreCompletionService();
   final RewardService _rewardService = RewardService();
   final RewardRedemptionService _rewardRedemptionService =
       RewardRedemptionService();
@@ -57,7 +60,10 @@ class _AppProvidersState extends State<AppProviders> {
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
             create: (_, userIdentityProvider) => ChoreProvider(
-                _choreService, _assignmentService, userIdentityProvider),
+                _choreService,
+                _assignmentService,
+                _choreCompletionService,
+                userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider,
