@@ -10,6 +10,7 @@ import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/auth_service.dart';
 import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/family_service.dart';
@@ -66,6 +67,62 @@ void main() {
 
   group("AssignmentService tests", () {
     late AssignmentService assignmentService;
+
+    setUp(() => assignmentService = AssignmentService(supabaseClient));
+
+    test('getChoresByFamily should return all chores', () async {
+      when(selectBuilder.eq('family_id', testData.familyId))
+          .thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
+        testData.getMapForChore(0, id: 5),
+        testData.getMapForChore(0, id: 6)
+      ]));
+
+      final expected = [
+        testData.getChore(0, id: 5),
+        testData.getChore(0, id: 6)
+      ];
+      final actual = await choreService.getChoresByFamily(testData.familyId);
+
+      expect(actual, expected);
+    });
+
+    test('insertChore should insert data and return chore', () async {
+      when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder)
+          .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
+
+      final expected = testData.getChore(0, id: 5);
+      final actual = await choreService.insertChore(
+          testData.familyId, testData.getChore(0));
+
+      expect(actual, expected);
+      verify(queryBuilder.insert(
+          testData.getMapForChore(0, includeFamilyId: true, includeMs: true)));
+    });
+
+    test('updateChore should update data', () async {
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await choreService.updateChore(testData.getChore(0, id: 5));
+
+      debugPrint(testData.getMapForChore(0, includeMs: true).toString());
+      verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
+    });
+
+    test('deleteChore should match against id', () async {
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await choreService.deleteChore(testData.getChore(0, id: 5));
+
+      verify(filterBuilder.match({"id": 5}));
+    });
+  });
+
+  group("AuthService tests", () {
+    late AuthService authService;
 
     setUp(() => assignmentService = AssignmentService(supabaseClient));
 
