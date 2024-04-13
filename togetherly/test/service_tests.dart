@@ -1,15 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:togetherly/models/child.dart';
-import 'package:togetherly/models/parent.dart';
-import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
-import 'package:togetherly/services/auth_service.dart';
 import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/family_service.dart';
@@ -63,7 +58,7 @@ void main() {
   });
 
   group("AssignmentService tests", () {
-    final testData = TestAssignmentGenerator();
+    const testData = TestAssignmentGenerator();
     late AssignmentService assignmentService;
 
     setUp(() => assignmentService = AssignmentService(supabaseClient));
@@ -113,7 +108,7 @@ void main() {
   });
 
   group("ChoreService tests", () {
-    final testData = TestChoreGenerator();
+    const testData = TestChoreGenerator();
     late ChoreService choreService;
 
     setUp(() => choreService = ChoreService(supabaseClient));
@@ -164,7 +159,7 @@ void main() {
   });
 
   group("ChoreCompletionService tests", () {
-    final testData = TestChoreCompletionGenerator();
+    const testData = TestChoreCompletionGenerator();
     late ChoreCompletionService completionService;
 
     setUp(() => completionService = ChoreCompletionService(supabaseClient));
@@ -217,7 +212,7 @@ void main() {
   });
 
   group("FamilyService tests", () {
-    final testData = TestFamilyGenerator();
+    const testData = TestFamilyGenerator();
     late FamilyService familyService;
 
     setUp(() => familyService = FamilyService(supabaseClient));
@@ -268,8 +263,8 @@ void main() {
   });
 
   group("PersonService tests", () {
-    final testChildren = TestChildGenerator();
-    final testParents = TestParentGenerator();
+    const testChildren = TestChildGenerator();
+    const testParents = TestParentGenerator();
     late PersonService personService;
     setUp(() => personService = PersonService(supabaseClient));
 
@@ -354,7 +349,7 @@ void main() {
   });
 
   group("RewardService tests", () {
-    final testData = TestRewardGenerator();
+    const testData = TestRewardGenerator();
     late RewardService rewardService;
 
     setUp(() => rewardService = RewardService(supabaseClient));
@@ -404,7 +399,7 @@ void main() {
   });
 
   group("RewardRedemptionService tests", () {
-    final testData = TestRewardRedemptionGenerator();
+    const testData = TestRewardRedemptionGenerator();
     late RewardRedemptionService rewardRedemptionService;
 
     setUp(() =>

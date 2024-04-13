@@ -11,7 +11,7 @@ import 'package:togetherly/models/reward_redemption.dart';
 abstract class TestDataGenerator<T> {
   final int familyId;
 
-  const TestDataGenerator([this.familyId = 12]);
+  const TestDataGenerator(int? familyId) : familyId = familyId ?? 12;
 
   T get(int testIndex);
 
@@ -19,6 +19,8 @@ abstract class TestDataGenerator<T> {
 }
 
 class TestFamilyGenerator extends TestDataGenerator<Family> {
+  const TestFamilyGenerator([super.familyId]);
+
   @override
   Family get(int testIndex, {int? id}) =>
       Family(id: id, name: "Family$testIndex");
@@ -31,6 +33,8 @@ class TestFamilyGenerator extends TestDataGenerator<Family> {
 }
 
 class TestChoreGenerator extends TestDataGenerator<Chore> {
+  const TestChoreGenerator([super.familyId]);
+
   @override
   Chore get(int testIndex, {int? id}) => Chore(
         id: id,
@@ -57,6 +61,8 @@ class TestChoreGenerator extends TestDataGenerator<Chore> {
 }
 
 class TestAssignmentGenerator extends TestDataGenerator<Assignment> {
+  const TestAssignmentGenerator([super.familyId]);
+
   @override
   Assignment get(int testIndex) => Assignment(
         personId: testIndex,
@@ -73,6 +79,8 @@ class TestAssignmentGenerator extends TestDataGenerator<Assignment> {
 }
 
 class TestChoreCompletionGenerator extends TestDataGenerator<ChoreCompletion> {
+  const TestChoreCompletionGenerator([super.familyId]);
+
   @override
   ChoreCompletion get(int testIndex, {int? id}) => ChoreCompletion(
         id: id,
@@ -112,6 +120,8 @@ const _profilePicNames = [
 ];
 
 class TestChildGenerator extends TestDataGenerator<Child> {
+  const TestChildGenerator([super.familyId]);
+
   @override
   Child get(int testIndex, {int? id}) => Child(
         id: id,
@@ -135,6 +145,8 @@ class TestChildGenerator extends TestDataGenerator<Child> {
 }
 
 class TestParentGenerator extends TestDataGenerator<Parent> {
+  const TestParentGenerator([super.familyId]);
+
   @override
   Parent get(int testIndex, {int? id}) => Parent(
         id: id,
@@ -156,6 +168,8 @@ class TestParentGenerator extends TestDataGenerator<Parent> {
 }
 
 class TestRewardGenerator extends TestDataGenerator<Reward> {
+  const TestRewardGenerator([super.familyId]);
+
   @override
   Reward get(int testIndex, {int? id}) => Reward(
         id: id,
@@ -183,6 +197,8 @@ class TestRewardGenerator extends TestDataGenerator<Reward> {
 
 class TestRewardRedemptionGenerator
     extends TestDataGenerator<RewardRedemption> {
+  const TestRewardRedemptionGenerator([super.familyId]);
+
   @override
   RewardRedemption get(int testIndex, {int? id}) => RewardRedemption(
         id: id,
