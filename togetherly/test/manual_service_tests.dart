@@ -9,6 +9,7 @@ import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/services/reward_service.dart';
 import 'package:togetherly/utilities/env.dart';
 
 import 'test_data.dart';
@@ -117,6 +118,25 @@ void main() {
       final result = await personService.insertParent(input);
       debugPrint("Result: $result");
       await personService.deletePerson(result);
+    });
+  });
+
+  group("RewardService tests", () {
+    const testData = TestRewardGenerator(1);
+    late RewardService rewardService;
+    setUp(() => rewardService = RewardService());
+
+    test('getRewardsByFamily', () async {
+      final result = await rewardService.getRewardsByFamily(testData.familyId);
+      debugPrint("Result: $result");
+    });
+
+    test('insertReward', () async {
+      final input = testData.get(0);
+      debugPrint("Input: $input");
+      final result = await rewardService.insertReward(testData.familyId, input);
+      debugPrint("Result: $result");
+      await rewardService.deleteReward(result);
     });
   });
 
