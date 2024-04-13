@@ -30,7 +30,7 @@ class ChoreProvider with ChangeNotifier {
 
   UserIdentityProvider _userIdentityProvider;
 
-  Iterable<Chore> _allChores = [];
+  List<Chore> _allChores = [];
   Iterable<Chore> get allChores => _allChores;
   Iterable<Chore> get choresDueToday =>
       _allChores.where((chore) => chore.dueDate == DateHelpers.getDateToday());
