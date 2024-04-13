@@ -15,6 +15,13 @@ import 'package:togetherly/services/reward_service.dart';
 import 'service_tests.mocks.dart';
 import 'test_data.dart';
 
+/*
+These tests are intended to be run automatically. They use mocks in place of
+any connection to an actual database. In order for the mocks to be generated,
+the following command must be run from the directory of the flutter project:
+    `dart run build_runner build`
+ */
+
 /// Helper function for stubbing the result of a query.
 ThenPostExpectation<T> whenExecuted<T>(MockPostgrestFilterBuilder<T> mock) {
   return ThenPostExpectation(
