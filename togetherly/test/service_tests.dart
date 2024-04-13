@@ -284,56 +284,84 @@ void main() {
     setUp(() => personService = PersonService(supabaseClient));
 
     test('getChildren should return all children', () async {
-      final result = await personService.getChildren(1);
-      debugPrint("$result");
+      when(selectBuilder
+              .match({'family_id': testChildren.familyId, 'is_parent': false}))
+          .thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder).thenCompleteWith(Future.value(
+          [testChildren.getMap(0, id: 5), testChildren.getMap(1, id: 6)]));
+
+      final expected = [testChildren.get(0, id: 5), testChildren.get(1, id: 6)];
+      final actual = await personService.getChildren(testChildren.familyId);
+
+      expect(actual, expected);
     });
 
     test('getParents should return all parents', () async {
-      final result = await personService.getParents(1);
-      debugPrint("$result");
+      when(selectBuilder
+              .match({'family_id': testParents.familyId, 'is_parent': true}))
+          .thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder).thenCompleteWith(Future.value(
+          [testParents.getMap(0, id: 5), testParents.getMap(1, id: 6)]));
+
+      final expected = [testParents.get(0, id: 5), testParents.get(1, id: 6)];
+      final actual = await personService.getParents(testParents.familyId);
+
+      expect(actual, expected);
     });
 
     test('insertChild should insert and return child', () async {
-      final result = await personService.insertChild(const Child(
-          familyId: 1,
-          pin: "1234",
-          name: "John",
-          icon: ProfileIcon.dog,
-          totalPoints: 10));
-      debugPrint("$result");
-      await personService.deletePerson(result);
+      when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder)
+          .thenCompleteWith(Future.value([testChildren.getMap(2, id: 5)]));
+
+      final expected = testChildren.get(2, id: 5);
+      final actual = await personService.insertChild(testChildren.get(2));
+
+      expect(actual, expected);
+      verify(queryBuilder.insert(testChildren.getMap(2)));
     });
 
     test('insertParent should insert and return parent', () async {
-      final result = await personService.insertParent(const Parent(
-          familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
-      debugPrint("$result");
-      await personService.deletePerson(result);
+      when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
+      whenExecuted(selectBuilder)
+          .thenCompleteWith(Future.value([testParents.getMap(2, id: 5)]));
+
+      final expected = testParents.get(2, id: 5);
+      final actual = await personService.insertParent(testParents.get(2));
+
+      expect(actual, expected);
+      verify(queryBuilder.insert(testParents.getMap(2)));
     });
 
     test('updateChild should update child', () async {
-      await personService.updateChild(const Child(
-          familyId: 1,
-          pin: "1234",
-          name: "John",
-          icon: ProfileIcon.dog,
-          totalPoints: 10));
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await personService.updateChild(testChildren.get(3, id: 5));
+
+      verify(queryBuilder.update(testChildren.getMap(3)));
     });
 
     test('updateParent should update parent', () async {
-      await personService.updateParent(const Parent(
-          familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await personService.updateParent(testParents.get(3, id: 5));
+
+      verify(queryBuilder.update(testParents.getMap(3)));
     });
 
     test('deletePerson should match against id', () async {
-      await personService.deletePerson(const Child(
-          familyId: 1,
-          pin: "1234",
-          name: "John",
-          icon: ProfileIcon.dog,
-          totalPoints: 10));
+      when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
+      whenExecuted(filterBuilder).thenCompleteWith(Future.value());
+
+      await personService.deletePerson(testChildren.get(4, id: 5));
+      await personService.deletePerson(testParents.get(5, id: 6));
+
+      verify(filterBuilder.match({"id": 5}));
+      verify(filterBuilder.match({"id": 6}));
     });
-  }, skip: "Not yet finished");
+  });
 
   group("RewardService tests", () {
     final testData = TestRewardGenerator();
