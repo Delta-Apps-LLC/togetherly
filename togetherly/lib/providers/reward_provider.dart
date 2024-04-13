@@ -49,13 +49,25 @@ class RewardProvider with ChangeNotifier {
   }
 
   Future<void> redeemReward(Reward reward, int quantity, Child child) async {
-    if(reward.quantity > quantity) {
-      await updateReward(reward.copyWith(quantity: (reward.quantity - quantity)));
-    } else if(reward.quantity == quantity) {
-      await _service.deleteReward(reward);
+    final newQuantity = reward.quantity - quantity;
+    final newPoints = child.totalPoints - (quantity * reward.points);
+
+    if (newQuantity >= 0 && newPoints >= 0) {
+      await updateReward(reward.copyWith(quantity: newQuantity));
+      await _personProvider
+          .updatePerson(child.copyWith(totalPoints: newPoints));
+      await _redemptionService.insertRewardRedemption(RewardRedemption(
+        rewardId: reward.id!,
+        childId: child.id!,
+        quantity: quantity,
+        timestamp: DateTime.now(),
+      ));
+      refresh();
+    } else if (newPoints >= 0) {
+      throw Exception("Not enough quantity remaining");
+    } else {
+      throw Exception("Not enough points available");
     }
-    await _personProvider.updatePerson(child.copyWith(totalPoints: child.totalPoints - (quantity * reward.points)));
-    await _redemptionService.insertRewardRedemption(RewardRedemption(rewardId: reward.id!, childId: child.id!, quantity: quantity, timestamp: DateTime.now()));
   }
 
   Future<void> refresh() async {
