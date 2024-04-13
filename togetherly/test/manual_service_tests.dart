@@ -6,6 +6,7 @@ import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
+import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/utilities/env.dart';
@@ -28,19 +29,77 @@ void main() {
         url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
   });
 
+  group("AssignmentService tests", () {
+    const testChildren = TestChildGenerator(1);
+    const testChores = TestChoreGenerator(1);
+    const testData = TestAssignmentGenerator(1);
+    late PersonService personService;
+    late ChoreService choreService;
+    late AssignmentService assignmentService;
+
+    setUp(() {
+      personService = PersonService();
+      choreService = ChoreService();
+      assignmentService = AssignmentService();
+    });
+
+    test('getAssignmentsByFamily', () async {
+      final result =
+          await assignmentService.getAssignmentsByFamily(testData.familyId);
+      debugPrint("Result: $result");
+    });
+
+    test('insertAssignment', () async {
+      final child = await personService.insertChild(testChildren.get(0));
+      final chore = await choreService.insertChore(
+          testChores.familyId, testChores.get(0));
+
+      final input =
+          testData.get(1).copyWith(personId: child.id, choreId: chore.id);
+      debugPrint("Input: $input");
+      final result = await assignmentService.insertAssignment(input);
+      debugPrint("Result: $result");
+      await assignmentService.deleteAssignment(result);
+
+      await choreService.deleteChore(chore);
+      await personService.deletePerson(child);
+    });
+  });
+
+  group("ChoreService tests", () {
+    const testData = TestChoreGenerator(1);
+    late ChoreService choreService;
+
+    setUp(() => choreService = ChoreService());
+
+    test('getChoresByFamily', () async {
+      final result = await choreService.getChoresByFamily(1);
+      debugPrint("Result: $result");
+    });
+
+    test('insertChore', () async {
+      final input = testData.get(0);
+      debugPrint("Input: $input");
+      final result = await choreService.insertChore(testData.familyId, input);
+      debugPrint("Result: $result");
+      await choreService.deleteChore(result);
+    });
+  });
+
   group("PersonService tests", () {
     const testChildren = TestChildGenerator(1);
     const testParents = TestParentGenerator(1);
     late PersonService personService;
+
     setUp(() => personService = PersonService());
 
     test('getChildren', () async {
-      final result = await personService.getChildren(1);
+      final result = await personService.getChildren(testChildren.familyId);
       debugPrint("Result: $result");
     });
 
     test('getParents', () async {
-      final result = await personService.getParents(1);
+      final result = await personService.getParents(testParents.familyId);
       debugPrint("Result: $result");
     });
 
@@ -58,25 +117,6 @@ void main() {
       final result = await personService.insertParent(input);
       debugPrint("Result: $result");
       await personService.deletePerson(result);
-    });
-  });
-
-  group("ChoreService tests", () {
-    const testData = TestChoreGenerator(1);
-    late ChoreService choreService;
-    setUp(() => choreService = ChoreService());
-
-    test('getChoresByFamily', () async {
-      final result = await choreService.getChoresByFamily(1);
-      debugPrint("Result: $result");
-    });
-
-    test('insertChore', () async {
-      final input = testData.get(0);
-      debugPrint("Input: $input");
-      final result = await choreService.insertChore(testData.familyId, input);
-      debugPrint("Result: $result");
-      await choreService.deleteChore(result);
     });
   });
 
