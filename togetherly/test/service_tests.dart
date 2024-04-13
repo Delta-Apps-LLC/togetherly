@@ -82,7 +82,7 @@ void main() {
         testData.getChore(0, id: 5),
         testData.getChore(0, id: 6)
       ];
-      final actual = await choreService.getChoresByFamily(testData.familyId);
+      final actual = await assignmentService.getAssignmentsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -93,7 +93,7 @@ void main() {
           .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
       final expected = testData.getChore(0, id: 5);
-      final actual = await choreService.insertChore(
+      final actual = await assignmentService.insertAssignment(
           testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
@@ -105,7 +105,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.getChore(0, id: 5));
+      await assignmentService.updateAssignment(testData.getChore(0, id: 5));
 
       debugPrint(testData.getMapForChore(0, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
@@ -115,7 +115,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.getChore(0, id: 5));
+      await assignmentService.deleteAssignment(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -200,7 +200,7 @@ void main() {
         testData.getChore(0, id: 5),
         testData.getChore(0, id: 6)
       ];
-      final actual = await choreService.getChoresByFamily(testData.familyId);
+      final actual = await choreCompletionService.getChoreCompletionsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -211,7 +211,7 @@ void main() {
           .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
       final expected = testData.getChore(0, id: 5);
-      final actual = await choreService.insertChore(
+      final actual = await choreCompletionService.insertChoreCompletion(
           testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
@@ -223,7 +223,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.getChore(0, id: 5));
+      await choreCompletionService.updateChoreCompletion(testData.getChore(0, id: 5));
 
       debugPrint(testData.getMapForChore(0, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
@@ -233,7 +233,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.getChore(0, id: 5));
+      await choreCompletionService.deleteChoreCompletion(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -256,7 +256,7 @@ void main() {
         testData.getChore(0, id: 5),
         testData.getChore(0, id: 6)
       ];
-      final actual = await choreService.getChoresByFamily(testData.familyId);
+      final actual = await familyService.getFamilyName(testData.familyId);
 
       expect(actual, expected);
     });
@@ -267,7 +267,7 @@ void main() {
           .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
       final expected = testData.getChore(0, id: 5);
-      final actual = await choreService.insertChore(
+      final actual = await familyService.insertFamily(
           testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
@@ -279,7 +279,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.getChore(0, id: 5));
+      await familyService.updateFamilyName(testData.getChore(0, id: 5));
 
       debugPrint(testData.getMapForChore(0, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
@@ -289,7 +289,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.getChore(0, id: 5));
+      await familyService.deleteFamily(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -328,7 +328,7 @@ void main() {
     });
 
     test('updateChild should update child', () async {
-      final result = await personService.insertChild(const Child(
+      final result = await personService.updateChild(const Child(
           familyId: 1,
           pin: "1234",
           name: "John",
@@ -339,14 +339,14 @@ void main() {
     });
 
     test('updateParent should update parent', () async {
-      final result = await personService.insertParent(const Parent(
+      final result = await personService.updateParent(const Parent(
           familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
       debugPrint("$result");
       await personService.deletePerson(result);
     });
 
     test('deletePerson should match against id', () async {
-      final result = await personService.insertChild(const Child(
+      final result = await personService.deletePerson(const Child(
           familyId: 1,
           pin: "1234",
           name: "John",
@@ -374,7 +374,7 @@ void main() {
         testData.getChore(0, id: 5),
         testData.getChore(0, id: 6)
       ];
-      final actual = await choreService.getChoresByFamily(testData.familyId);
+      final actual = await rewardService.getRewardsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -385,7 +385,7 @@ void main() {
           .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
       final expected = testData.getChore(0, id: 5);
-      final actual = await choreService.insertChore(
+      final actual = await rewardService.insertReward(
           testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
@@ -397,7 +397,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.getChore(0, id: 5));
+      await rewardService.updateReward(testData.getChore(0, id: 5));
 
       debugPrint(testData.getMapForChore(0, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
@@ -407,7 +407,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.getChore(0, id: 5));
+      await rewardService.deleteReward(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -430,7 +430,7 @@ void main() {
         testData.getChore(0, id: 5),
         testData.getChore(0, id: 6)
       ];
-      final actual = await choreService.getChoresByFamily(testData.familyId);
+      final actual = await rewardRedemptionService.getRewardRedemptionsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -441,7 +441,7 @@ void main() {
           .thenCompleteWith(Future.value([testData.getMapForChore(0, id: 5)]));
 
       final expected = testData.getChore(0, id: 5);
-      final actual = await choreService.insertChore(
+      final actual = await rewardRedemptionService.insertRewardRedemption(
           testData.familyId, testData.getChore(0));
 
       expect(actual, expected);
@@ -453,7 +453,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.getChore(0, id: 5));
+      await rewardRedemptionService.updateRewardRedemption(testData.getChore(0, id: 5));
 
       debugPrint(testData.getMapForChore(0, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMapForChore(0, includeMs: true)));
@@ -463,7 +463,7 @@ void main() {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.getChore(0, id: 5));
+      await rewardRedemptionService.deleteRewardRedemption(testData.getChore(0, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
