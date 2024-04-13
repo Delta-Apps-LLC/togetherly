@@ -112,12 +112,6 @@ void main() {
     });
   });
 
-  group("AuthService tests", () {
-    late AuthService authService;
-
-    setUp(() => authService = AuthService(supabaseClient));
-  });
-
   group("ChoreService tests", () {
     final testData = TestChoreGenerator();
     late ChoreService choreService;
