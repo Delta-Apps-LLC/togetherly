@@ -36,7 +36,6 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_choreIdToPersonIds].
   Map<int, Set<int>>? _choreIdToPersonIdsCache;
-
   /// Helper map for getting the set of person IDs assigned to a chore.
   Map<int, Set<int>> get _choreIdToPersonIds =>
       _choreIdToPersonIdsCache ??= _allAssignments.groupFoldBy(
@@ -44,7 +43,6 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_personIdToChoreIds].
   Map<int, Set<int>>? _personIdToChoreIdsCache;
-
   /// Helper map for getting the set of chore IDs assigned to a person.
   Map<int, Set<int>> get _personIdToChoreIds =>
       _personIdToChoreIdsCache ??= _allAssignments.groupFoldBy(
