@@ -1,4 +1,59 @@
+import 'package:togetherly/models/assignment.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/chore.dart';
+import 'package:togetherly/models/chore_completion.dart';
+import 'package:togetherly/models/family.dart';
+import 'package:togetherly/models/parent.dart';
+import 'package:togetherly/models/reward.dart';
+import 'package:togetherly/models/reward_redemption.dart';
+
+abstract class TestDataGenerator<T> {
+  final int familyId;
+
+  const TestDataGenerator([this.familyId = 12]);
+
+  T get(int testIndex);
+
+  Map<String, dynamic> getMap(int testIndex);
+}
+
+abstract class TestDataWithIdGenerator<T> extends TestDataGenerator<T> {
+  T getWithId(int testIndex, int id);
+
+  Map<String, dynamic> getMapWithId(int testIndex, [bool includeFamilyId = false]);
+}
+
+class TestFamilyGenerator extends TestDataWithIdGenerator<Family> {
+
+}
+
+class TestChoreGenerator extends TestDataWithIdGenerator<Chore> {
+
+}
+
+class TestAssignmentGenerator extends TestDataGenerator<Assignment> {
+
+}
+
+class TestChoreCompletionGenerator extends TestDataWithIdGenerator<ChoreCompletion> {
+
+}
+
+class TestChildGenerator extends TestDataWithIdGenerator<Child> {
+
+}
+
+class TestParentGenerator extends TestDataWithIdGenerator<Parent> {
+
+}
+
+class TestRewardGenerator extends TestDataWithIdGenerator<Reward> {
+
+}
+
+class TestRewardRedemptionGenerator extends TestDataWithIdGenerator<RewardRedemption> {
+
+}
 
 class TestData {
   final int familyId;
