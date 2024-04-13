@@ -11,7 +11,12 @@ import 'package:togetherly/services/reward_service.dart';
 import '../models/child.dart';
 
 class RewardProvider with ChangeNotifier {
-  RewardProvider(this._service, this._userIdentityProvider, this._personProvider, this._redemptionService) {
+  RewardProvider(
+    this._service,
+    this._redemptionService,
+    this._userIdentityProvider,
+    this._personProvider,
+  ) {
     log("RewardProvider created");
     refresh();
   }
@@ -20,7 +25,7 @@ class RewardProvider with ChangeNotifier {
   final RewardRedemptionService _redemptionService;
 
   UserIdentityProvider _userIdentityProvider;
-  final PersonProvider _personProvider;
+  PersonProvider _personProvider;
 
   List<Reward> _rewards = [];
   Iterable<Reward> get rewards => _rewards;
@@ -64,8 +69,10 @@ class RewardProvider with ChangeNotifier {
     log("RewardProvider refreshed!");
   }
 
-  void updateDependencies(UserIdentityProvider userIdentityProvider) {
+  void updateDependencies(UserIdentityProvider userIdentityProvider,
+      PersonProvider personProvider) {
     _userIdentityProvider = userIdentityProvider;
+    _personProvider = personProvider;
     refresh();
   }
 }

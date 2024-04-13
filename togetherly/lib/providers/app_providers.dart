@@ -28,7 +28,8 @@ class _AppProvidersState extends State<AppProviders> {
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
   final RewardService _rewardService = RewardService();
-  final RewardRedemptionService _rewardRedemptionService = RewardRedemptionService();
+  final RewardRedemptionService _rewardRedemptionService =
+      RewardRedemptionService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,8 @@ class _AppProvidersState extends State<AppProviders> {
         //     update: (_, otherProvider, previous) =>
         //         previous.updateDependencies(otherProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, PersonProvider>(
-            create: (_, userIdentityProvider) => PersonProvider(
-                _personService, userIdentityProvider),
+            create: (_, userIdentityProvider) =>
+                PersonProvider(_personService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
@@ -59,11 +60,15 @@ class _AppProvidersState extends State<AppProviders> {
                 _choreService, _assignmentService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
-        SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
-          create: (_, userIdentityProvider) =>
-              RewardProvider(_rewardService, userIdentityProvider, PersonProvider(_personService,userIdentityProvider), _rewardRedemptionService),
-          update: (_, userIdentityProvider, previous) =>
-              previous.updateDependencies(userIdentityProvider),
+        SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider,
+            RewardProvider>(
+          create: (_, userIdentityProvider, personProvider) => RewardProvider(
+              _rewardService,
+              _rewardRedemptionService,
+              userIdentityProvider,
+              personProvider),
+          update: (_, userIdentityProvider, personProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider, personProvider),
         ),
 
         // Add to this section any providers that only transform the state of
