@@ -126,6 +126,7 @@ class TestChildGenerator extends TestDataGenerator<Child> {
   Map<String, dynamic> getMap(int testIndex, {int? id}) => {
         if (id != null) "id": id,
         "family_id": familyId,
+        "is_parent": false,
         "pin": "1234${testIndex % 9}",
         "name": "Child$testIndex",
         "profile_pic": _profilePicNames[testIndex % 12],
@@ -147,6 +148,7 @@ class TestParentGenerator extends TestDataGenerator<Parent> {
   Map<String, dynamic> getMap(int testIndex, {int? id}) => {
         if (id != null) "id": id,
         "family_id": familyId,
+        "is_parent": true,
         "pin": "1234${testIndex % 9}",
         "name": "Parent$testIndex",
         "profile_pic": _profilePicNames[testIndex % 12],
