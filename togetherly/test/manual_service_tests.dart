@@ -36,23 +36,27 @@ void main() {
 
     test('getChildren', () async {
       final result = await personService.getChildren(1);
-      debugPrint("$result");
+      debugPrint("Result: $result");
     });
 
     test('getParents', () async {
       final result = await personService.getParents(1);
-      debugPrint("$result");
+      debugPrint("Result: $result");
     });
 
     test('insertChild', () async {
-      final result = await personService.insertChild(testChildren.get(0));
-      debugPrint("$result");
+      final input = testChildren.get(0);
+      debugPrint("Input: $input");
+      final result = await personService.insertChild(input);
+      debugPrint("Result: $result");
       await personService.deletePerson(result);
     });
 
     test('insertParent', () async {
-      final result = await personService.insertParent(testParents.get(0));
-      debugPrint("$result");
+      final input = testParents.get(0);
+      debugPrint("Input: $input");
+      final result = await personService.insertParent(input);
+      debugPrint("Result: $result");
       await personService.deletePerson(result);
     });
   });
@@ -64,13 +68,14 @@ void main() {
 
     test('getChoresByFamily', () async {
       final result = await choreService.getChoresByFamily(1);
-      debugPrint("$result");
+      debugPrint("Result: $result");
     });
 
     test('insertChore', () async {
-      final result =
-          await choreService.insertChore(testData.familyId, testData.get(1));
-      debugPrint("$result");
+      final input = testData.get(0);
+      debugPrint("Input: $input");
+      final result = await choreService.insertChore(testData.familyId, input);
+      debugPrint("Result: $result");
       await choreService.deleteChore(result);
     });
   });
