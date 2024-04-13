@@ -12,7 +12,7 @@ import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
-import 'service_tests.mocks.dart';
+import 'services_test.mocks.dart';
 import 'test_data.dart';
 
 /*
