@@ -6,6 +6,7 @@ import 'package:togetherly/models/family.dart';
 import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/reward.dart';
 import 'package:togetherly/models/reward_redemption.dart';
+import 'package:togetherly/utilities/value.dart';
 
 abstract class TestDataGenerator<T> {
   final int familyId;
@@ -17,50 +18,13 @@ abstract class TestDataGenerator<T> {
   Map<String, dynamic> getMap(int testIndex);
 }
 
-abstract class TestDataWithIdGenerator<T> extends TestDataGenerator<T> {
-  T getWithId(int testIndex, int id);
-
-  Map<String, dynamic> getMapWithId(int testIndex, [bool includeFamilyId = false]);
-}
-
-class TestFamilyGenerator extends TestDataWithIdGenerator<Family> {
+class TestFamilyGenerator extends TestDataGenerator<Family> {
 
 }
 
-class TestChoreGenerator extends TestDataWithIdGenerator<Chore> {
-
-}
-
-class TestAssignmentGenerator extends TestDataGenerator<Assignment> {
-
-}
-
-class TestChoreCompletionGenerator extends TestDataWithIdGenerator<ChoreCompletion> {
-
-}
-
-class TestChildGenerator extends TestDataWithIdGenerator<Child> {
-
-}
-
-class TestParentGenerator extends TestDataWithIdGenerator<Parent> {
-
-}
-
-class TestRewardGenerator extends TestDataWithIdGenerator<Reward> {
-
-}
-
-class TestRewardRedemptionGenerator extends TestDataWithIdGenerator<RewardRedemption> {
-
-}
-
-class TestData {
-  final int familyId;
-
-  const TestData([this.familyId = 12]);
-
-  Chore getChore(int testIndex, {int? id}) => Chore(
+class TestChoreGenerator extends TestDataGenerator<Chore> {
+  @override
+  Chore get(int testIndex, {int? id}) => Chore(
     id: id,
     title: "Title$testIndex",
     description: "Description$testIndex",
@@ -69,15 +33,39 @@ class TestData {
     isShared: testIndex % 2 == 0,
   );
 
-  Map<String, dynamic> getMapForChore(int testIndex, {int? id, bool includeFamilyId = false, includeMs = false}) => {
+  @override
+  Map<String, dynamic> getMap(int testIndex, {int? id, bool includeFamilyId = false, includeMs = false}) => {
     if (id != null) "id": id,
     if (includeFamilyId) "family_id": familyId,
     "title": "Title$testIndex",
     "description": "Description$testIndex",
     "points": 42 + testIndex,
     "shared": testIndex % 2 == 0,
-    "date_due": "${2040 + testIndex}-01-01 00:00:00${includeMs ? '.000' : ''}",
+    "date_due":
+    "${2040 + testIndex}-01-01 00:00:00${includeMs ? '.000' : ''}",
   };
+}
 
+class TestAssignmentGenerator extends TestDataGenerator<Assignment> {
+
+}
+
+class TestChoreCompletionGenerator extends TestDataGenerator<ChoreCompletion> {
+
+}
+
+class TestChildGenerator extends TestDataGenerator<Child> {
+
+}
+
+class TestParentGenerator extends TestDataGenerator<Parent> {
+
+}
+
+class TestRewardGenerator extends TestDataGenerator<Reward> {
+
+}
+
+class TestRewardRedemptionGenerator extends TestDataGenerator<RewardRedemption> {
 
 }
