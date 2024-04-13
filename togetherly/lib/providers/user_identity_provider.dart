@@ -1,17 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:togetherly/providers/auth_provider.dart';
 
 class UserIdentityProvider with ChangeNotifier {
-  UserIdentityProvider() {
+  UserIdentityProvider(this._authProvider) {
     log("UserProvider created");
-    // TODO: Remove temporary hard-coded IDs once authentication is done.
-    _familyId = 1;
-    // Child:
-    // _personId = 3;
-    // Parent:
-    _personId = 4;
+    refresh();
   }
+
+  AuthProvider _authProvider;
 
   int? _familyId;
   int? get familyId => _familyId;
@@ -19,16 +17,20 @@ class UserIdentityProvider with ChangeNotifier {
   int? _personId;
   int? get personId => _personId;
 
-  void setIdentity(int familyId, int personId) {
-    _familyId = familyId;
+  Future<void> setPersonId(int? personId) async {
     _personId = personId;
     notifyListeners();
   }
 
-  void clearIdentity() {
-    _familyId = null;
-    _personId = null;
+  Future<void> refresh() async {
+    _familyId = _authProvider.user?.userMetadata?['family_id'];
     notifyListeners();
+    log("UserProvider refreshed!");
+  }
+
+  void updateDependencies(AuthProvider authProvider) {
+    _authProvider = authProvider;
+    refresh();
   }
 
   // TODO:

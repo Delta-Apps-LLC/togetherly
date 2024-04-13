@@ -29,15 +29,18 @@ class PersonService {
     return _mapToParent(
       (await Supabase.instance.client
               .from(_personTable)
-              .insert({_parentToMap(parent)}).select())
+              .insert(_parentToMap(parent)).select())
           .single,
     );
   }
 
-  Future<void> insertChild(Child child) async {
-    await Supabase.instance.client
-        .from(_personTable)
-        .insert({_childToMap(child)});
+  Future<Child> insertChild(Child child) async {
+    return _mapToChild(
+      (await Supabase.instance.client
+              .from(_personTable)
+              .insert(_childToMap(child)).select())
+          .single,
+    );
   }
 
   Future<void> deletePerson(Person person) async {
@@ -71,7 +74,6 @@ class PersonService {
       );
 
   Map<String, dynamic> _childToMap(Child child) => {
-        'id': child.id,
         'family_id': child.familyId,
         'pin': child.pin,
         'name': child.name,
@@ -89,7 +91,6 @@ class PersonService {
       );
 
   Map<String, dynamic> _parentToMap(Parent parent) => {
-        'id': parent.id,
         'family_id': parent.familyId,
         'pin': parent.pin,
         'name': parent.name,
