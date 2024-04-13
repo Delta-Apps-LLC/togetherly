@@ -34,4 +34,29 @@ class ChoreCompletion {
         dueDate: dueDate ?? this.dueDate,
         isApproved: isApproved ?? this.isApproved,
       );
+
+  @override
+  String toString() =>
+      'ChoreCompletion(id: $id, choreId: $choreId, childId: $childId, dateSubmitted: $dateSubmitted, dueDate: $dueDate, isApproved: $isApproved)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChoreCompletion &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          choreId == other.choreId &&
+          childId == other.childId &&
+          dateSubmitted == other.dateSubmitted &&
+          dueDate == other.dueDate &&
+          isApproved == other.isApproved;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      choreId.hashCode ^
+      childId.hashCode ^
+      dateSubmitted.hashCode ^
+      dueDate.hashCode ^
+      isApproved.hashCode;
 }

@@ -38,7 +38,7 @@ class Reward {
 
   @override
   String toString() =>
-      'Reward(id: $id, title: "$title", description: "$description", points: $points, quantity: $quantity)';
+      'Reward(id: $id, title: "$title", description: "$description", points: $points, quantity: $quantity, icon: "${String.fromCharCode(icon)}")';
 
   @override
   bool operator ==(Object other) =>
@@ -49,7 +49,8 @@ class Reward {
           title == other.title &&
           description == other.description &&
           points == other.points &&
-          quantity == other.quantity;
+          quantity == other.quantity &&
+          icon == other.icon;
 
   @override
   int get hashCode =>
@@ -57,5 +58,6 @@ class Reward {
       title.hashCode ^
       description.hashCode ^
       points.hashCode ^
-      quantity.hashCode;
+      quantity.hashCode ^
+      icon.hashCode;
 }

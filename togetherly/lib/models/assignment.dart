@@ -30,4 +30,16 @@ class Assignment {
   @override
   String toString() =>
       'Assignment(personId: $personId, choreId: $choreId, status: $status)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Assignment &&
+          runtimeType == other.runtimeType &&
+          personId == other.personId &&
+          choreId == other.choreId &&
+          status == other.status;
+
+  @override
+  int get hashCode => personId.hashCode ^ choreId.hashCode ^ status.hashCode;
 }
