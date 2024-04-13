@@ -11,6 +11,7 @@ import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
 class AppProviders extends StatefulWidget {
@@ -27,9 +28,11 @@ class _AppProvidersState extends State<AppProviders> {
   final PersonService _personService = PersonService();
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
-  final RewardService _rewardService = RewardService();
   final ChoreCompletionService _choreCompletionService =
       ChoreCompletionService();
+  final RewardService _rewardService = RewardService();
+  final RewardRedemptionService _rewardRedemptionService =
+      RewardRedemptionService();
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +66,15 @@ class _AppProvidersState extends State<AppProviders> {
                 userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
-        SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
-          create: (_, userIdentityProvider) =>
-              RewardProvider(_rewardService, userIdentityProvider),
-          update: (_, userIdentityProvider, previous) =>
-              previous.updateDependencies(userIdentityProvider),
+        SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider,
+            RewardProvider>(
+          create: (_, userIdentityProvider, personProvider) => RewardProvider(
+              _rewardService,
+              _rewardRedemptionService,
+              userIdentityProvider,
+              personProvider),
+          update: (_, userIdentityProvider, personProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider, personProvider),
         ),
 
         // Add to this section any providers that only transform the state of
