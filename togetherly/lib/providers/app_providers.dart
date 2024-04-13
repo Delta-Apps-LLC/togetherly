@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:togetherly/models/family.dart';
 import 'package:togetherly/providers/auth_provider.dart';
-
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/family_provider.dart';
 import 'package:togetherly/providers/person_provider.dart';
@@ -12,9 +10,11 @@ import 'package:togetherly/providers/simple_change_notifier_proxy_provider.dart'
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/auth_service.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/family_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 
 class AppProviders extends StatefulWidget {
@@ -31,7 +31,11 @@ class _AppProvidersState extends State<AppProviders> {
   final PersonService _personService = PersonService();
   final ChoreService _choreService = ChoreService();
   final AssignmentService _assignmentService = AssignmentService();
+  final ChoreCompletionService _choreCompletionService =
+      ChoreCompletionService();
   final RewardService _rewardService = RewardService();
+  final RewardRedemptionService _rewardRedemptionService =
+      RewardRedemptionService();
   final AuthService _authService = AuthService();
   final FamilyService _familyService = FamilyService();
 
@@ -66,14 +70,21 @@ class _AppProvidersState extends State<AppProviders> {
                 previous.updateDependencies(userIdentityProvider)),
         SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
             create: (_, userIdentityProvider) => ChoreProvider(
-                _choreService, _assignmentService, userIdentityProvider),
+                _choreService,
+                _assignmentService,
+                _choreCompletionService,
+                userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
-        SimpleChangeNotifierProxyProvider<UserIdentityProvider, RewardProvider>(
-          create: (_, userIdentityProvider) =>
-              RewardProvider(_rewardService, userIdentityProvider),
-          update: (_, userIdentityProvider, previous) =>
-              previous.updateDependencies(userIdentityProvider),
+        SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider,
+            RewardProvider>(
+          create: (_, userIdentityProvider, personProvider) => RewardProvider(
+              _rewardService,
+              _rewardRedemptionService,
+              userIdentityProvider,
+              personProvider),
+          update: (_, userIdentityProvider, personProvider, previous) =>
+              previous.updateDependencies(userIdentityProvider, personProvider),
         ),
         SimpleChangeNotifierProxyProvider2<UserIdentityProvider, AuthProvider, FamilyProvider>(
             create: (_, userIdentityProvider, authProvider) => FamilyProvider(
