@@ -10,7 +10,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ScaffoldProvider>(
-        builder: (context, provider, child) => switch (provider.homePageType) {
+        builder: (context, provider, child) =>
+            switch (provider.homePageType) {
               HomePageType.parent => const ParentHomePage(),
               HomePageType.child => const ChildHomePage()
             });

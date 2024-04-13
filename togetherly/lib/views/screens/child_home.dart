@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/edit_chore_dialog.dart';
@@ -41,8 +42,17 @@ class ChildHomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10.0),
-            const ChoreList(),
+            const ChoreList(
+              type: ChoreType.today,
+            ),
+            const SizedBox(height: 20.0),
+            const ChoreList(
+              type: ChoreType.comingSoon,
+            ),
+            const SizedBox(height: 20.0),
+            const ChoreList(
+              type: ChoreType.overdue,
+            ),
             const SizedBox(height: 20.0),
           ],
         ),
