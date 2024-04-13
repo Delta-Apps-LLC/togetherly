@@ -4,8 +4,13 @@ import 'package:togetherly/models/chore.dart';
 class ChoreService {
   static const String _choreTable = "chore";
 
+  ChoreService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<List<Chore>> getChoresByFamily(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_choreTable)
         .select("id, title, description, points, shared, date_due")
         .eq("family_id", familyId);
@@ -13,9 +18,8 @@ class ChoreService {
   }
 
   Future<Chore> insertChore(int familyId, Chore chore) async {
-    //Service function call and pass chore
     return _mapToChore(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_choreTable)
               .insert(_choreToMap(chore, familyId))
               .select())
@@ -24,16 +28,11 @@ class ChoreService {
   }
 
   Future<void> deleteChore(Chore chore) async {
-    //await
-    await Supabase.instance.client
-        .from(_choreTable)
-        .delete()
-        .match({'id': chore.id});
+    await _supabaseClient.from(_choreTable).delete().match({'id': chore.id});
   }
 
   Future<void> updateChore(Chore chore) async {
-    //Query by choreID
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_choreTable)
         .update(_choreToMap(chore))
         .match({'id': chore.id});

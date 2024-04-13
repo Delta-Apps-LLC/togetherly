@@ -5,8 +5,13 @@ class ChoreCompletionService {
   static const String _completionTable = "chore_completion";
   static const String _familyCompletionView = "family_chore_completion";
 
+  ChoreCompletionService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<List<ChoreCompletion>> getChoreCompletionsByFamily(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_familyCompletionView)
         .select(
             'id, chore_id, person_id, date_submitted, due_date, is_approved')
@@ -16,7 +21,7 @@ class ChoreCompletionService {
 
   Future<ChoreCompletion> insertChoreCompletion(ChoreCompletion completion) async {
     return _mapToChoreCompletion(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_completionTable)
               .insert(_choreCompletionToMap(completion))
               .select())
@@ -25,14 +30,14 @@ class ChoreCompletionService {
   }
 
   Future<void> deleteChoreCompletion(ChoreCompletion completion) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_completionTable)
         .delete()
         .match({'id': completion.id});
   }
 
   Future<void> updateChoreCompletion(ChoreCompletion completion) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_completionTable)
         .update(_choreCompletionToMap(completion))
         .match({'id': completion.id});
