@@ -31,7 +31,6 @@ class PersonProvider with ChangeNotifier {
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
-      Person? person;
       if (person is Parent) {
         person = await _service.insertParent(person);
       } else if (person is Child) {
