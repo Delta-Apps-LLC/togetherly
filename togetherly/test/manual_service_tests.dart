@@ -10,6 +10,15 @@ import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/utilities/env.dart';
 
+import 'test_data.dart';
+
+/*
+These tests are intended to be run manually as a type of integration test, as
+they perform actual database read and write operations. These cover a more
+limited subset of the functionality of the services, but should be sufficient
+to ensure that the services can read and write to the actual database properly.
+ */
+
 void main() {
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -20,6 +29,8 @@ void main() {
   });
 
   group("PersonService tests", () {
+    const testChildren = TestChildGenerator(1);
+    const testParents = TestParentGenerator(1);
     late PersonService personService;
     setUp(() => personService = PersonService());
 
@@ -34,25 +45,20 @@ void main() {
     });
 
     test('insertChild', () async {
-      final result = await personService.insertChild(const Child(
-          familyId: 1,
-          pin: "1234",
-          name: "John",
-          icon: ProfileIcon.dog,
-          totalPoints: 10));
+      final result = await personService.insertChild(testChildren.get(0));
       debugPrint("$result");
       await personService.deletePerson(result);
     });
 
     test('insertParent', () async {
-      final result = await personService.insertParent(const Parent(
-          familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
+      final result = await personService.insertParent(testParents.get(0));
       debugPrint("$result");
       await personService.deletePerson(result);
     });
   });
 
   group("ChoreService tests", () {
+    const testData = TestChoreGenerator(1);
     late ChoreService choreService;
     setUp(() => choreService = ChoreService());
 
@@ -62,14 +68,8 @@ void main() {
     });
 
     test('insertChore', () async {
-      final result = await choreService.insertChore(
-          1,
-          Chore(
-            title: "Test",
-            dueDate: DateTime(2030),
-            points: 10,
-            isShared: true,
-          ));
+      final result =
+          await choreService.insertChore(testData.familyId, testData.get(1));
       debugPrint("$result");
       await choreService.deleteChore(result);
     });
