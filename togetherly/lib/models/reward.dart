@@ -35,4 +35,29 @@ class Reward {
         quantity: quantity ?? this.quantity,
         icon: icon ?? this.icon,
       );
+
+  @override
+  String toString() =>
+      'Reward(id: $id, title: "$title", description: "$description", points: $points, quantity: $quantity, icon: "${String.fromCharCode(icon)}")';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Reward &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          title == other.title &&
+          description == other.description &&
+          points == other.points &&
+          quantity == other.quantity &&
+          icon == other.icon;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
+      points.hashCode ^
+      quantity.hashCode ^
+      icon.hashCode;
 }

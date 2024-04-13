@@ -30,4 +30,27 @@ class RewardRedemption {
         quantity: quantity ?? this.quantity,
         timestamp: timestamp ?? this.timestamp,
       );
+
+  @override
+  String toString() =>
+      'RewardRedemption(id: $id, rewardId: $rewardId, childId: $childId, quantity: $quantity, timestamp: $timestamp)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RewardRedemption &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          rewardId == other.rewardId &&
+          childId == other.childId &&
+          quantity == other.quantity &&
+          timestamp == other.timestamp;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      rewardId.hashCode ^
+      childId.hashCode ^
+      quantity.hashCode ^
+      timestamp.hashCode;
 }

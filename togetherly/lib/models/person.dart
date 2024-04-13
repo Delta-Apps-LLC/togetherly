@@ -27,4 +27,23 @@ abstract class Person {
     required this.name,
     required this.icon,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Person &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          familyId == other.familyId &&
+          pin == other.pin &&
+          name == other.name &&
+          icon == other.icon;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      familyId.hashCode ^
+      pin.hashCode ^
+      name.hashCode ^
+      icon.hashCode;
 }
