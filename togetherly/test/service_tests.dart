@@ -60,39 +60,6 @@ void main() {
     when(queryBuilder.delete()).thenAnswer((_) => filterBuilder);
   });
 
-  group("PersonService tests", () {
-    late PersonService personService;
-    setUp(() => personService = PersonService(supabaseClient));
-
-    test('getChildren', () async {
-      final result = await personService.getChildren(1);
-      debugPrint("$result");
-    });
-
-    test('getParents', () async {
-      final result = await personService.getParents(1);
-      debugPrint("$result");
-    });
-
-    test('insertChild', () async {
-      final result = await personService.insertChild(const Child(
-          familyId: 1,
-          pin: "1234",
-          name: "John",
-          icon: ProfileIcon.dog,
-          totalPoints: 10));
-      debugPrint("$result");
-      await personService.deletePerson(result);
-    });
-
-    test('insertParent', () async {
-      final result = await personService.insertParent(const Parent(
-          familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
-      debugPrint("$result");
-      await personService.deletePerson(result);
-    });
-  }, skip: "Not yet finished");
-
   group("ChoreService tests", () {
     late ChoreService choreService;
 
@@ -148,6 +115,39 @@ void main() {
       verify(filterBuilder.match({"id": 5}));
     });
   });
+
+  group("PersonService tests", () {
+    late PersonService personService;
+    setUp(() => personService = PersonService(supabaseClient));
+
+    test('getChildren', () async {
+      final result = await personService.getChildren(1);
+      debugPrint("$result");
+    });
+
+    test('getParents', () async {
+      final result = await personService.getParents(1);
+      debugPrint("$result");
+    });
+
+    test('insertChild', () async {
+      final result = await personService.insertChild(const Child(
+          familyId: 1,
+          pin: "1234",
+          name: "John",
+          icon: ProfileIcon.dog,
+          totalPoints: 10));
+      debugPrint("$result");
+      await personService.deletePerson(result);
+    });
+
+    test('insertParent', () async {
+      final result = await personService.insertParent(const Parent(
+          familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
+      debugPrint("$result");
+      await personService.deletePerson(result);
+    });
+  }, skip: "Not yet finished");
 
   // TODO: Add similar tests for other services.
 }
