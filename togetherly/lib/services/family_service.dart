@@ -11,7 +11,8 @@ class FamilyService {
     var result = await _supabaseClient
         .from('family')
         .select('name')
-        .match({'id': familyId}).single();
+        .eq('id', familyId)
+        .single();
 
     return Future<String>.value(result['name']);
   }
