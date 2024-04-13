@@ -2,11 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:togetherly/models/child.dart';
-import 'package:togetherly/models/chore.dart';
-import 'package:togetherly/models/parent.dart';
-import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/family_service.dart';
 import 'package:togetherly/services/person_service.dart';
@@ -86,6 +83,43 @@ void main() {
       final result = await choreService.insertChore(testData.familyId, input);
       debugPrint("Result: $result");
       await choreService.deleteChore(result);
+    });
+  });
+
+  group("ChoreCompletionService tests", () {
+    const testChildren = TestChildGenerator(1);
+    const testChores = TestChoreGenerator(1);
+    const testData = TestChoreCompletionGenerator(1);
+    late PersonService personService;
+    late ChoreService choreService;
+    late ChoreCompletionService completionService;
+
+    setUp(() {
+      personService = PersonService();
+      choreService = ChoreService();
+      completionService = ChoreCompletionService();
+    });
+
+    test('getChoreCompletionsByFamily', () async {
+      final result = await completionService
+          .getChoreCompletionsByFamily(testData.familyId);
+      debugPrint("Result: $result");
+    });
+
+    test('insertAssignment', () async {
+      final child = await personService.insertChild(testChildren.get(0));
+      final chore = await choreService.insertChore(
+          testChores.familyId, testChores.get(0));
+
+      final input =
+          testData.get(1).copyWith(childId: child.id, choreId: chore.id);
+      debugPrint("Input: $input");
+      final result = await completionService.insertChoreCompletion(input);
+      debugPrint("Result: $result");
+      await completionService.deleteChoreCompletion(result);
+
+      await choreService.deleteChore(chore);
+      await personService.deletePerson(child);
     });
   });
 
@@ -199,6 +233,4 @@ void main() {
       await personService.deletePerson(child);
     });
   });
-
-  // TODO: Add similar tests for other services.
 }
