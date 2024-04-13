@@ -8,6 +8,7 @@ import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
+import 'package:togetherly/services/family_service.dart';
 import 'package:togetherly/services/person_service.dart';
 import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
@@ -85,6 +86,26 @@ void main() {
       final result = await choreService.insertChore(testData.familyId, input);
       debugPrint("Result: $result");
       await choreService.deleteChore(result);
+    });
+  });
+
+  group("FamilyService tests", () {
+    const testData = TestFamilyGenerator(1);
+    late FamilyService familyService;
+
+    setUp(() => familyService = FamilyService());
+
+    test('getFamilyName', () async {
+      final result = await familyService.getFamilyName(testData.familyId);
+      debugPrint("Result: $result");
+    });
+
+    test('insertFamily', () async {
+      final input = testData.get(0).name;
+      debugPrint("Input: $input");
+      final result = await familyService.insertFamily(input);
+      debugPrint("Result: $result");
+      await familyService.deleteFamily(result.id!);
     });
   });
 
