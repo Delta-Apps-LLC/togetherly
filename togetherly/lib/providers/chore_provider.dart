@@ -15,8 +15,8 @@ class ChoreProvider with ChangeNotifier {
   ChoreProvider(
     this._choreService,
     this._assignmentService,
-    this._userIdentityProvider,
     this._choreCompletionService,
+    this._userIdentityProvider,
   ) {
     log("ChoreProvider created");
     refresh();
@@ -36,6 +36,7 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_choreIdToPersonIds].
   Map<int, Set<int>>? _choreIdToPersonIdsCache;
+
   /// Helper map for getting the set of person IDs assigned to a chore.
   Map<int, Set<int>> get _choreIdToPersonIds =>
       _choreIdToPersonIdsCache ??= _allAssignments.groupFoldBy(
@@ -43,6 +44,7 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_personIdToChoreIds].
   Map<int, Set<int>>? _personIdToChoreIdsCache;
+
   /// Helper map for getting the set of chore IDs assigned to a person.
   Map<int, Set<int>> get _personIdToChoreIds =>
       _personIdToChoreIdsCache ??= _allAssignments.groupFoldBy(
@@ -115,11 +117,18 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  Future<void> updateAssignment(Assignment assignment, Chore chore) async {
+  Future<void> updateAssignment(Assignment assignment) async {
     await _assignmentService.updateAssignment(assignment);
-    if(assignment.status == AssignmentStatus.completed) {
+    if (assignment.status == AssignmentStatus.completed) {
       //TODO updated isApproved when adding parental approval functionality
-      await _choreCompletionService.insertChoreCompletion(ChoreCompletion(choreId: assignment.choreId, childId: assignment.personId, dateSubmitted: DateTime.now(), dueDate: chore.dueDate, isApproved: true));
+      final chore = allChores.firstWhere((c) => c.id == assignment.choreId);
+      await _choreCompletionService.insertChoreCompletion(ChoreCompletion(
+        choreId: assignment.choreId,
+        childId: assignment.personId,
+        dateSubmitted: DateTime.now(),
+        dueDate: chore.dueDate,
+        isApproved: true,
+      ));
     }
     await refresh();
   }
