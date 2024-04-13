@@ -5,8 +5,13 @@ class AssignmentService {
   static const String _assignmentTable = "assignment";
   static const String _familyAssignmentView = "family_assignment";
 
+  AssignmentService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<List<Assignment>> getAssignmentsByFamily(int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_familyAssignmentView)
         .select('person_id, chore_id, status')
         .eq("family_id", familyId);
@@ -15,7 +20,7 @@ class AssignmentService {
 
   Future<Assignment> insertAssignment(Assignment assignment) async {
     return _mapToAssignment(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_assignmentTable)
               .insert(_assignmentToMap(assignment))
               .select())
@@ -24,14 +29,14 @@ class AssignmentService {
   }
 
   Future<void> deleteAssignment(Assignment assignment) async {
-    await Supabase.instance.client.from(_assignmentTable).delete().match({
+    await _supabaseClient.from(_assignmentTable).delete().match({
       'person_id': assignment.personId,
       'chore_id': assignment.choreId,
     });
   }
 
   Future<void> updateAssignment(Assignment assignment) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_assignmentTable)
         .update(_assignmentToMap(assignment))
         .match({

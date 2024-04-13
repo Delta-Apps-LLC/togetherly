@@ -45,3 +45,6 @@ app.*.map.json
 # ENVied environment variables (used for storing secrets)
 .env
 **/env.g.dart
+
+# Mockito-generated mocks
+**/*.mocks.dart

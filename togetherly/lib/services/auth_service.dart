@@ -1,9 +1,14 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
+  AuthService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<AuthException?> signUp(String email, String password) async {
     try {
-      await Supabase.instance.client.auth.signUp(
+      await _supabaseClient.auth.signUp(
         email: email,
         password: password,
         data: {'family_id': null},
@@ -16,7 +21,7 @@ class AuthService {
 
   Future<AuthException?> signIn(String email, String password) async {
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
+      await _supabaseClient.auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -28,7 +33,7 @@ class AuthService {
 
   Future<AuthException?> updateAuthUser(int familyId) async {
     try {
-      await Supabase.instance.client.auth.updateUser(
+      await _supabaseClient.auth.updateUser(
         UserAttributes(
           data: {'family_id': familyId},
         ),
@@ -40,14 +45,14 @@ class AuthService {
   }
 
   User? getCurrentUser() {
-    return Supabase.instance.client.auth.currentUser;
+    return _supabaseClient.auth.currentUser;
   }
 
   Session? getCurrentSession() {
-    return Supabase.instance.client.auth.currentSession;
+    return _supabaseClient.auth.currentSession;
   }
 
   Future<void> logout() async {
-    await Supabase.instance.client.auth.signOut();
+    await _supabaseClient.auth.signOut();
   }
 }

@@ -6,10 +6,7 @@ import 'package:togetherly/views/widgets/custom_material_app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Supabase.initialize(
-    url: 'https://ejsdquitvcfduhsrdwvx.supabase.co',
-    anonKey: Env.supabaseAnonKey,
-  );
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
   runApp(const MyApp());
 }
 
