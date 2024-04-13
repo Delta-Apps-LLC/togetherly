@@ -232,10 +232,12 @@ void main() {
     setUp(() => familyService = FamilyService(supabaseClient));
 
     test('getFamilyName should return family name', () async {
-      when(selectBuilder.eq('family_id', testData.familyId))
+      final singleBuilder = MockPostgrestFilterBuilder<Map<String, dynamic>>();
+      when(selectBuilder.eq('id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(
-          Future.value([testData.getMap(0)]));
+      when(selectBuilder.single()).thenAnswer((_) => singleBuilder);
+      whenExecuted(singleBuilder)
+          .thenCompleteWith(Future.value(testData.getMap(0)));
 
       final expected = testData.get(0, id: 5).name;
       final actual = await familyService.getFamilyName(testData.familyId);
