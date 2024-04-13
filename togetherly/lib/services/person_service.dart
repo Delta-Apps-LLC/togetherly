@@ -34,7 +34,8 @@ class PersonService {
     return _mapToParent(
       (await _supabaseClient
               .from(_personTable)
-              .insert(_parentToMap(parent)).select())
+              .insert(_parentToMap(parent))
+              .select())
           .single,
     );
   }
@@ -43,7 +44,8 @@ class PersonService {
     return _mapToChild(
       (await _supabaseClient
               .from(_personTable)
-              .insert(_childToMap(child)).select())
+              .insert(_childToMap(child))
+              .select())
           .single,
     );
   }
