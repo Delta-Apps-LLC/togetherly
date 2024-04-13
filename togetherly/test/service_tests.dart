@@ -6,7 +6,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:togetherly/models/child.dart';
-import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/parent.dart';
 import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
@@ -72,16 +71,12 @@ void main() {
     test('getAssignmentsByFamily should return all assignments', () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0), testData.getMap(1)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
-      final actual = await assignmentService.getAssignmentsByFamily(testData.familyId);
+      final expected = [testData.get(0), testData.get(1)];
+      final actual =
+          await assignmentService.getAssignmentsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
@@ -89,34 +84,31 @@ void main() {
     test('insertAssignment should insert and return assignment', () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await assignmentService.insertAssignment(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2);
+      final actual = await assignmentService.insertAssignment(testData.get(2));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      verify(queryBuilder.insert(testData.getMap(2)));
     });
 
     test('updateAssignment should update assignment', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await assignmentService.updateAssignment(testData.get(0, id: 5));
+      await assignmentService.updateAssignment(testData.get(3));
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      verify(queryBuilder.update(testData.getMap(3)));
     });
 
     test('deleteAssignment should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await assignmentService.deleteAssignment(testData.get(0, id: 5));
+      await assignmentService.deleteAssignment(testData.get(4));
 
-      verify(filterBuilder.match({"id": 5}));
+      verify(filterBuilder.match({"person_id": 4, "chore_id": 5}));
     });
   });
 
@@ -135,15 +127,10 @@ void main() {
     test('getChoresByFamily should return all chores', () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0, id: 5), testData.getMap(1, id: 6)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
+      final expected = [testData.get(0, id: 5), testData.get(1, id: 6)];
       final actual = await choreService.getChoresByFamily(testData.familyId);
 
       expect(actual, expected);
@@ -152,32 +139,32 @@ void main() {
     test('insertChore should insert and return chore', () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2, id: 5)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await choreService.insertChore(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2, id: 5);
+      final actual =
+          await choreService.insertChore(testData.familyId, testData.get(2));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      verify(queryBuilder
+          .insert(testData.getMap(2, includeFamilyId: true, includeMs: true)));
     });
 
     test('updateChore should update chore', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.updateChore(testData.get(0, id: 5));
+      await choreService.updateChore(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      debugPrint(testData.getMap(3, includeMs: true).toString());
+      verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
     test('deleteChore should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreService.deleteChore(testData.get(0, id: 5));
+      await choreService.deleteChore(testData.get(4, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -185,56 +172,54 @@ void main() {
 
   group("ChoreCompletionService tests", () {
     final testData = TestChoreCompletionGenerator();
-    late ChoreCompletionService choreCompletionService;
+    late ChoreCompletionService completionService;
 
-    setUp(() => choreCompletionService = ChoreCompletionService(supabaseClient));
+    setUp(() => completionService = ChoreCompletionService(supabaseClient));
 
-    test('getChoreCompletionsByFamily should return all chore completions', () async {
+    test('getChoreCompletionsByFamily should return all chore completions',
+        () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0, id: 5), testData.getMap(1, id: 6)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
-      final actual = await choreCompletionService.getChoreCompletionsByFamily(testData.familyId);
+      final expected = [testData.get(0, id: 5), testData.get(1, id: 6)];
+      final actual = await completionService
+          .getChoreCompletionsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
 
-    test('insertChoreCompletion should insert and return chore completion', () async {
+    test('insertChoreCompletion should insert and return chore completion',
+        () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2, id: 5)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await choreCompletionService.insertChoreCompletion(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2, id: 5);
+      final actual =
+          await completionService.insertChoreCompletion(testData.get(2));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      debugPrint(testData.getMap(2, includeMs: true).toString());
+      verify(queryBuilder.insert(testData.getMap(2, includeMs: true)));
     });
 
     test('updateChoreCompletion should update chore completion', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreCompletionService.updateChoreCompletion(testData.get(0, id: 5));
+      await completionService.updateChoreCompletion(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      debugPrint(testData.getMap(3, includeMs: true).toString());
+      verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
     test('deleteChoreCompletion should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await choreCompletionService.deleteChoreCompletion(testData.get(0, id: 5));
+      await completionService.deleteChoreCompletion(testData.get(4, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -249,15 +234,10 @@ void main() {
     test('getFamilyName should return family name', () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
+      final expected = testData.get(0, id: 5).name;
       final actual = await familyService.getFamilyName(testData.familyId);
 
       expect(actual, expected);
@@ -266,32 +246,30 @@ void main() {
     test('insertFamily should insert and return family', () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2, id: 5)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await familyService.insertFamily(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2, id: 5);
+      final actual = await familyService.insertFamily(testData.get(2).name);
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      verify(queryBuilder.insert(testData.getMap(2)));
     });
 
     test('updateFamilyName should update family name', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await familyService.updateFamilyName(testData.get(0, id: 5));
+      await familyService.updateFamilyName(5, testData.get(3).name);
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      debugPrint(testData.getMap(3).toString());
+      verify(queryBuilder.update(testData.getMap(3)));
     });
 
     test('deleteFamily should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await familyService.deleteFamily(testData.get(0, id: 5));
+      await familyService.deleteFamily(5);
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -332,32 +310,26 @@ void main() {
     });
 
     test('updateChild should update child', () async {
-      final result = await personService.updateChild(const Child(
+      await personService.updateChild(const Child(
           familyId: 1,
           pin: "1234",
           name: "John",
           icon: ProfileIcon.dog,
           totalPoints: 10));
-      debugPrint("$result");
-      await personService.deletePerson(result);
     });
 
     test('updateParent should update parent', () async {
-      final result = await personService.updateParent(const Parent(
+      await personService.updateParent(const Parent(
           familyId: 1, pin: "1234", name: "John", icon: ProfileIcon.dog));
-      debugPrint("$result");
-      await personService.deletePerson(result);
     });
 
     test('deletePerson should match against id', () async {
-      final result = await personService.deletePerson(const Child(
+      await personService.deletePerson(const Child(
           familyId: 1,
           pin: "1234",
           name: "John",
           icon: ProfileIcon.dog,
           totalPoints: 10));
-      debugPrint("$result");
-      await personService.deletePerson(result);
     });
   }, skip: "Not yet finished");
 
@@ -370,15 +342,10 @@ void main() {
     test('getRewardsByFamily should return all rewards', () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0, id: 5), testData.getMap(1, id: 6)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
+      final expected = [testData.get(0, id: 5), testData.get(1, id: 6)];
       final actual = await rewardService.getRewardsByFamily(testData.familyId);
 
       expect(actual, expected);
@@ -387,32 +354,31 @@ void main() {
     test('insertReward should insert and return reward', () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2, id: 5)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await rewardService.insertReward(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2, id: 5);
+      final actual =
+          await rewardService.insertReward(testData.familyId, testData.get(2));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      verify(queryBuilder.insert(testData.getMap(2, includeFamilyId: true)));
     });
 
     test('updateReward should update reward', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await rewardService.updateReward(testData.get(0, id: 5));
+      await rewardService.updateReward(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      debugPrint(testData.getMap(3).toString());
+      verify(queryBuilder.update(testData.getMap(3)));
     });
 
     test('deleteReward should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await rewardService.deleteReward(testData.get(0, id: 5));
+      await rewardService.deleteReward(testData.get(4, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
@@ -422,54 +388,54 @@ void main() {
     final testData = TestRewardRedemptionGenerator();
     late RewardRedemptionService rewardRedemptionService;
 
-    setUp(() => rewardRedemptionService = RewardRedemptionService(supabaseClient));
+    setUp(() =>
+        rewardRedemptionService = RewardRedemptionService(supabaseClient));
 
-    test('getRewardRedemptionsByFamily should return all reward redemptions', () async {
+    test('getRewardRedemptionsByFamily should return all reward redemptions',
+        () async {
       when(selectBuilder.eq('family_id', testData.familyId))
           .thenAnswer((_) => selectBuilder);
-      whenExecuted(selectBuilder).thenCompleteWith(Future.value([
-        testData.getMap(0, id: 5),
-        testData.getMap(0, id: 6)
-      ]));
+      whenExecuted(selectBuilder).thenCompleteWith(
+          Future.value([testData.getMap(0, id: 5), testData.getMap(1, id: 6)]));
 
-      final expected = [
-        testData.get(0, id: 5),
-        testData.get(0, id: 6)
-      ];
-      final actual = await rewardRedemptionService.getRewardRedemptionsByFamily(testData.familyId);
+      final expected = [testData.get(0, id: 5), testData.get(1, id: 6)];
+      final actual = await rewardRedemptionService
+          .getRewardRedemptionsByFamily(testData.familyId);
 
       expect(actual, expected);
     });
 
-    test('insertRewardRedemption should insert and return reward redemption', () async {
+    test('insertRewardRedemption should insert and return reward redemption',
+        () async {
       when(filterBuilder.select('*')).thenAnswer((_) => selectBuilder);
       whenExecuted(selectBuilder)
-          .thenCompleteWith(Future.value([testData.getMap(0, id: 5)]));
+          .thenCompleteWith(Future.value([testData.getMap(2, id: 5)]));
 
-      final expected = testData.get(0, id: 5);
-      final actual = await rewardRedemptionService.insertRewardRedemption(
-          testData.familyId, testData.get(0));
+      final expected = testData.get(2, id: 5);
+      final actual =
+          await rewardRedemptionService.insertRewardRedemption(testData.get(2));
 
       expect(actual, expected);
-      verify(queryBuilder.insert(
-          testData.getMap(0, includeFamilyId: true, includeMs: true)));
+      verify(queryBuilder.insert(testData.getMap(2, includeMs: true)));
     });
 
     test('updateRewardRedemption should update reward redemption', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await rewardRedemptionService.updateRewardRedemption(testData.get(0, id: 5));
+      await rewardRedemptionService
+          .updateRewardRedemption(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(0, includeMs: true).toString());
-      verify(queryBuilder.update(testData.getMap(0, includeMs: true)));
+      debugPrint(testData.getMap(3, includeMs: true).toString());
+      verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
     test('deleteRewardRedemption should match against id', () async {
       when(filterBuilder.match(any)).thenAnswer((_) => filterBuilder);
       whenExecuted(filterBuilder).thenCompleteWith(Future.value());
 
-      await rewardRedemptionService.deleteRewardRedemption(testData.get(0, id: 5));
+      await rewardRedemptionService
+          .deleteRewardRedemption(testData.get(4, id: 5));
 
       verify(filterBuilder.match({"id": 5}));
     });
