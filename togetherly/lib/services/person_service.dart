@@ -41,7 +41,7 @@ class PersonService {
 
   Future<Child> insertChild(Child child) async {
     return _mapToChild(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_personTable)
               .insert(_childToMap(child)).select())
           .single,

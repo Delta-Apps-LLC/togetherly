@@ -5,9 +5,14 @@ class RewardRedemptionService {
   static const String _rewardRedemptionTable = "redeemed_reward";
   static const String _familyRewardRedemptionView = "family_redeemed_reward";
 
+  RewardRedemptionService([SupabaseClient? supabaseClient])
+      : _supabaseClient = supabaseClient ?? Supabase.instance.client;
+
+  final SupabaseClient _supabaseClient;
+
   Future<List<RewardRedemption>> getRewardRedemptionsByFamily(
       int familyId) async {
-    var result = await Supabase.instance.client
+    var result = await _supabaseClient
         .from(_familyRewardRedemptionView)
         .select('id, person_id, reward_id, quantity, timestamp')
         .eq("family_id", familyId);
@@ -17,7 +22,7 @@ class RewardRedemptionService {
   Future<RewardRedemption> insertRewardRedemption(
       RewardRedemption redemption) async {
     return _mapToRedeemedReward(
-      (await Supabase.instance.client
+      (await _supabaseClient
               .from(_rewardRedemptionTable)
               .insert(_rewardRedemptionToMap(redemption))
               .select())
@@ -26,14 +31,14 @@ class RewardRedemptionService {
   }
 
   Future<void> deleteRewardRedemption(RewardRedemption redemption) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_rewardRedemptionTable)
         .delete()
         .match({'id': redemption.id});
   }
 
   Future<void> updateRewardRedemption(RewardRedemption redemption) async {
-    await Supabase.instance.client
+    await _supabaseClient
         .from(_rewardRedemptionTable)
         .update(_rewardRedemptionToMap(redemption))
         .match({'id': redemption.id});
