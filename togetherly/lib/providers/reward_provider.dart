@@ -1,14 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/reward.dart';
 import 'package:togetherly/models/reward_redemption.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
-
-import '../models/child.dart';
 
 class RewardProvider with ChangeNotifier {
   RewardProvider(
