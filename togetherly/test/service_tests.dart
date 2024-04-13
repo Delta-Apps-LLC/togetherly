@@ -150,7 +150,6 @@ void main() {
 
       await choreService.updateChore(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(3, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
@@ -195,7 +194,6 @@ void main() {
           await completionService.insertChoreCompletion(testData.get(2));
 
       expect(actual, expected);
-      debugPrint(testData.getMap(2, includeMs: true).toString());
       verify(queryBuilder.insert(testData.getMap(2, includeMs: true)));
     });
 
@@ -205,7 +203,6 @@ void main() {
 
       await completionService.updateChoreCompletion(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(3, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
@@ -257,7 +254,6 @@ void main() {
 
       await familyService.updateFamilyName(5, testData.get(3).name);
 
-      debugPrint(testData.getMap(3).toString());
       verify(queryBuilder.update(testData.getMap(3)));
     });
 
@@ -394,7 +390,6 @@ void main() {
 
       await rewardService.updateReward(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(3).toString());
       verify(queryBuilder.update(testData.getMap(3)));
     });
 
@@ -450,7 +445,6 @@ void main() {
       await rewardRedemptionService
           .updateRewardRedemption(testData.get(3, id: 5));
 
-      debugPrint(testData.getMap(3, includeMs: true).toString());
       verify(queryBuilder.update(testData.getMap(3, includeMs: true)));
     });
 
