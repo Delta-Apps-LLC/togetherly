@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
+import 'package:togetherly/models/chore_completion.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_completion_service.dart';
@@ -11,8 +12,6 @@ import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/utilities/date.dart';
 
 enum ChoreType { today, comingSoon, overdue }
-
-import '../models/chore_completion.dart';
 
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
