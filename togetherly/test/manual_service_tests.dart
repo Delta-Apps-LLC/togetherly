@@ -9,6 +9,7 @@ import 'package:togetherly/models/person.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/services/person_service.dart';
+import 'package:togetherly/services/reward_redemption_service.dart';
 import 'package:togetherly/services/reward_service.dart';
 import 'package:togetherly/utilities/env.dart';
 
@@ -74,7 +75,7 @@ void main() {
     setUp(() => choreService = ChoreService());
 
     test('getChoresByFamily', () async {
-      final result = await choreService.getChoresByFamily(1);
+      final result = await choreService.getChoresByFamily(testData.familyId);
       debugPrint("Result: $result");
     });
 
@@ -137,6 +138,44 @@ void main() {
       final result = await rewardService.insertReward(testData.familyId, input);
       debugPrint("Result: $result");
       await rewardService.deleteReward(result);
+    });
+  });
+
+  group("RewardRedemptionService tests", () {
+    const testChildren = TestChildGenerator(1);
+    const testRewards = TestRewardGenerator(1);
+    const testData = TestRewardRedemptionGenerator(1);
+    late PersonService personService;
+    late RewardService rewardService;
+    late RewardRedemptionService rewardRedemptionService;
+
+    setUp(() {
+      personService = PersonService();
+      rewardService = RewardService();
+      rewardRedemptionService = RewardRedemptionService();
+    });
+
+    test('getRewardRedemptionsByFamily', () async {
+      final result = await rewardRedemptionService
+          .getRewardRedemptionsByFamily(testData.familyId);
+      debugPrint("Result: $result");
+    });
+
+    test('insertReward', () async {
+      final child = await personService.insertChild(testChildren.get(0));
+      final reward = await rewardService.insertReward(
+          testRewards.familyId, testRewards.get(0));
+
+      final input =
+          testData.get(1).copyWith(childId: child.id, rewardId: reward.id);
+      debugPrint("Input: $input");
+      final result =
+          await rewardRedemptionService.insertRewardRedemption(input);
+      debugPrint("Result: $result");
+      await rewardRedemptionService.deleteRewardRedemption(result);
+
+      await rewardService.deleteReward(reward);
+      await personService.deletePerson(child);
     });
   });
 
