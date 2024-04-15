@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/parent.dart';
@@ -22,8 +23,10 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   Iterable<Child> get children => _children;
 
-  Person? get currentPerson => [...parents, ...children]
-      .singleWhere((element) => element.id == _userIdentityProvider.personId);
+  Child? get currentChild => children
+      .singleWhereOrNull((child) => child.id == _userIdentityProvider.personId);
+  Parent? get currentParent => parents.singleWhereOrNull(
+        (parent) => parent.id == _userIdentityProvider.personId);
 
   bool _ready = false;
   bool get ready => _ready;
@@ -40,7 +43,7 @@ class PersonProvider with ChangeNotifier {
             'Cannot add a person that is neither a parent nor a child');
       }
       if (parents.isEmpty && children.isEmpty) {
-        _userIdentityProvider.setPersonId(person?.id);
+        _userIdentityProvider.setPersonId(person.id);
       }
       await refresh();
     } else {

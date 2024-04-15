@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
+import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class Points extends StatelessWidget {
@@ -6,6 +9,18 @@ class Points extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? getPoints() {
+      final personProvider =
+          Provider.of<PersonProvider>(context, listen: false);
+      final scaffoldProvider =
+          Provider.of<ScaffoldProvider>(context, listen: false);
+      if (scaffoldProvider.childBeingViewed != null) {
+        return scaffoldProvider.childBeingViewed!.totalPoints;
+      } else {
+        return personProvider.currentChild?.totalPoints;
+      }
+    }
+
     return Center(
       child: SizedBox(
         height: 40,
@@ -23,7 +38,7 @@ class Points extends StatelessWidget {
                 color: AppColors.brandGold,
               ),
               Text(
-                '65',
+                getPoints().toString(),
                 style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
               ),
               const SizedBox(

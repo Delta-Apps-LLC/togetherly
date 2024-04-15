@@ -86,7 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 15,
               ),
-              getAvatar(personProvider.currentPerson),
+              getAvatar(
+                  personProvider.currentParent ?? personProvider.currentChild),
               const SizedBox(
                 height: 10,
               ),
@@ -102,7 +103,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: AppTextStyles.brandAccentLarge,
                       ),
                       Text(
-                        personProvider.currentPerson!.name,
+                        personProvider.currentParent?.name ??
+                            personProvider.currentChild!.name,
                         style: AppTextStyles.brandAccentLarge,
                       ),
                     ],
@@ -143,7 +145,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Text(
                             _pinVisible
-                                ? personProvider.currentPerson!.pin
+                                ? personProvider.currentParent?.pin ??
+                                    personProvider.currentChild!.pin
                                 : '*****',
                             style: AppTextStyles.brandAccentLarge,
                           ),
