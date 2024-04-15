@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/chore_provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
+import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
@@ -69,13 +72,15 @@ class _ChoreItemState extends State<ChoreItem> {
 
     void toggleChoreCompleted(BuildContext context) {
       final provider = Provider.of<ChoreProvider>(context, listen: false);
-      final updatedChore = {
-        'status': widget.chore.status == ChoreStatus.assigned
-            ? ChoreStatus.completed
-            : ChoreStatus.assigned,
-        'chore_id': widget.chore.id,
-      };
-      // provider.updateChore(updatedChore);
+      final personProvider =
+          Provider.of<PersonProvider>(context, listen: false);
+      final updatedAssignment = Assignment(
+          personId: personProvider.currentChild!.id!,
+          choreId: widget.chore.id!,
+          status: widget.chore.status == ChoreStatus.assigned
+              ? AssignmentStatus.completed
+              : AssignmentStatus.assigned);
+      provider.updateAssignment(updatedAssignment);
     }
 
     Widget assignedAvatars() {
@@ -132,54 +137,58 @@ class _ChoreItemState extends State<ChoreItem> {
       );
     }
 
-    return InkWell(
-      onTap: () => buildDialog(context),
-      child: Container(
-        height: 65,
-        margin: const EdgeInsets.only(top: 5),
-        child: PhysicalModel(
-          borderRadius: BorderRadius.circular(5),
-          color: AppColors.brandLightGray,
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                top: 6.0, bottom: 6.0, right: 10.0, left: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    // if (chore.isBonus)
-                    //   const Icon(
-                    //     Icons.star,
-                    //     color: AppColors.brandGold,
-                    //   ),
-                    // if (chore.isBonus)
-                    //   const SizedBox(
-                    //     width: 5,
-                    //   ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.chore.title,
-                          style: widget.chore.status == ChoreStatus.pending ||
-                                  widget.chore.status == ChoreStatus.completed
-                              ? AppTextStyles.brandBodyStrike
-                              : AppTextStyles.brandBody,
-                        ),
-                        if (!widget.chore.dueDate.isToday())
+    return Consumer<ScaffoldProvider>(
+      builder: (context, scaffoldProvider, child) => InkWell(
+        onTap: () => buildDialog(context),
+        child: Container(
+          height: 65,
+          margin: const EdgeInsets.only(top: 5),
+          child: PhysicalModel(
+            borderRadius: BorderRadius.circular(5),
+            color: AppColors.brandLightGray,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 6.0, bottom: 6.0, right: 10.0, left: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      // if (chore.isBonus)
+                      //   const Icon(
+                      //     Icons.star,
+                      //     color: AppColors.brandGold,
+                      //   ),
+                      // if (chore.isBonus)
+                      //   const SizedBox(
+                      //     width: 5,
+                      //   ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Text(
-                            widget.chore.dueDate.prettyDate(),
-                            style: AppTextStyles.brandAccentSub,
+                            widget.chore.title,
+                            style: widget.chore.status == ChoreStatus.pending ||
+                                    widget.chore.status == ChoreStatus.completed
+                                ? AppTextStyles.brandBodyStrike
+                                : AppTextStyles.brandBody,
                           ),
-                      ],
-                    ),
-                  ],
-                ),
-                widget.isParent ? assignedAvatars() : pointsAndCheckBox(),
-              ],
+                          if (!widget.chore.dueDate.isToday())
+                            Text(
+                              widget.chore.dueDate.prettyDate(),
+                              style: AppTextStyles.brandAccentSub,
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  widget.isParent || scaffoldProvider.childBeingViewed != null
+                      ? assignedAvatars()
+                      : pointsAndCheckBox(),
+                ],
+              ),
             ),
           ),
         ),
