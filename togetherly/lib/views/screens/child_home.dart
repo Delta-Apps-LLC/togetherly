@@ -42,16 +42,19 @@ class ChildHomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const ChoreList(
+            ChoreList(
               type: ChoreType.today,
+              isParent: isParent,
             ),
             const SizedBox(height: 20.0),
-            const ChoreList(
+            ChoreList(
               type: ChoreType.comingSoon,
+              isParent: isParent,
             ),
             const SizedBox(height: 20.0),
-            const ChoreList(
+            ChoreList(
               type: ChoreType.overdue,
+              isParent: isParent,
             ),
             const SizedBox(height: 20.0),
           ],

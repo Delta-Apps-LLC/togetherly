@@ -6,8 +6,9 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.type});
+  const ChoreList({super.key, required this.type, required this.isParent});
   final ChoreType type;
+  final bool isParent;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +48,7 @@ class ChoreList extends StatelessWidget {
                 ),
               ...getProperChores(choreProvider).map((chore) => ChoreItem(
                     chore: chore,
+                    isParent: isParent,
                   ))
             ],
           ),
