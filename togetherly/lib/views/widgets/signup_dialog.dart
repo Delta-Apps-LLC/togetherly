@@ -24,7 +24,6 @@ class _SignupDialogState extends State<SignupDialog> {
       final res = await provider.signUp(_email, _password);
       bool failed = res != null;
       if (failed) {
-        print(res.message);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             res.message,

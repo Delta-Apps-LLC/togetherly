@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/reward.dart';
+import 'package:togetherly/providers/person_provider.dart';
+import 'package:togetherly/providers/reward_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class RewardDialog extends StatefulWidget {
@@ -17,10 +19,29 @@ class _RewardDialogState extends State<RewardDialog> {
   @override
   Widget build(BuildContext context) {
     Future<void> redeemReward(BuildContext context) async {
-      // final provider = Provider.of<RewardProvider>(context, listen: false);
-      setState(() => loading = true);
-      await Future.delayed(const Duration(seconds: 2));
-      setState(() => loading = false);
+      final rewardProvider =
+          Provider.of<RewardProvider>(context, listen: false);
+      final personProvider =
+          Provider.of<PersonProvider>(context, listen: false);
+      if (widget.reward.points > personProvider.currentChild!.totalPoints) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text(
+            'You need more points to redeem this reward',
+            style: AppTextStyles.brandAccentLarge,
+          ),
+          duration: const Duration(seconds: 3),
+          backgroundColor: AppColors.errorRed,
+          behavior: SnackBarBehavior.floating,
+          margin:
+              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.8),
+        ));
+      } else {
+        setState(() => loading = true);
+        await rewardProvider.redeemReward(
+            widget.reward, 1, personProvider.currentChild!);
+        setState(() => loading = false);
+        Navigator.of(context).pop();
+      }
     }
 
     return AlertDialog(
