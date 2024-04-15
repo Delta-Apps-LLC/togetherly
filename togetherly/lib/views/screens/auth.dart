@@ -25,6 +25,12 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool displayLeading(ScaffoldProvider provider) {
+      return provider.index == 0 &&
+          provider.homePageType == HomePageType.child &&
+          provider.childBeingViewed != null;
+    }
+
     return Consumer<UserIdentityProvider>(
       builder: (context, userProvider, child) => (userProvider.familyId == null)
           ? const OnboardPage()
@@ -34,7 +40,7 @@ class AuthPage extends StatelessWidget {
                   builder: (context, provider, child) => Scaffold(
                     appBar: AppBar(
                       backgroundColor: AppColors.brandBlue,
-                      leading: provider.childBeingViewed != null
+                      leading: displayLeading(provider)
                           ? IconButton(
                               icon: const Icon(Icons.arrow_back),
                               onPressed: () {
