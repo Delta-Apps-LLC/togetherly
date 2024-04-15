@@ -4,15 +4,20 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
+import 'package:togetherly/models/chore_completion.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
+import 'package:togetherly/services/chore_completion_service.dart';
 import 'package:togetherly/services/chore_service.dart';
 import 'package:togetherly/utilities/date.dart';
+
+enum ChoreType { today, comingSoon, overdue }
 
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
     this._choreService,
     this._assignmentService,
+    this._choreCompletionService,
     this._userIdentityProvider,
   ) {
     log("ChoreProvider created");
@@ -21,19 +26,18 @@ class ChoreProvider with ChangeNotifier {
 
   final ChoreService _choreService;
   final AssignmentService _assignmentService;
+  final ChoreCompletionService _choreCompletionService;
 
   UserIdentityProvider _userIdentityProvider;
 
   List<Chore> _allChores = [];
   Iterable<Chore> get allChores => _allChores;
-
-  List<Chore> get choreListDueToday => _allChores
-      .where((chore) => chore.dueDate == DateHelpers.getDateToday())
-      .toList();
-  List<Chore> get choreListComingSoon =>
-      _allChores.where((chore) => _isChoreDueTomorrow(chore.dueDate)).toList();
-  List<Chore> get choreListOverdue =>
-      _allChores.where((chore) => _isChoreOverdue(chore.dueDate)).toList();
+  Iterable<Chore> get choresDueToday =>
+      _allChores.where((chore) => chore.dueDate == DateHelpers.getDateToday());
+  Iterable<Chore> get choresComingSoon =>
+      _allChores.where((chore) => _isChoreDueTomorrow(chore.dueDate));
+  Iterable<Chore> get choresOverdue =>
+      _allChores.where((chore) => _isChoreOverdue(chore.dueDate));
 
   bool _isChoreDueTomorrow(DateTime dueDate) {
     final dateToday = DateHelpers.getDateToday();
@@ -44,9 +48,17 @@ class ChoreProvider with ChangeNotifier {
 
   bool _isChoreOverdue(DateTime dueDate) {
     final dateToday = DateHelpers.getDateToday();
-    return dueDate.year <= dateToday.year &&
-        dueDate.month <= dateToday.month &&
-        dueDate.day < dateToday.day;
+    if (dueDate.year < dateToday.year) {
+      return true;
+    } else if (dueDate.year == dateToday.year &&
+        dueDate.month < dateToday.month) {
+      return true;
+    } else if (dueDate.year == dateToday.year &&
+        dueDate.month == dateToday.month &&
+        dueDate.day < dateToday.day) {
+      return true;
+    }
+    return false;
   }
 
   // Iterable<Chore> choresAssignedToPerson(int personId)
@@ -56,6 +68,7 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_choreIdToPersonIds].
   Map<int, Set<int>>? _choreIdToPersonIdsCache;
+
   /// Helper map for getting the set of person IDs assigned to a chore.
   Map<int, Set<int>> get _choreIdToPersonIds =>
       _choreIdToPersonIdsCache ??= _allAssignments.groupFoldBy(
@@ -63,6 +76,7 @@ class ChoreProvider with ChangeNotifier {
 
   /// Cached copy of [_personIdToChoreIds].
   Map<int, Set<int>>? _personIdToChoreIdsCache;
+
   /// Helper map for getting the set of chore IDs assigned to a person.
   Map<int, Set<int>> get _personIdToChoreIds =>
       _personIdToChoreIdsCache ??= _allAssignments.groupFoldBy(
@@ -135,10 +149,19 @@ class ChoreProvider with ChangeNotifier {
     await refresh();
   }
 
-  // TODO: Remove/update this once ChoreCompletion code is done (as there
-  //       won't be anything left to update without the status field).
   Future<void> updateAssignment(Assignment assignment) async {
     await _assignmentService.updateAssignment(assignment);
+    if (assignment.status == AssignmentStatus.completed) {
+      //TODO updated isApproved when adding parental approval functionality
+      final chore = allChores.firstWhere((c) => c.id == assignment.choreId);
+      await _choreCompletionService.insertChoreCompletion(ChoreCompletion(
+        choreId: assignment.choreId,
+        childId: assignment.personId,
+        dateSubmitted: DateTime.now(),
+        dueDate: chore.dueDate,
+        isApproved: true,
+      ));
+    }
     await refresh();
   }
 

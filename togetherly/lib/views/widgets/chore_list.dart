@@ -6,18 +6,24 @@ import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.title, required this.isParent});
-  final String title;
-  final bool isParent;
+  const ChoreList({super.key, required this.type});
+  final ChoreType type;
 
   @override
   Widget build(BuildContext context) {
-    List<Chore> getProperList(ChoreProvider provider) {
-      return switch (title) {
-        'Today' => provider.choreListDueToday,
-        'Coming Soon' => provider.choreListComingSoon,
-        'Overdue' => provider.choreListOverdue,
-        String() => [],
+    Iterable<Chore> getProperChores(ChoreProvider provider) {
+      return switch (type) {
+        ChoreType.today => provider.choresDueToday,
+        ChoreType.comingSoon => provider.choresComingSoon,
+        ChoreType.overdue => provider.choresOverdue,
+      };
+    }
+
+    String getProperChoreTitle() {
+      return switch (type) {
+        ChoreType.today => 'Today',
+        ChoreType.comingSoon => 'Coming Soon',
+        ChoreType.overdue => 'Overdue'
       };
     }
 
@@ -25,21 +31,23 @@ class ChoreList extends StatelessWidget {
       builder: (context, choreProvider, child) => Column(
         mainAxisAlignment: MainAxisAlignment.center, // Aligns to center
         crossAxisAlignment: CrossAxisAlignment.stretch, // Aligns to left
+        // mainAxisAlignment: MainAxisAlignment.start, // Aligns to center
+        // crossAxisAlignment: CrossAxisAlignment.start, // Aligns to left
         children: <Widget>[
           Text(
-            title,
+            getProperChoreTitle(),
             style: AppTextStyles.brandAccentLarge,
           ),
           Column(
             children: [
-              if (getProperList(choreProvider).isEmpty)
+              if (getProperChores(choreProvider).isEmpty)
                 const Text(
                   'No chores to display here.',
                   style: AppTextStyles.brandAccent,
                 ),
-              ...getProperList(choreProvider)
-                  .map((chore) => ChoreItem(chore: chore, isParent: isParent))
-                  .toList(),
+              ...getProperChores(choreProvider).map((chore) => ChoreItem(
+                    chore: chore,
+                  ))
             ],
           ),
         ],

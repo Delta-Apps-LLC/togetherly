@@ -6,13 +6,9 @@ class FamilyService {
     var result = await Supabase.instance.client
         .from('family')
         .select('name')
-        .match({'id': familyId});
-    var name;
-    result.forEach((map) {
-      name = map['name'];
-    });
+        .match({'id': familyId}).single();
 
-    return Future<String>.value(name);
+    return Future<String>.value(result['name']);
   }
 
   Future<Family> insertFamily(String name) async {

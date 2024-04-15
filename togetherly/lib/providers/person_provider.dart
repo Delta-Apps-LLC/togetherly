@@ -22,20 +22,29 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   Iterable<Child> get children => _children;
 
+  Person? get currentPerson => [...parents, ...children]
+      .singleWhere((element) => element.id == _userIdentityProvider.personId);
+
+  bool _ready = false;
+  bool get ready => _ready;
+
   Future<void> addPerson(Person person) async {
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       if (person is Parent) {
-        await _service.insertParent(person);
+        person = await _service.insertParent(person);
       } else if (person is Child) {
-        await _service.insertChild(person);
+        person = await _service.insertChild(person);
       } else {
         throw Exception(
             'Cannot add a person that is neither a parent nor a child');
       }
+      if (parents.isEmpty && children.isEmpty) {
+        _userIdentityProvider.setPersonId(person?.id);
+      }
       await refresh();
     } else {
-      // TODO: Report some kind of error, possibly.
+      throw Exception('Cannot add a person without the familyId');
     }
   }
 
@@ -57,6 +66,8 @@ class PersonProvider with ChangeNotifier {
   }
 
   Future<void> refresh() async {
+    _ready = false;
+    notifyListeners();
     final familyId = _userIdentityProvider.familyId;
     if (familyId != null) {
       _parents = await _service.getParents(familyId);
@@ -65,8 +76,9 @@ class PersonProvider with ChangeNotifier {
       _parents = [];
       _children = [];
     }
+    _ready = true;
     notifyListeners();
-    log("ChoreProvider refreshed!");
+    log("PersonProvider refreshed!");
   }
 
   void updateDependencies(UserIdentityProvider userIdentityProvider) {
