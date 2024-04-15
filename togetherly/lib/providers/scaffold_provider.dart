@@ -1,13 +1,18 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/child.dart';
+import 'package:togetherly/providers/person_provider.dart';
+import 'package:togetherly/providers/user_identity_provider.dart';
 
 enum HomePageType { parent, child }
 
 class ScaffoldProvider with ChangeNotifier {
-  ScaffoldProvider() {
+  ScaffoldProvider(this._userIdentityProvider, this._personProvider) {
     log("ScaffoldProvider created");
   }
+
+  UserIdentityProvider _userIdentityProvider;
+  PersonProvider _personProvider;
 
   int? _index = 0;
   int? get index => _index;
@@ -16,8 +21,12 @@ class ScaffoldProvider with ChangeNotifier {
       'Family'; // TODO: change default title depending on isParent ? (family name) : (child name)
   String? get title => _title;
 
-  HomePageType _homePageType = HomePageType.parent;
-  HomePageType get homePageType => _homePageType;
+  HomePageType? _homePageType;
+  HomePageType get homePageType => _personProvider.currentChild != null
+      ? HomePageType.child
+      : _childBeingViewed != null || _personProvider.currentParent != null
+          ? HomePageType.parent
+          : HomePageType.child;
 
   Child? _childBeingViewed;
   Child? get childBeingViewed => _childBeingViewed;
@@ -52,5 +61,11 @@ class ScaffoldProvider with ChangeNotifier {
     _homePageType = type ?? _homePageType;
     _childBeingViewed = childBeingViewed;
     notifyListeners();
+  }
+
+  void updateDependencies(UserIdentityProvider userIdentityProvider,
+      PersonProvider personProvider) {
+    _userIdentityProvider = userIdentityProvider;
+    _personProvider = personProvider;
   }
 }

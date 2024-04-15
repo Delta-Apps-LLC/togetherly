@@ -46,8 +46,8 @@ class _AppProvidersState extends State<AppProviders> {
         // Add to this section any providers that only maintain state.
         // ChangeNotifierProvider<ExampleProvider>(
         //     create: (_) => ExampleProvider(exampleService)),
-        ChangeNotifierProvider<ScaffoldProvider>(
-            create: (_) => ScaffoldProvider()),
+        // ChangeNotifierProvider<ScaffoldProvider>(
+        //     create: (_) => ScaffoldProvider()),
         ChangeNotifierProvider<AuthProvider>(
             create: (_) => AuthProvider(_authService)),
 
@@ -91,6 +91,11 @@ class _AppProvidersState extends State<AppProviders> {
                 _familyService, userIdentityProvider, authProvider),
             update: (_, userIdentityProvider, authProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider, authProvider)),
+        SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider, ScaffoldProvider>(
+          create: (_, userIdentityProvider, personProvider) => ScaffoldProvider(
+            userIdentityProvider, personProvider),
+            update: (_, userIdentityProvider, personProvider, previous) => previous.updateDependencies(userIdentityProvider, personProvider)
+          ),
 
         // Add to this section any providers that only transform the state of
         // other providers.

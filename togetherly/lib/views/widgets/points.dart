@@ -9,10 +9,10 @@ class Points extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int getPoints() {
+    int? getPoints() {
       final scaffoldProvider =
           Provider.of<ScaffoldProvider>(context, listen: false);
-      return scaffoldProvider.childBeingViewed!.totalPoints;
+      return scaffoldProvider.childBeingViewed?.totalPoints;
     }
 
     return Consumer<PersonProvider>(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/person.dart';
+import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/themes.dart';
 
@@ -23,9 +24,12 @@ class _PinDialogState extends State<PinDialog> {
     void selectProfile() async {
       final userProvider =
           Provider.of<UserIdentityProvider>(context, listen: false);
+      final scaffoldProvider =
+          Provider.of<ScaffoldProvider>(context, listen: false);
       if (_formKey.currentState!.validate()) {
         setState(() => _loading = true);
         await userProvider.setPersonId(widget.person.id);
+        scaffoldProvider.setScaffoldValues(index: 0);
         setState(() => _loading = false);
         Navigator.of(context).pop();
       }
