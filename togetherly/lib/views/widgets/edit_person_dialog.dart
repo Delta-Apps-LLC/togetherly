@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:provider/provider.dart';
+import 'package:togetherly/models/child.dart';
+import 'package:togetherly/models/parent.dart';
+import 'package:togetherly/models/person.dart';
+import 'package:togetherly/providers/person_provider.dart';
+import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/themes.dart';
 
-class NewPersonDialog extends StatefulWidget {
-  const NewPersonDialog({super.key});
+class EditPersonDialog extends StatefulWidget {
+  const EditPersonDialog({super.key, this.person});
+  final Person? person;
 
   @override
-  State<NewPersonDialog> createState() => _NewPersonDialogState();
+  State<EditPersonDialog> createState() => _EditPersonDialogState();
 }
 
-class _NewPersonDialogState extends State<NewPersonDialog> {
+class _EditPersonDialogState extends State<EditPersonDialog> {
   bool _loading = false;
   final _formKey = GlobalKey<FormState>();
   final MultiSelectController<Map<String, dynamic>> selectController =
       MultiSelectController();
   String _name = '';
+  String _pin = '';
+  String _verifyPin = '';
   bool _isParent = false;
   bool _showAvatarError = false;
   Map<String, dynamic> _selectedAvatar = {};
@@ -62,16 +72,49 @@ class _NewPersonDialogState extends State<NewPersonDialog> {
         value: {'title': 'tiger', 'avatar': 'assets/images/avatars/tiger.png'}),
   ];
 
+  ProfileIcon _parseProfilePic(String pic) => switch (pic) {
+        "bear" => ProfileIcon.bear,
+        "cat" => ProfileIcon.cat,
+        "chicken" => ProfileIcon.chicken,
+        "dog" => ProfileIcon.dog,
+        "fish" => ProfileIcon.fish,
+        "fox" => ProfileIcon.fox,
+        "giraffe" => ProfileIcon.giraffe,
+        "gorilla" => ProfileIcon.gorilla,
+        "koala" => ProfileIcon.koala,
+        "panda" => ProfileIcon.panda,
+        "rabbit" => ProfileIcon.rabbit,
+        "tiger" => ProfileIcon.tiger,
+        _ => throw FormatException('Unsupported profile pic "$pic"'),
+      };
+
   void submitPerson(BuildContext context) async {
     if (_selectedAvatar.isEmpty) {
       setState(() => _showAvatarError = true);
     } else {
       setState(() => _showAvatarError = false);
-    }
-    if (_formKey.currentState!.validate() && !_showAvatarError) {
-      setState(() => _loading = true);
-      await Future.delayed(const Duration(seconds: 2));
-      setState(() => _loading = false);
+      if (_formKey.currentState!.validate()) {
+        final personProvider =
+            Provider.of<PersonProvider>(context, listen: false);
+        final userProvider =
+            Provider.of<UserIdentityProvider>(context, listen: false);
+        final newPerson = _isParent
+            ? Parent(
+                familyId: userProvider.familyId!,
+                pin: _pin,
+                name: _name,
+                icon: _parseProfilePic(_selectedAvatar['title']))
+            : Child(
+                familyId: userProvider.familyId!,
+                pin: _pin,
+                name: _name,
+                icon: _parseProfilePic(_selectedAvatar['title']),
+                totalPoints: 0);
+        setState(() => _loading = true);
+        await personProvider.addPerson(newPerson);
+        setState(() => _loading = false);
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -124,8 +167,41 @@ class _NewPersonDialogState extends State<NewPersonDialog> {
                 return null;
               },
             ),
-            const SizedBox(
-              height: 10,
+            TextFormField(
+              maxLength: 5,
+              obscureText: true,
+              initialValue: _pin,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: const InputDecoration(
+                labelText: 'PIN',
+              ),
+              onChanged: (value) => setState(() => _pin = value),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a PIN';
+                } else if (value.length != 5) {
+                  return 'PIN must be exactly 5 digits';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              maxLength: 5,
+              obscureText: true,
+              initialValue: _verifyPin,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: const InputDecoration(
+                labelText: 'Verify PIN',
+              ),
+              onChanged: (value) => setState(() => _verifyPin = value),
+              validator: (value) {
+                if (value != _pin) {
+                  return 'PIN does not match';
+                }
+                return null;
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

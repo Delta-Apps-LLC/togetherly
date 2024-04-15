@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/person.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/views/widgets/edit_person_dialog.dart';
 
-class FamilyChildItem extends StatelessWidget {
+class FamilyChildItem extends StatefulWidget {
   const FamilyChildItem({super.key, required this.child});
   final Child child;
+
+  @override
+  State<FamilyChildItem> createState() => _FamilyChildItemState();
+}
+
+class _FamilyChildItemState extends State<FamilyChildItem> {
+  bool _loading = false;
 
   Widget getAvatar(Child child) {
     String image = switch (child.icon) {
@@ -30,15 +39,67 @@ class FamilyChildItem extends StatelessWidget {
     );
   }
 
+  Future<void> deleteParent() async {
+    final personProvider = Provider.of<PersonProvider>(context, listen: false);
+    setState(() => _loading = true);
+    await personProvider.deletePerson(widget.child);
+    setState(() => _loading = false);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ScaffoldProvider>(context, listen: false);
 
+    Future<void> buildPersonDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return const EditPersonDialog();
+          return AlertDialog(
+            title: const Text(
+              'Person Details',
+              style: AppTextStyles.brandHeading,
+            ),
+            content: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'Close',
+                  style: AppTextStyles.brandAccent,
+                ),
+              ),
+              ElevatedButton(
+                style: AppWidgetStyles.submitButton.copyWith(
+                    backgroundColor: MaterialStatePropertyAll(
+                        Theme.of(context).colorScheme.error)),
+                onPressed: () => deleteParent(),
+                child: _loading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Delete',
+                        style: AppTextStyles.brandAccent,
+                      ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return InkWell(
       onTap: () {
         provider.setScaffoldValues(
-            index: null, title: child.name, type: HomePageType.child, childBeingViewed: child);
+            index: null,
+            title: widget.child.name,
+            type: HomePageType.child,
+            childBeingViewed: widget.child);
       },
+      onLongPress: () => buildPersonDialog(context),
       child: Container(
         height: 65,
         margin: const EdgeInsets.only(top: 8),
@@ -54,12 +115,12 @@ class FamilyChildItem extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    getAvatar(child),
+                    getAvatar(widget.child),
                     const SizedBox(
                       width: 15,
                     ),
                     Text(
-                      child.name,
+                      widget.child.name,
                       style:
                           AppTextStyles.brandBodyLarge.copyWith(fontSize: 22),
                     ),
@@ -73,7 +134,7 @@ class FamilyChildItem extends StatelessWidget {
                       color: AppColors.brandGold,
                     ),
                     Text(
-                      child.totalPoints.toString(),
+                      widget.child.totalPoints.toString(),
                       style:
                           AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                     ),

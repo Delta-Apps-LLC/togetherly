@@ -4,7 +4,7 @@ import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/views/widgets/family_child_item.dart';
 import 'package:togetherly/views/widgets/family_parent_item.dart';
-import 'package:togetherly/views/widgets/new_person_dialog.dart';
+import 'package:togetherly/views/widgets/edit_person_dialog.dart';
 
 class FamilyList extends StatefulWidget {
   const FamilyList({super.key, required this.title});
@@ -21,7 +21,7 @@ class _FamilyListState extends State<FamilyList> {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return const NewPersonDialog();
+          return const EditPersonDialog();
         },
       );
     }
