@@ -24,9 +24,9 @@ class ScaffoldProvider with ChangeNotifier {
   HomePageType? _homePageType;
   HomePageType get homePageType => _personProvider.currentChild != null
       ? HomePageType.child
-      : _childBeingViewed != null || _personProvider.currentParent != null
-          ? HomePageType.parent
-          : HomePageType.child;
+      : _childBeingViewed != null && _personProvider.currentParent != null
+          ? HomePageType.child
+          : HomePageType.parent;
 
   Child? _childBeingViewed;
   Child? get childBeingViewed => _childBeingViewed;

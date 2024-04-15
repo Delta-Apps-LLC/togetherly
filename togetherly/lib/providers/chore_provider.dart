@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/models/chore_completion.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/services/assignment_service.dart';
 import 'package:togetherly/services/chore_completion_service.dart';
@@ -15,11 +16,11 @@ enum ChoreType { today, comingSoon, overdue }
 
 class ChoreProvider with ChangeNotifier {
   ChoreProvider(
-    this._choreService,
-    this._assignmentService,
-    this._choreCompletionService,
-    this._userIdentityProvider,
-  ) {
+      this._choreService,
+      this._assignmentService,
+      this._choreCompletionService,
+      this._userIdentityProvider,
+      this._personProvider) {
     log("ChoreProvider created");
     refresh();
   }
@@ -29,6 +30,7 @@ class ChoreProvider with ChangeNotifier {
   final ChoreCompletionService _choreCompletionService;
 
   UserIdentityProvider _userIdentityProvider;
+  PersonProvider _personProvider;
 
   List<Chore> _allChores = [];
   Iterable<Chore> get allChores => _allChores;
@@ -86,6 +88,16 @@ class ChoreProvider with ChangeNotifier {
       allChores.where((chore) =>
           (_personIdToChoreIds[personId] ?? const <int>{}).contains(chore.id));
 
+  Iterable<Chore> get choresAssignedToPersonIdDueToday =>
+      choresAssignedToCurrentUser
+          .where((chore) => chore.dueDate == DateHelpers.getDateToday());
+  Iterable<Chore> get choresAssignedToPersonIdComingSoon =>
+      choresAssignedToCurrentUser
+          .where((chore) => _isChoreDueTomorrow(chore.dueDate));
+  Iterable<Chore> get choresAssignedToPersonIdOverdue =>
+      choresAssignedToCurrentUser
+          .where((chore) => _isChoreOverdue(chore.dueDate));
+
   Iterable<int> personIdsAssignedToChore(Chore chore) =>
       _choreIdToPersonIds[chore.id] ?? const <int>{};
 
@@ -93,6 +105,21 @@ class ChoreProvider with ChangeNotifier {
     int? personId = _userIdentityProvider.personId;
     return personId == null ? const [] : choresAssignedToPersonId(personId);
   }
+
+  Iterable<Chore> get choresAssignedToViewedUser {
+    int? personId = _userIdentityProvider.personId;
+    return personId == null ? const [] : choresAssignedToPersonId(personId);
+  }
+
+  Iterable<Chore> get choresAssignedToViewedUserDueToday =>
+      choresAssignedToViewedUser
+          .where((chore) => chore.dueDate == DateHelpers.getDateToday());
+  Iterable<Chore> get choresAssignedToViewedUserComingSoon =>
+      choresAssignedToViewedUser
+          .where((chore) => _isChoreDueTomorrow(chore.dueDate));
+  Iterable<Chore> get choresAssignedToViewedUserOverdue =>
+      choresAssignedToViewedUser
+          .where((chore) => _isChoreOverdue(chore.dueDate));
 
   /// Gets the status of the assignment of the given chore to the given person
   /// ID. Returns null if the chore is not assigned to the person ID.
@@ -206,8 +233,10 @@ class ChoreProvider with ChangeNotifier {
     log("ChoreProvider refreshed!");
   }
 
-  void updateDependencies(UserIdentityProvider userIdentityProvider) {
+  void updateDependencies(UserIdentityProvider userIdentityProvider,
+      PersonProvider personProvider) {
     _userIdentityProvider = userIdentityProvider;
+    _personProvider = personProvider;
     refresh();
   }
 }

@@ -68,14 +68,15 @@ class _AppProvidersState extends State<AppProviders> {
                 PersonProvider(_personService, userIdentityProvider),
             update: (_, userIdentityProvider, previous) =>
                 previous.updateDependencies(userIdentityProvider)),
-        SimpleChangeNotifierProxyProvider<UserIdentityProvider, ChoreProvider>(
-            create: (_, userIdentityProvider) => ChoreProvider(
+        SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider, ChoreProvider>(
+            create: (_, userIdentityProvider, personProvider) => ChoreProvider(
                 _choreService,
                 _assignmentService,
                 _choreCompletionService,
-                userIdentityProvider),
-            update: (_, userIdentityProvider, previous) =>
-                previous.updateDependencies(userIdentityProvider)),
+                userIdentityProvider,
+                personProvider),
+            update: (_, userIdentityProvider, personProvider, previous) =>
+                previous.updateDependencies(userIdentityProvider, personProvider)),
         SimpleChangeNotifierProxyProvider2<UserIdentityProvider, PersonProvider,
             RewardProvider>(
           create: (_, userIdentityProvider, personProvider) => RewardProvider(
