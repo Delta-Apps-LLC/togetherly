@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
+import 'package:togetherly/providers/user_identity_provider.dart';
 import 'package:togetherly/themes.dart';
 
 class CustomAppBarTitle extends StatelessWidget {
@@ -41,8 +43,9 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   void _updateIndex(int index, ScaffoldProvider provider) {
     if (index == provider.index) return;
+    final personProvider = Provider.of<PersonProvider>(context, listen: false);
     String title = switch (index) {
-      0 => 'Family',
+      0 => personProvider.isPersonIdParent(null) ? 'Family' : 'Chores',
       1 => 'Approval',
       2 => 'Store',
       3 => 'Settings',
@@ -59,8 +62,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ScaffoldProvider>(context, listen: false);
-
     final List<BottomNavigationBarItem> items = [
       const BottomNavigationBarItem(
         backgroundColor: AppColors.brandBlue,
@@ -88,16 +89,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
       padding: const EdgeInsets.only(left: 6.0, right: 6.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: BottomNavigationBar(
-          items: items,
-          currentIndex: widget.index,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.brandBlue,
-          selectedItemColor: AppColors.brandGold,
-          unselectedItemColor: AppColors.brandBlack,
-          selectedLabelStyle: AppTextStyles.brandAccentSub,
-          unselectedLabelStyle: AppTextStyles.brandAccentSub,
-          onTap: (index) => _updateIndex(index, provider),
+        child: Consumer<ScaffoldProvider>(
+          builder: (context, scaffoldProvider, child) => BottomNavigationBar(
+            items: items,
+            currentIndex: widget.index,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.brandBlue,
+            selectedItemColor: AppColors.brandGold,
+            unselectedItemColor: AppColors.brandBlack,
+            selectedLabelStyle: AppTextStyles.brandAccentSub,
+            unselectedLabelStyle: AppTextStyles.brandAccentSub,
+            onTap: (index) => _updateIndex(index, scaffoldProvider),
+          ),
         ),
       ),
     );

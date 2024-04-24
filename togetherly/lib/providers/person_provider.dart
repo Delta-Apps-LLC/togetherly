@@ -23,10 +23,14 @@ class PersonProvider with ChangeNotifier {
   List<Child> _children = [];
   Iterable<Child> get children => _children;
 
-  Child? get currentChild => children
-      .singleWhereOrNull((child) => child.id == _userIdentityProvider.personId);
-  Parent? get currentParent => parents.singleWhereOrNull(
-        (parent) => parent.id == _userIdentityProvider.personId);
+  Person? get currentPerson => [...parents, ...children].singleWhereOrNull(
+      (person) => person.id == _userIdentityProvider.personId);
+
+  bool isPersonIdParent(int? personId) {
+    final id = personId ?? _userIdentityProvider.personId;
+    return [..._parents, ..._children]
+        .firstWhereOrNull((person) => person.id == id) is Parent;
+  }
 
   bool _ready = false;
   bool get ready => _ready;

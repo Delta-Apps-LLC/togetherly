@@ -9,6 +9,7 @@ enum HomePageType { parent, child }
 class ScaffoldProvider with ChangeNotifier {
   ScaffoldProvider(this._userIdentityProvider, this._personProvider) {
     log("ScaffoldProvider created");
+    // _title = _homePageType == HomePageType.child ? 'Chores' : 'Family';
   }
 
   UserIdentityProvider _userIdentityProvider;
@@ -17,19 +18,19 @@ class ScaffoldProvider with ChangeNotifier {
   int? _index = 0;
   int? get index => _index;
 
-  String? _title =
-      'Family'; // TODO: change default title depending on isParent ? (family name) : (child name)
+  String? _title;
   String? get title => _title;
 
   HomePageType? _homePageType;
-  HomePageType get homePageType => _personProvider.currentChild != null
-      ? HomePageType.child
-      : _childBeingViewed != null && _personProvider.currentParent != null
+  HomePageType get homePageType =>
+      _personProvider.currentPerson is Child || _childBeingViewed != null
           ? HomePageType.child
           : HomePageType.parent;
 
   Child? _childBeingViewed;
   Child? get childBeingViewed => _childBeingViewed;
+
+  bool get isParentViewingChild => _childBeingViewed != null;
 
   void setNavIndex(int index) {
     _index = index;

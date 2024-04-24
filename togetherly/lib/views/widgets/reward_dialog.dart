@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/models/reward.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/reward_provider.dart';
@@ -23,7 +24,8 @@ class _RewardDialogState extends State<RewardDialog> {
           Provider.of<RewardProvider>(context, listen: false);
       final personProvider =
           Provider.of<PersonProvider>(context, listen: false);
-      if (widget.reward.points > personProvider.currentChild!.totalPoints) {
+      if (widget.reward.points >
+          (personProvider.currentPerson as Child).totalPoints) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text(
             'You need more points to redeem this reward',
@@ -38,7 +40,7 @@ class _RewardDialogState extends State<RewardDialog> {
       } else {
         setState(() => loading = true);
         await rewardProvider.redeemReward(
-            widget.reward, 1, personProvider.currentChild!);
+            widget.reward, 1, personProvider.currentPerson as Child);
         setState(() => loading = false);
         Navigator.of(context).pop();
       }
@@ -65,7 +67,9 @@ class _RewardDialogState extends State<RewardDialog> {
           style: AppWidgetStyles.submitButton,
           onPressed: () => redeemReward(context),
           child: loading
-              ? const CircularProgressIndicator()
+              ? const CircularProgressIndicator(
+                  color: AppColors.brandPurple,
+                )
               : const Text(
                   'Redeem',
                   style: AppTextStyles.brandAccent,

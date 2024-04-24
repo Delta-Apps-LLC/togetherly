@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togetherly/models/child.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
@@ -9,9 +10,12 @@ class Points extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int? getPoints() {
+    int? getPoints(PersonProvider personProvider) {
       final scaffoldProvider =
           Provider.of<ScaffoldProvider>(context, listen: false);
+      if (personProvider.currentPerson is Child) {
+        return (personProvider.currentPerson as Child).totalPoints;
+      }
       return scaffoldProvider.childBeingViewed?.totalPoints;
     }
 
@@ -33,8 +37,7 @@ class Points extends StatelessWidget {
                   color: AppColors.brandGold,
                 ),
                 Text(
-                  personProvider.currentChild?.totalPoints.toString() ??
-                      getPoints().toString(),
+                  getPoints(personProvider).toString(),
                   style: AppTextStyles.brandAccentLarge.copyWith(fontSize: 22),
                 ),
                 const SizedBox(

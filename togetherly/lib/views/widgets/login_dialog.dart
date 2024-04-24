@@ -102,7 +102,9 @@ class _LoginDialogState extends State<LoginDialog> {
           style: AppWidgetStyles.submitButton,
           onPressed: () => login(context),
           child: _loading
-              ? const CircularProgressIndicator()
+              ? const CircularProgressIndicator(
+                  color: AppColors.brandPurple,
+                )
               : const Text(
                   'Login',
                   style: AppTextStyles.brandAccent,

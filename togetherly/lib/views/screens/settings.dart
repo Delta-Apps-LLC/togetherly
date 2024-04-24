@@ -87,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 15,
               ),
               getAvatar(
-                  personProvider.currentParent ?? personProvider.currentChild),
+                  personProvider.currentPerson),
               const SizedBox(
                 height: 10,
               ),
@@ -103,8 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: AppTextStyles.brandAccentLarge,
                       ),
                       Text(
-                        personProvider.currentParent?.name ??
-                            personProvider.currentChild!.name,
+                        personProvider.currentPerson?.name ?? '',
                         style: AppTextStyles.brandAccentLarge,
                       ),
                     ],
@@ -145,8 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Text(
                             _pinVisible
-                                ? personProvider.currentParent?.pin ??
-                                    personProvider.currentChild!.pin
+                                ? personProvider.currentPerson?.pin ?? ''
                                 : '*****',
                             style: AppTextStyles.brandAccentLarge,
                           ),
@@ -219,7 +217,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       EdgeInsets.only(top: 10, bottom: 10)),
                 ),
               ),
-              if (_loading) const CircularProgressIndicator(),
+              if (_loading)
+                const CircularProgressIndicator(
+                  color: AppColors.brandPurple,
+                ),
             ],
           ),
         ),

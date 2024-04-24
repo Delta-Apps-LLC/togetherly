@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/iterable_extensions.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/filters_dialog.dart';
 import 'package:togetherly/views/widgets/edit_chore_dialog.dart';
@@ -73,28 +75,30 @@ class FamilyChoresDialog extends StatelessWidget {
               ],
             ),
           ),
-          const SliverFillRemaining(
+          SliverFillRemaining(
             child: Padding(
               padding: AppWidgetStyles.appPadding,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ChoreList(
-                      type: ChoreType.today,
-                      isParent: true,
-                    ),
-                    SizedBox(height: 20.0),
-                    ChoreList(
-                      type: ChoreType.comingSoon,
-                      isParent: true,
-                    ),
-                    SizedBox(height: 20.0),
-                    ChoreList(
-                      type: ChoreType.overdue,
-                      isParent: true,
-                    ),
-                    SizedBox(height: 20.0),
-                  ],
+                child: Consumer<ChoreProvider>(
+                  builder: (context, choreProvider, child) => Column(
+                    children: [
+                      ChoreList(
+                        type: ChoreType.today,
+                        chores: choreProvider.allChores.dueToday,
+                      ),
+                      const SizedBox(height: 20.0),
+                      ChoreList(
+                        type: ChoreType.comingSoon,
+                        chores: choreProvider.allChores.dueTomorrow,
+                      ),
+                      const SizedBox(height: 20.0),
+                      ChoreList(
+                        type: ChoreType.overdue,
+                        chores: choreProvider.allChores.overdue,
+                      ),
+                      const SizedBox(height: 20.0),
+                    ],
+                  ),
                 ),
               ),
             ),

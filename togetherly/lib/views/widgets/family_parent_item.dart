@@ -76,7 +76,9 @@ class _FamilyParentItemState extends State<FamilyParentItem> {
                         Theme.of(context).colorScheme.error)),
                 onPressed: () => deleteParent(),
                 child: _loading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(
+                        color: AppColors.brandPurple,
+                      )
                     : const Text(
                         'Delete',
                         style: AppTextStyles.brandAccent,

@@ -4,37 +4,21 @@ import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/iterable_extensions.dart';
 import 'package:togetherly/views/widgets/chore_item.dart';
 
 class ChoreList extends StatelessWidget {
-  const ChoreList({super.key, required this.type, required this.isParent});
+  const ChoreList({super.key, required this.type, required this.chores});
   final ChoreType type;
-  final bool isParent;
+  final Iterable<Chore> chores;
 
   @override
   Widget build(BuildContext context) {
-    bool isViewingChild = false;
-    Iterable<Chore> getProperChildChores(ChoreProvider provider) {
-      return switch (type) {
-        ChoreType.today => provider.choresAssignedToPersonIdDueToday,
-        ChoreType.comingSoon => provider.choresAssignedToPersonIdComingSoon,
-        ChoreType.overdue => provider.choresAssignedToPersonIdOverdue,
-      };
-    }
-
-    Iterable<Chore> getProperViewedChildChores(ChoreProvider provider) {
-      return switch (type) {
-        ChoreType.today => provider.choresAssignedToViewedUserDueToday,
-        ChoreType.comingSoon => provider.choresAssignedToViewedUserComingSoon,
-        ChoreType.overdue => provider.choresAssignedToViewedUserOverdue,
-      };
-    }
-
     Iterable<Chore> getProperFamilyChores(ChoreProvider provider) {
       return switch (type) {
-        ChoreType.today => provider.choresDueToday,
-        ChoreType.comingSoon => provider.choresComingSoon,
-        ChoreType.overdue => provider.choresOverdue,
+        ChoreType.today => provider.allChores.dueToday,
+        ChoreType.comingSoon => provider.allChores.dueTomorrow,
+        ChoreType.overdue => provider.allChores.overdue,
       };
     }
 
@@ -44,16 +28,6 @@ class ChoreList extends StatelessWidget {
         ChoreType.comingSoon => 'Coming Soon',
         ChoreType.overdue => 'Overdue'
       };
-    }
-
-    Iterable<Chore> getProperList(
-        ChoreProvider choreProvider, ScaffoldProvider scaffoldProvider) {
-      isViewingChild = scaffoldProvider.childBeingViewed != null;
-      return isParent
-          ? getProperFamilyChores(choreProvider)
-          : isViewingChild
-              ? getProperViewedChildChores(choreProvider)
-              : getProperChildChores(choreProvider);
     }
 
     return Consumer<ChoreProvider>(
@@ -70,20 +44,14 @@ class ChoreList extends StatelessWidget {
           Consumer<ScaffoldProvider>(
             builder: (context, scaffoldProvider, child) => Column(
               children: [
-                if (isParent
-                    ? getProperFamilyChores(choreProvider).isEmpty
-                    : isViewingChild
-                        ? getProperViewedChildChores(choreProvider).isEmpty
-                        : getProperChildChores(choreProvider).isEmpty)
+                if (chores.isEmpty)
                   const Text(
                     'No chores to display here.',
                     style: AppTextStyles.brandAccent,
                   ),
-                ...getProperList(choreProvider, scaffoldProvider)
-                    .map((chore) => ChoreItem(
-                          chore: chore,
-                          isParent: isParent,
-                        ))
+                ...chores.map((chore) => ChoreItem(
+                      chore: chore,
+                    ))
               ],
             ),
           ),

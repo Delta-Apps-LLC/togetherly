@@ -3,22 +3,22 @@ import 'package:provider/provider.dart';
 import 'package:togetherly/models/assignment.dart';
 import 'package:togetherly/models/chore.dart';
 import 'package:togetherly/providers/chore_provider.dart';
-import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/providers/scaffold_provider.dart';
 import 'package:togetherly/themes.dart';
 import 'package:togetherly/utilities/date.dart';
 import 'package:togetherly/views/widgets/chore_details_dialog.dart';
 
 class ChoreItem extends StatefulWidget {
-  const ChoreItem({super.key, required this.chore, required this.isParent});
+  const ChoreItem({super.key, required this.chore});
   final Chore chore;
-  final bool isParent;
 
   @override
   State<ChoreItem> createState() => _ChoreItemState();
 }
 
 class _ChoreItemState extends State<ChoreItem> {
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     final List<String> avatars = [
@@ -36,28 +36,35 @@ class _ChoreItemState extends State<ChoreItem> {
       'tiger'
     ];
 
-    Widget getStatusIcon(Chore chore) {
-      switch (chore.status) {
-        case ChoreStatus.assigned:
-          return const Icon(
-            Icons.check_box_outline_blank,
-            size: 28,
-            color: AppColors.brandBlack,
-          );
-        case ChoreStatus.pending:
-          return const Icon(
-            Icons.hourglass_bottom,
-            size: 28,
-            color: AppColors.brandRose,
-          );
-        case ChoreStatus.completed:
-          return const Icon(
-            Icons.check_box_outlined,
-            size: 28,
-            color: AppColors.brandGreen,
-          );
-        default:
-          throw Exception('Invalid status for chore');
+    Widget getStatusIcon(
+        ScaffoldProvider scaffoldProvider, ChoreProvider choreProvider) {
+      final currentStatus =
+          choreProvider.getAssignmentStatusForCurrentUser(widget.chore);
+      if (currentStatus == null) {
+        throw Exception('No assignment status available for current user');
+      } else {
+        switch (currentStatus) {
+          case AssignmentStatus.assigned:
+            return const Icon(
+              Icons.check_box_outline_blank,
+              size: 28,
+              color: AppColors.brandBlack,
+            );
+          case AssignmentStatus.pending:
+            return const Icon(
+              Icons.hourglass_bottom,
+              size: 28,
+              color: AppColors.brandRose,
+            );
+          case AssignmentStatus.completed:
+            return const Icon(
+              Icons.check_box_outlined,
+              size: 28,
+              color: AppColors.brandGreen,
+            );
+          default:
+            throw Exception('Invalid status for chore');
+        }
       }
     }
 
@@ -68,19 +75,6 @@ class _ChoreItemState extends State<ChoreItem> {
           return ChoreDetailsDialog(chore: widget.chore);
         },
       );
-    }
-
-    void toggleChoreCompleted(BuildContext context) {
-      final provider = Provider.of<ChoreProvider>(context, listen: false);
-      final personProvider =
-          Provider.of<PersonProvider>(context, listen: false);
-      final updatedAssignment = Assignment(
-          personId: personProvider.currentChild!.id!,
-          choreId: widget.chore.id!,
-          status: widget.chore.status == ChoreStatus.assigned
-              ? AssignmentStatus.completed
-              : AssignmentStatus.assigned);
-      provider.updateAssignment(updatedAssignment);
     }
 
     Widget assignedAvatars() {
@@ -111,29 +105,41 @@ class _ChoreItemState extends State<ChoreItem> {
     }
 
     Widget pointsAndCheckBox() {
-      return Row(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              const Icon(
-                Icons.bolt,
-                color: AppColors.brandGold,
-                size: 32,
-              ),
-              Text(
-                widget.chore.points.toString(),
-                style: AppTextStyles.brandAccent,
-              ),
-            ],
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-            icon: getStatusIcon(widget.chore),
-            onPressed: () => toggleChoreCompleted(context),
-          ),
-        ],
+      return Consumer<ChoreProvider>(
+        builder: (context, choreProvider, child) => Row(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                const Icon(
+                  Icons.bolt,
+                  color: AppColors.brandGold,
+                  size: 32,
+                ),
+                Text(
+                  widget.chore.points.toString(),
+                  style: AppTextStyles.brandAccent,
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Consumer<ScaffoldProvider>(
+              builder: (context, scaffoldProvider, child) => _loading
+                  ? const CircularProgressIndicator(
+                      color: AppColors.brandPurple,
+                    )
+                  : IconButton(
+                      icon: getStatusIcon(scaffoldProvider, choreProvider),
+                      onPressed: () async {
+                        setState(() => _loading = true);
+                        await choreProvider.toggleChoreCompleted(widget.chore);
+                        setState(() => _loading = false);
+                      },
+                    ),
+            ),
+          ],
+        ),
       );
     }
 
@@ -184,7 +190,7 @@ class _ChoreItemState extends State<ChoreItem> {
                       ),
                     ],
                   ),
-                  widget.isParent || scaffoldProvider.childBeingViewed != null
+                  scaffoldProvider.isParentViewingChild
                       ? assignedAvatars()
                       : pointsAndCheckBox(),
                 ],

@@ -121,7 +121,9 @@ class _SignupDialogState extends State<SignupDialog> {
           style: AppWidgetStyles.submitButton,
           onPressed: () => signup(context),
           child: _loading
-              ? const CircularProgressIndicator()
+              ? const CircularProgressIndicator(
+                  color: AppColors.brandPurple,
+                )
               : const Text(
                   'Signup',
                   style: AppTextStyles.brandAccent,

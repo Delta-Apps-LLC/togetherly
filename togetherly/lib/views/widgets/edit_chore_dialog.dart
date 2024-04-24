@@ -355,7 +355,9 @@ class _EditChoreDialogState extends State<EditChoreDialog> {
                 ? updateChore(context, provider)
                 : submitChore(context, provider),
             child: _loading
-                ? const CircularProgressIndicator()
+                ? const CircularProgressIndicator(
+                    color: AppColors.brandPurple,
+                  )
                 : const Text(
                     'Save',
                     style: AppTextStyles.brandAccent,

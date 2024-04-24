@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:togetherly/providers/chore_provider.dart';
 import 'package:togetherly/providers/person_provider.dart';
 import 'package:togetherly/themes.dart';
+import 'package:togetherly/utilities/iterable_extensions.dart';
 import 'package:togetherly/views/widgets/chore_list.dart';
 import 'package:togetherly/views/widgets/family_chores_dialog.dart';
 import 'package:togetherly/views/widgets/family_list.dart';
@@ -107,9 +108,11 @@ class ParentHomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const ChoreList(
-                type: ChoreType.today,
-                isParent: true,
+              Consumer<ChoreProvider>(
+                builder: (context, choreProvider, child) => ChoreList(
+                  type: ChoreType.today,
+                  chores: choreProvider.allChores.dueToday,
+                ),
               ),
               const SizedBox(height: 20.0),
             ],

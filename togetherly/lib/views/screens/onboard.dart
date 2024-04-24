@@ -71,7 +71,9 @@ class _OnboardPageState extends State<OnboardPage> {
                       EdgeInsets.only(top: 8, bottom: 8)),
                 ),
                 child: _loading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(
+                        color: AppColors.brandPurple,
+                      )
                     : Text(
                         'Continue',
                         style: AppTextStyles.brandHeading

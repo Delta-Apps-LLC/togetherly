@@ -34,34 +34,6 @@ class ChoreProvider with ChangeNotifier {
 
   List<Chore> _allChores = [];
   Iterable<Chore> get allChores => _allChores;
-  Iterable<Chore> get choresDueToday =>
-      _allChores.where((chore) => chore.dueDate == DateHelpers.getDateToday());
-  Iterable<Chore> get choresComingSoon =>
-      _allChores.where((chore) => _isChoreDueTomorrow(chore.dueDate));
-  Iterable<Chore> get choresOverdue =>
-      _allChores.where((chore) => _isChoreOverdue(chore.dueDate));
-
-  bool _isChoreDueTomorrow(DateTime dueDate) {
-    final dateToday = DateHelpers.getDateToday();
-    return dueDate.year == dateToday.year &&
-        dueDate.month == dateToday.month &&
-        dueDate.day == dateToday.day + 1;
-  }
-
-  bool _isChoreOverdue(DateTime dueDate) {
-    final dateToday = DateHelpers.getDateToday();
-    if (dueDate.year < dateToday.year) {
-      return true;
-    } else if (dueDate.year == dateToday.year &&
-        dueDate.month < dateToday.month) {
-      return true;
-    } else if (dueDate.year == dateToday.year &&
-        dueDate.month == dateToday.month &&
-        dueDate.day < dateToday.day) {
-      return true;
-    }
-    return false;
-  }
 
   // Iterable<Chore> choresAssignedToPerson(int personId)
   //   => allChores.where((chore) => chore.assignedChildId == personId);
@@ -88,16 +60,6 @@ class ChoreProvider with ChangeNotifier {
       allChores.where((chore) =>
           (_personIdToChoreIds[personId] ?? const <int>{}).contains(chore.id));
 
-  Iterable<Chore> get choresAssignedToPersonIdDueToday =>
-      choresAssignedToCurrentUser
-          .where((chore) => chore.dueDate == DateHelpers.getDateToday());
-  Iterable<Chore> get choresAssignedToPersonIdComingSoon =>
-      choresAssignedToCurrentUser
-          .where((chore) => _isChoreDueTomorrow(chore.dueDate));
-  Iterable<Chore> get choresAssignedToPersonIdOverdue =>
-      choresAssignedToCurrentUser
-          .where((chore) => _isChoreOverdue(chore.dueDate));
-
   Iterable<int> personIdsAssignedToChore(Chore chore) =>
       _choreIdToPersonIds[chore.id] ?? const <int>{};
 
@@ -105,21 +67,6 @@ class ChoreProvider with ChangeNotifier {
     int? personId = _userIdentityProvider.personId;
     return personId == null ? const [] : choresAssignedToPersonId(personId);
   }
-
-  Iterable<Chore> get choresAssignedToViewedUser {
-    int? personId = _userIdentityProvider.personId;
-    return personId == null ? const [] : choresAssignedToPersonId(personId);
-  }
-
-  Iterable<Chore> get choresAssignedToViewedUserDueToday =>
-      choresAssignedToViewedUser
-          .where((chore) => chore.dueDate == DateHelpers.getDateToday());
-  Iterable<Chore> get choresAssignedToViewedUserComingSoon =>
-      choresAssignedToViewedUser
-          .where((chore) => _isChoreDueTomorrow(chore.dueDate));
-  Iterable<Chore> get choresAssignedToViewedUserOverdue =>
-      choresAssignedToViewedUser
-          .where((chore) => _isChoreOverdue(chore.dueDate));
 
   /// Gets the status of the assignment of the given chore to the given person
   /// ID. Returns null if the chore is not assigned to the person ID.
@@ -129,6 +76,14 @@ class ChoreProvider with ChangeNotifier {
           .firstWhereOrNull(
               (a) => a.choreId == chore.id && a.personId == personId)
           ?.status;
+
+  AssignmentStatus? getAssignmentStatusForCurrentUser(Chore chore) {
+    final personId = _userIdentityProvider.personId;
+    if (personId == null) {
+      return null;
+    }
+    return getAssignmentStatus(chore, personId);
+  }
 
   Future<void> addChore(Chore chore, [Iterable<int>? assignedChildIds]) async {
     final familyId = _userIdentityProvider.familyId;
@@ -191,6 +146,24 @@ class ChoreProvider with ChangeNotifier {
     }
     await refresh();
   }
+
+  Future<void> toggleChoreCompleted(Chore chore) async {
+      final personId = _userIdentityProvider.personId;
+      if (personId == null) {
+        return;
+      }
+      final currentStatus = getAssignmentStatus(chore, personId);
+      if (currentStatus == null) {
+        return;
+      }
+      final updatedAssignment = Assignment(
+          personId: personId,
+          choreId: chore.id!,
+          status: currentStatus == AssignmentStatus.assigned
+              ? AssignmentStatus.completed
+              : AssignmentStatus.assigned);
+      await updateAssignment(updatedAssignment);
+    }
 
   Future<void> updateChildrenAssignedToChore(
       Chore chore, Iterable<int> assignedChildIds) async {

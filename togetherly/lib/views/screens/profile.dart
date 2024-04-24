@@ -293,7 +293,9 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (context, personProvider, child) => Center(
             child: SingleChildScrollView(
               child: !personProvider.ready
-                  ? const CircularProgressIndicator()
+                  ? const CircularProgressIndicator(
+                      color: AppColors.brandPurple,
+                    )
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -324,7 +326,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       EdgeInsets.only(top: 8, bottom: 8)),
                             ),
                             child: _loading
-                                ? const CircularProgressIndicator()
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.brandPurple,
+                                  )
                                 : Text(
                                     'Create',
                                     style: AppTextStyles.brandHeading
